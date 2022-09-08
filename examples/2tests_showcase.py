@@ -1,5 +1,5 @@
 """ The beauty of this package is that the error raised isn't just any exception.
-    It has two bases classes: `unittest.case.SkipTest` and `_pytest.outcomes.Skipped` (If available).
+    It has two base classes: `unittest.case.SkipTest` and `_pytest.outcomes.Skipped` (If available).
 
     This means that if a test method uses an uninstalled optional package then that test is automatically skipped.
     This means no more manual skip decorators for optional dependencies! """

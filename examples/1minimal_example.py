@@ -1,6 +1,6 @@
 """ Call `GeneralImporter` before importing any optional dependencies.
 
-    Here is a simple minimal example:"""
+    Here is a minimal example:"""
 
 from generalimport import GeneralImporter
 GeneralImporter("notinstalled")
