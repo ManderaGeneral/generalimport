@@ -4,7 +4,6 @@ Handle all your optional dependencies with a single call!
 ## Contents
 <pre>
 <a href='#generalimport'>generalimport</a>
-├─ <a href='#Contents'>Contents</a>
 ├─ <a href='#Examples'>Examples</a>
 │  ├─ <a href='#Minimal-Example'>Minimal Example</a>
 │  ├─ <a href='#Tests-Showcase'>Tests Showcase</a>
@@ -13,8 +12,7 @@ Handle all your optional dependencies with a single call!
 ├─ <a href='#Installation'>Installation</a>
 ├─ <a href='#Information'>Information</a>
 ├─ <a href='#Attributes'>Attributes</a>
-├─ <a href='#Contributions'>Contributions</a>
-└─ <a href='#Todo'>Todo</a>
+└─ <a href='#Contributions'>Contributions</a>
 </pre>
 
 ## Examples
@@ -23,7 +21,7 @@ Handle all your optional dependencies with a single call!
 
 Call `GeneralImporter` before importing any optional dependencies.
 
-Here is a simple minimal example:
+Here is a minimal example:
 
 ``` python
 from generalimport import GeneralImporter
@@ -50,7 +48,7 @@ Simply import your optional package and use it like you would any package and le
 ### Tests Showcase
 
 The beauty of this package is that the error raised isn't just any exception.
-It has two bases classes: `unittest.case.SkipTest` and `_pytest.outcomes.Skipped` (If available).
+It has two base classes: `unittest.case.SkipTest` and `_pytest.outcomes.Skipped` (If available).
 
 This means that if a test method uses an uninstalled optional package then that test is automatically skipped.
 This means no more manual skip decorators for optional dependencies!
@@ -107,7 +105,7 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 ## Information
 | Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                                                                                  | Platform        |   Lvl | Todo                                                      | Cover   |
 |:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1.1](https://pypi.org/project/generalimport/) | 2022-09-08 19:53 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.3 %  |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1.2](https://pypi.org/project/generalimport/) | 2022-09-08 21:27 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.3 %  |
 
 ## Attributes
 <pre>
@@ -135,5 +133,5 @@ Pull requests are **not wanted**, please discuss with me before investing any ti
 
 
 <sup>
-Generated 2022-09-08 20:40 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-08 21:27 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
