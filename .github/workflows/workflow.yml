@@ -29,16 +29,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-      - name: Clone 6 repos
+      - name: Clone 7 repos
         run: |
+          git clone ssh://git@github.com/ManderaGeneral/generalimport.git
           git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
           git clone ssh://git@github.com/ManderaGeneral/generalfile.git
           git clone ssh://git@github.com/ManderaGeneral/generalvector.git
           git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
           git clone ssh://git@github.com/Mandera/Mandera.git
           git clone ssh://git@github.com/ManderaGeneral/.github.git
-      - name: Install 4 repos
+      - name: Install 5 repos
         run: |
+          pip install -e generalimport
           pip install -e generallibrary
           pip install -e generalfile
           pip install -e generalvector
@@ -46,6 +48,10 @@ jobs:
       - name: Run Packager method 'workflow_unittest'
         run: |
           python -c "from generalpackager import Packager; Packager().workflow_unittest()"
+        env:
+          PACKAGER_GITHUB_API: ${{ secrets.PACKAGER_GITHUB_API }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
   sync:
     needs: unittest
     if: github.ref == 'refs/heads/master'
@@ -66,16 +72,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-      - name: Clone 6 repos
+      - name: Clone 7 repos
         run: |
+          git clone ssh://git@github.com/ManderaGeneral/generalimport.git
           git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
           git clone ssh://git@github.com/ManderaGeneral/generalfile.git
           git clone ssh://git@github.com/ManderaGeneral/generalvector.git
           git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
           git clone ssh://git@github.com/Mandera/Mandera.git
           git clone ssh://git@github.com/ManderaGeneral/.github.git
-      - name: Install 4 repos
+      - name: Install 5 repos
         run: |
+          pip install -e generalimport
           pip install -e generallibrary
           pip install -e generalfile
           pip install -e generalvector
@@ -83,3 +91,7 @@ jobs:
       - name: Run Packager method 'workflow_sync'
         run: |
           python -c "from generalpackager import Packager; Packager().workflow_sync()"
+        env:
+          PACKAGER_GITHUB_API: ${{ secrets.PACKAGER_GITHUB_API }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}

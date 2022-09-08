@@ -1,9 +1,8 @@
 
 from generalpackager import Packager
 
-# Packager("generalimport").generate_localfiles(print_out=True)
+Packager("generalimport").generate_localfiles(print_out=True)
 
-print(Packager("generalimport").commit_and_push())
 
 
 

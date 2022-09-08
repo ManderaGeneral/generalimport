@@ -1,12 +1,14 @@
 {
-    "install_requires": [],
+    "install_requires": [
+        "setuptools"
+    ],
     "extras_require": {},
     "enabled": true,
     "private": false,
-    "name": null,
+    "name": "generalimport",
     "target": "python",
-    "version": "0.0.1",
-    "description": "Missing description.",
+    "version": "0.1.0",
+    "description": "Handles optional dependencies effortlessly. Raises error when missing package is used, not imported.",
     "topics": [],
     "manifest": []
 }
