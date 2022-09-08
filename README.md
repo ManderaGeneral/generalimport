@@ -17,9 +17,7 @@ Handle all your optional dependencies with a single call!
 └─ <a href='#Todo'>Todo</a>
 </pre>
 
-## Examples
 
-### Minimal Example
 
 Call `GeneralImporter` before importing any optional dependencies.
 Here is a simple minimal example:
@@ -38,7 +36,6 @@ func()  # Error occurs here
 
 Imports fail when they are **used**, *not* imported.
 
-### Tests Showcase
 
 The beauty of this package is that the error raised isn't just any exception.
 It has two bases classes: `unittest.case.SkipTest` and `_pytest.outcomes.Skipped` (If available).
@@ -64,7 +61,6 @@ OK (skipped=1)
 Skipped: Optional dependency 'optional_uninstalled_package' was used but it isn't installed.
 ```
 
-### Recommended Installation
 
 I recommend to put this at the top of your main `__init__.py` file.
 
@@ -77,12 +73,11 @@ This is all you need to write to use this package.
 Optional dependencies are usually defined in `setup.py`'s `extras_require` parameter.
 You can also write `GeneralImporter("*")` to make **any** package importable.
 
-### How It Works
 
 - When `GeneralImporter` is instantiated it creates a new importer for `sys.meta_path`.
 - This importer will return 'fake' modules for specified names.
 - The fake module will recursively return itself when asked for an attribute.
-- When used in any way (\\_\\_call\\_\\_, __add__, __str__ etc) it raises `generalimport.MissingOptionalDependency`.
+- When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 
 ## Installation
@@ -93,7 +88,7 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 ## Information
 | Package                                                          | Ver                                            | Latest Release   | Python                                                                                                                   | Platform        |   Lvl | Todo                                                      | Cover   |
 |:-----------------------------------------------------------------|:-----------------------------------------------|:-----------------|:-------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | - %     |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.2 %  |
 
 ## Attributes
 <pre>
@@ -118,10 +113,9 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 Issue-creation and discussion is most welcome!
 Pull requests are **not wanted**, please discuss with me before investing any time.
 
-## Todo
 
 No todos!
 
 <sup>
-Generated 2022-09-08 18:41 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-08 18:51 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
