@@ -87,7 +87,6 @@ GeneralImporter("your", "optional", "dependencies")
 ```
 
 This is all you need to write to use this package.
-Optional dependencies are usually defined in `setup.py`'s `extras_require` parameter.
 
 You can also write `GeneralImporter("*")` to make **any** package importable.
 
@@ -100,8 +99,6 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 - When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 
-TEST
-
 ## Installation
 | Command                     | <a href='https://pypi.org/project/setuptools'>setuptools</a>   |
 |:----------------------------|:---------------------------------------------------------------|
@@ -110,7 +107,7 @@ TEST
 ## Information
 | Package                                                          | Ver                                            | Latest Release   | Python                                                                                                                   | Platform        |   Lvl | Todo                                                      | Cover   |
 |:-----------------------------------------------------------------|:-----------------------------------------------|:-----------------|:-------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | - %     |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.3 %  |
 
 ## Attributes
 <pre>
@@ -138,5 +135,5 @@ Pull requests are **not wanted**, please discuss with me before investing any ti
 
 
 <sup>
-Generated 2022-09-08 19:17 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-08 19:28 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
