@@ -17,32 +17,45 @@ Handle all your optional dependencies with a single call!
 └─ <a href='#Todo'>Todo</a>
 </pre>
 
+## Examples
 
+### Minimal Example
 
 Call `GeneralImporter` before importing any optional dependencies.
+
 Here is a simple minimal example:
 
-```
+``` python
 from generalimport import GeneralImporter
-GeneralImporter("pandas")
+GeneralImporter("notinstalled")
 
-import pandas  # No error
+import notinstalled  # No error
 
 def func():
-    pandas.DataFrame()
+    notinstalled.missing_func()  # Error occurs here
 
-func()  # Error occurs here
+func()
+```
+
+
+```
+...MissingOptionalDependency: Optional dependency 'notinstalled' was used but it isn't installed.
 ```
 
 Imports fail when they are **used**, *not* imported.
 
+This means you don't need to keep checking if the package is installed before importing it.
+Simply import your optional package and use it like you would any package and let it fail wherever it fails, with a nice error message.
+
+### Tests Showcase
 
 The beauty of this package is that the error raised isn't just any exception.
 It has two bases classes: `unittest.case.SkipTest` and `_pytest.outcomes.Skipped` (If available).
+
 This means that if a test method uses an uninstalled optional package then that test is automatically skipped.
 This means no more manual skip decorators for optional dependencies!
 
-```
+``` python
 from generalimport import GeneralImporter
 GeneralImporter("optional_uninstalled_package")
 
@@ -55,23 +68,30 @@ class MyTest(TestCase):
         self.assertEqual(3, missing_func(1, 2))
 ```
 
+
 ```
 Ran 1 test in 0.002s
+
 OK (skipped=1)
+
 Skipped: Optional dependency 'optional_uninstalled_package' was used but it isn't installed.
 ```
 
+### Recommended Installation
 
 I recommend to put this at the top of your main `__init__.py` file.
 
-```
+``` python
 from generalimport import GeneralImporter
 GeneralImporter("your", "optional", "dependencies")
 ```
 
 This is all you need to write to use this package.
 Optional dependencies are usually defined in `setup.py`'s `extras_require` parameter.
+
 You can also write `GeneralImporter("*")` to make **any** package importable.
+
+### How It Works
 
 
 - When `GeneralImporter` is instantiated it creates a new importer for `sys.meta_path`.
@@ -79,6 +99,8 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 - The fake module will recursively return itself when asked for an attribute.
 - When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
+
+TEST
 
 ## Installation
 | Command                     | <a href='https://pypi.org/project/setuptools'>setuptools</a>   |
@@ -88,7 +110,7 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 ## Information
 | Package                                                          | Ver                                            | Latest Release   | Python                                                                                                                   | Platform        |   Lvl | Todo                                                      | Cover   |
 |:-----------------------------------------------------------------|:-----------------------------------------------|:-----------------|:-------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.2 %  |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | - %     |
 
 ## Attributes
 <pre>
@@ -99,7 +121,7 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L78'>Method: disable</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L93'>Method: disable_all</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L72'>Method: enable</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L57'>Method: find_module</a> <b>(Untested)</b>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L57'>Method: find_module</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L88'>Method: get_enabled</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L68'>Method: is_enabled</a>
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L62'>Method: load_module</a>
@@ -111,11 +133,10 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 
 ## Contributions
 Issue-creation and discussion is most welcome!
+
 Pull requests are **not wanted**, please discuss with me before investing any time.
 
 
-No todos!
-
 <sup>
-Generated 2022-09-08 18:51 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-08 19:17 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>

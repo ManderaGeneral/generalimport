@@ -101,6 +101,11 @@ class Test(TestCase):
         self.assertNotIn("bar", importer.added_fullnames)
         self.assertNotIn("bar", sys.modules)
 
+    def test_find_module(self):
+        importer = GeneralImporter("foo")
+        self.assertIs(importer, importer.find_module("foo"))
+        self.assertIs(None, importer.find_module("bar"))
+
     def test_wildcard(self):
         GeneralImporter("*")
 
