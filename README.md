@@ -105,9 +105,9 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 | `pip install generalimport` | Yes                                                            |
 
 ## Information
-| Package                                                          | Ver                                              | Latest Release   | Python                                                                                                                   | Platform        |   Lvl | Todo                                                      | Cover   |
-|:-----------------------------------------------------------------|:-------------------------------------------------|:-----------------|:-------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1.1](https://pypi.org/project/generalimport/) |                  | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.3 %  |
+| Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                   | Platform        |   Lvl | Todo                                                      | Cover   |
+|:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.1.1](https://pypi.org/project/generalimport/) | 2022-09-08 19:52 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 97.3 %  |
 
 ## Attributes
 <pre>
@@ -135,5 +135,5 @@ Pull requests are **not wanted**, please discuss with me before investing any ti
 
 
 <sup>
-Generated 2022-09-08 19:45 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-08 19:52 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
