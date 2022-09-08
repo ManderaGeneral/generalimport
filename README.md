@@ -109,21 +109,21 @@ You can also write `GeneralImporter("*")` to make **any** package importable.
 
 ## Attributes
 <pre>
-<a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/__init__.py#L1'>Module: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L99'>Class: FakeModule</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L107'>Method: error_func</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L45'>Class: GeneralImporter</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L78'>Method: disable</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L93'>Method: disable_all</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L72'>Method: enable</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L57'>Method: find_module</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L88'>Method: get_enabled</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L68'>Method: is_enabled</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L62'>Method: load_module</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L32'>Class: MissingOptionalDependency</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L19'>Function: get_installed_packages</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L115'>Function: import_module</a>
-└─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/optional_import.py#L23'>Function: package_is_installed</a>
+<a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/__init__.py#L1'>Module: generalimport</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L99'>Class: FakeModule</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L107'>Method: error_func</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L45'>Class: GeneralImporter</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L78'>Method: disable</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L93'>Method: disable_all</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L72'>Method: enable</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L57'>Method: find_module</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L88'>Method: get_enabled</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L68'>Method: is_enabled</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L62'>Method: load_module</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L32'>Class: MissingOptionalDependency</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L19'>Function: get_installed_packages</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L115'>Function: import_module</a>
+└─ <a href='https://github.com/ManderaGeneral/generalimport/blob/54e4c36/generalimport/optional_import.py#L23'>Function: package_is_installed</a>
 </pre>
 
 ## Contributions
@@ -133,5 +133,5 @@ Pull requests are **not wanted**, please discuss with me before investing any ti
 
 
 <sup>
-Generated 2022-09-08 21:27 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-08 21:27 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/54e4c36'>54e4c36</a>.
 </sup>
