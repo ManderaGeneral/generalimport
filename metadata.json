@@ -8,7 +8,7 @@
     "name": "generalimport",
     "target": "python",
     "version": "0.1.0",
-    "description": "Handles optional dependencies effortlessly. Raises error when missing package is used, not imported.",
+    "description": "Handle all your optional dependencies with a single call!",
     "topics": [],
     "manifest": []
 }

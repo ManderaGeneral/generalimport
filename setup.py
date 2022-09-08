@@ -12,7 +12,7 @@ setup(
     author='Rickard "Mandera" Abraham',
     author_email="rickard.abraham@gmail.com",
     version="0.1",
-    description="Handles optional dependencies effortlessly. Raises error when missing package is used, not imported.",
+    description="Handle all your optional dependencies with a single call!",
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=[

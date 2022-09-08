@@ -105,7 +105,7 @@ class FakeModule:
         self.name = name
 
     def error_func(self, *args, **kwargs):
-        raise MissingOptionalDependency(f"Optional dependency was used '{self.name}' but it isn't installed.")
+        raise MissingOptionalDependency(f"Optional dependency '{self.name}' was used but it isn't installed.")
 
     def __getattr__(self, item):
         return self
