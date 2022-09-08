@@ -1,0 +1,12 @@
+{
+    "install_requires": [],
+    "extras_require": {},
+    "enabled": true,
+    "private": false,
+    "name": null,
+    "target": "python",
+    "version": "0.0.1",
+    "description": "Missing description.",
+    "topics": [],
+    "manifest": []
+}
