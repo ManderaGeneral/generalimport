@@ -138,6 +138,8 @@ class FakeModule:
         raise MissingOptionalDependency(f"Optional dependency '{self.name}' was used but it isn't installed.")
 
     def __getattr__(self, item):
+        if item == "__version__":  # Maybe do something like this for some attrs
+            self.error_func()
         return self
 
     __call__ = __enter__ = __exit__ = __str__ = __repr__ = __abs__ = __add__ = __all__ = __and__ = __builtins__ = __cached__ = __concat__ = __contains__ = __delitem__ = __doc__ = __eq__ = __file__ = __floordiv__ = __ge__ = __gt__ = __iadd__ = __iand__ = __iconcat__ = __ifloordiv__ = __ilshift__ = __imatmul__ = __imod__ = __imul__ = __index__ = __inv__ = __invert__ = __ior__ = __ipow__ = __irshift__ = __isub__ = __itruediv__ = __ixor__ = __le__ = __loader__ = __lshift__ = __lt__ = __matmul__ = __mod__ = __mul__ = __name__ = __ne__ = __neg__ = __not__ = __or__ = __package__ = __pos__ = __pow__ = __rshift__ = __setitem__ = __spec__ = __sub__ = __truediv__ = __xor__ = error_func
