@@ -4,11 +4,8 @@ import pkg_resources
 
 
 def get_skip_base_classes():
-    try:
-        from unittest.case import SkipTest
-        yield SkipTest
-    except ImportError:
-        pass
+    from unittest.case import SkipTest
+    yield SkipTest
 
     try:
         from _pytest.outcomes import Skipped
@@ -49,21 +46,48 @@ class GeneralImporter:
         If wildcard (default "*") is provided then this will work on any missing package. """
     WILDCARD = "*"
 
-    def __init__(self, *names):
-        self.names = names
+    def __init__(self, *names, handles_namespace=False):
+        self.names = set()
+        self.added_fullnames = {}
+
+        self.add_names(*names)
+        self.handles_namespace = handles_namespace
+
         self.enable()
-        self.added_fullnames = []
+
+    @staticmethod
+    def _top_name(fullname):
+        return fullname.split(".")[0]
+
+    def _store_loaded_fullname(self, fullname):
+        """ Stores fullname in a set in a dict using its' top name as key. """
+        name = self._top_name(fullname=fullname)
+        if name not in self.added_fullnames:
+            self.added_fullnames[name] = set()
+        self.added_fullnames[name].add(fullname)
 
     def find_module(self, fullname, path=None):
         """ Returns self if fullname is in names, or wildcard is present. """
-        if self.WILDCARD in self.names or fullname.split(".")[0] in self.names:
+        if self.WILDCARD in self.names or self._top_name(fullname) in self.names:
             return self
 
     def load_module(self, fullname):
         """ Adds a FakeModule instance to sys.modules and stores fullname in case of disable. """
         module = FakeModule(name=fullname)
         sys.modules[fullname] = module
-        self.added_fullnames.append(fullname)
+        self._store_loaded_fullname(fullname=fullname)
+
+    def add_names(self, *names):
+        self.names.update(names)
+
+    def remove_names(self, *names):
+        """ Removes FakeModule from sys.modules and then name from added_fullnames. """
+        for name in names:
+            for fullname in self.added_fullnames.get(name, []):
+                sys.modules.pop(fullname, None)
+
+        for name in names:
+            self.added_fullnames.pop(name, None)
 
     def is_enabled(self):
         """ Whether importer is in sys.meta_path or not. """
@@ -73,27 +97,33 @@ class GeneralImporter:
         """ Enables importer by adding it to sys.meta_path.
             Starts from scratch if previously disabled. """
         if not self.is_enabled():
-            sys.meta_path.append(self)
+            if self.handles_namespace:
+                sys.meta_path.insert(0, self)
+            else:
+                sys.meta_path.append(self)
 
     def disable(self):
         """ Disable importer by removing it from sys.meta_path.
             Removes any FakeModule instances this importer has added to sys.modules. """
         if self.is_enabled():
             sys.meta_path.remove(self)
-        for fullname in self.added_fullnames:
-            sys.modules.pop(fullname, None)
-        self.added_fullnames.clear()
+            self.remove_names(*self.added_fullnames)
 
-    @classmethod
-    def get_enabled(cls):
-        """ List of enabled GeneralImporter instances. """
-        return [importer for importer in sys.meta_path if isinstance(importer, GeneralImporter)]
+def get_enabled_importers():
+    """ List of enabled GeneralImporter instances. """
+    return [importer for importer in sys.meta_path if isinstance(importer, GeneralImporter)]
 
-    @classmethod
-    def disable_all(cls):
-        """ Disables all GeneralImporter instances. """
-        for importer in cls.get_enabled():
-            importer.disable()
+def disable_importers():
+    """ Disables all GeneralImporter instances. """
+    for importer in get_enabled_importers():
+        importer.disable()
+
+def get_importer(handles_namespace):
+    importers = get_enabled_importers()
+    for importer in importers:
+        if importer.handles_namespace is handles_namespace:
+            return importer
+    return GeneralImporter(handles_namespace=handles_namespace)
 
 
 class FakeModule:
@@ -112,17 +142,91 @@ class FakeModule:
 
     __call__ = __enter__ = __exit__ = __str__ = __repr__ = __abs__ = __add__ = __all__ = __and__ = __builtins__ = __cached__ = __concat__ = __contains__ = __delitem__ = __doc__ = __eq__ = __file__ = __floordiv__ = __ge__ = __gt__ = __iadd__ = __iand__ = __iconcat__ = __ifloordiv__ = __ilshift__ = __imatmul__ = __imod__ = __imul__ = __index__ = __inv__ = __invert__ = __ior__ = __ipow__ = __irshift__ = __isub__ = __itruediv__ = __ixor__ = __le__ = __loader__ = __lshift__ = __lt__ = __matmul__ = __mod__ = __mul__ = __name__ = __ne__ = __neg__ = __not__ = __or__ = __package__ = __pos__ = __pow__ = __rshift__ = __setitem__ = __spec__ = __sub__ = __truediv__ = __xor__ = error_func
 
+def _safe_import(name):
+    try:
+        return importlib.import_module(name=name)
+    except (ModuleNotFoundError, TypeError) as e:
+        return None
+
+def _module_is_namespace(module):
+    """ Returns if given module is a namespace, if it is it removes it from sys.modules. """
+    is_namespace = module and getattr(module, "__file__", None) is None
+    if is_namespace:
+        sys.modules.pop(module.__name__, None)
+    return is_namespace
+
+
 def import_module(name, error=True):
     """ Like importlib.import_module with optional error paremeter to return None if errored.
         Also excludes namespaces. """
-    try:
-        module = importlib.import_module(name=name)
-    except (ModuleNotFoundError, TypeError) as e:
-        if error:
-            raise e
-    else:
-        if getattr(module, "__file__", None):  # Got a namespace module without __file__ so filter those out here
-            return module
-        elif error:
-            raise ModuleNotFoundError(f"Module '{name}' is only a namespace.")
+    module = _safe_import(name=name)
+    if _module_is_namespace(module=module):
+        module = None
+
+    if module is None and error:
+        raise ModuleNotFoundError(f"Module '{name}' is only a namespace.")
+    return module
+
+def module_is_namespace(name):
+    return _module_is_namespace(module=_safe_import(name=name))
+
+def _seperate_namespaces(names):
+    names = set(names)
+    namespaces = {name for name in names if module_is_namespace(name=name)}
+    names -= namespaces
+    return names, namespaces
+
+def _assert_no_dots(names):
+    for name in names:
+        assert "." not in name, f"Dot found in '{name}', only provide package without dots."
+
+def generalimport(*names):
+    """ Adds names to GeneralImporter if they exist or create them.
+        Will at most have two instances in sys.meta_path:
+        One first to catch namespace imports. One last to catch uninstalled imports. """
+    _assert_no_dots(names=names)
+    names, namespaces = _seperate_namespaces(names=names)
+    if names:
+        get_importer(handles_namespace=False).add_names(*names)
+    if namespaces:
+        get_importer(handles_namespace=True).add_names(*namespaces)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

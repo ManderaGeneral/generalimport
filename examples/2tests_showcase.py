@@ -4,8 +4,8 @@
     This means that if a test method uses an uninstalled optional package then that test is automatically skipped.
     This means no more manual skip decorators for optional dependencies! """
 
-from generalimport import GeneralImporter
-GeneralImporter("optional_uninstalled_package")
+from generalimport import generalimport
+generalimport("optional_uninstalled_package")
 
 from optional_uninstalled_package import missing_func
 

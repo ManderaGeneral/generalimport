@@ -1,9 +1,9 @@
-""" Call `GeneralImporter` before importing any optional dependencies.
+""" Call `generalimport` before importing any optional dependencies.
 
     Here is a minimal example:"""
 
-from generalimport import GeneralImporter
-GeneralImporter("notinstalled")
+from generalimport import generalimport
+generalimport("notinstalled")
 
 import notinstalled  # No error
 

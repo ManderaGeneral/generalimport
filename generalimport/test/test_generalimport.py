@@ -1,10 +1,38 @@
 import sys
 from unittest import TestCase
+from unittest.mock import MagicMock
 
-import generalimport
+import generalimport as gi
 from generalimport import *
 
+from contextlib import contextmanager
+
+@contextmanager
+def namespace_package(name):
+    class Namespace:
+        def __init__(self, name):
+            self.__name__ = name
+
+    class Importer:
+        def find_module(self, fullname, path=None):
+            if fullname == name:
+                return self
+
+        def load_module(self, fullname):
+            sys.modules[fullname] = Namespace(fullname)
+    importer = Importer()
+    sys.meta_path.append(importer)
+
+    try:
+        yield
+    finally:
+        sys.meta_path.remove(importer)
+
+
 class Test(TestCase):
+    def tearDown(self):
+        disable_importers()
+
     def test_get_installed_packages(self):
         self.assertIn("generalimport", get_installed_packages())
         self.assertIn("setuptools", get_installed_packages())
@@ -67,22 +95,22 @@ class Test(TestCase):
         self.assertNotIn(importer2, sys.meta_path)
 
     def test_get_enabled(self):
-        GeneralImporter.get_enabled()
+        get_enabled_importers()
         importer = GeneralImporter()
-        self.assertIn(importer, GeneralImporter.get_enabled())
+        self.assertIn(importer, get_enabled_importers())
         importer.disable()
-        self.assertNotIn(importer, GeneralImporter.get_enabled())
+        self.assertNotIn(importer, get_enabled_importers())
 
     def test_error_func(self):
         self.assertRaises(MissingOptionalDependency, FakeModule("foo").error_func, 1, 2, 3, 4, 5, x=2, y=3)
 
     def test_disable_all(self):
         importer = GeneralImporter("foobar")
-        enabled = GeneralImporter.get_enabled()
+        enabled = get_enabled_importers()
         self.assertIn(importer, enabled)
         self.assertEqual(True, importer.is_enabled())
 
-        GeneralImporter.disable_all()
+        disable_importers()
         self.assertEqual(False, importer.is_enabled())
 
         for importer in enabled:
@@ -121,8 +149,7 @@ class Test(TestCase):
         import heyyyy.foo
         self.assertRaises(MissingOptionalDependency, heyyyy.foo)
 
-
-    def test_importlib(self):
+    def test_importmodule(self):
         self.assertRaises(ModuleNotFoundError, import_module, "thisdoesntexist")
         importer = GeneralImporter("thisdoesntexist")
 
@@ -131,11 +158,46 @@ class Test(TestCase):
 
         self.assertRaises(ModuleNotFoundError, import_module, "thisdoesntexist")
 
-        self.assertIs(import_module("generalimport"), generalimport)
+        self.assertIs(import_module("generalimport"), gi)
 
         import_module("generalimport")
 
+    def test_importmodule_namespace(self):
+        with namespace_package("fake_namespace"):
+            self.assertEqual(None, import_module("fake_namespace", error=False))
+            import fake_namespace
+            self.assertEqual("fake_namespace", fake_namespace.__name__)
 
+    def test_namespace_importer(self):
+        with namespace_package("fake_namespace"):
+            self.assertEqual(True, module_is_namespace("fake_namespace"))
+            self.assertEqual(True, module_is_namespace("fake_namespace"))
+
+            generalimport("fake_namespace")
+
+            from fake_namespace.mod import func
+
+            self.assertRaises(MissingOptionalDependency, func)
+
+    def test_generalimport(self):
+        with namespace_package("fake_namespace"):
+            self.assertEqual(True, module_is_namespace("fake_namespace"))
+            self.assertEqual(True, module_is_namespace("fake_namespace"))
+            self.assertEqual(0, len(get_enabled_importers()))
+
+            generalimport("fake_namespace", "missing_dep")
+            self.assertEqual(2, len(get_enabled_importers()))
+
+            generalimport("another_missing")
+            self.assertEqual(2, len(get_enabled_importers()))
+
+            import fake_namespace
+            import missing_dep
+            import another_missing
+
+            self.assertRaises(MissingOptionalDependency, fake_namespace.func)
+            self.assertRaises(MissingOptionalDependency, missing_dep.func)
+            self.assertRaises(MissingOptionalDependency, another_missing.func)
 
 
 

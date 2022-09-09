@@ -11,7 +11,7 @@ setup(
     name="generalimport",
     author='Rickard "Mandera" Abraham',
     author_email="rickard.abraham@gmail.com",
-    version="0.1.2",
+    version="0.2",
     description="Handle all your optional dependencies with a single call!",
     long_description=long_description,
     long_description_content_type="text/markdown",
