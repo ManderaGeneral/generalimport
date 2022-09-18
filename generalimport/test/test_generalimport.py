@@ -1,38 +1,12 @@
 import sys
-from unittest import TestCase
-from unittest.mock import MagicMock
 
 import generalimport as gi
 from generalimport import *
 
-from contextlib import contextmanager
-
-@contextmanager
-def namespace_package(name):
-    class Namespace:
-        def __init__(self, name):
-            self.__name__ = name
-
-    class Importer:
-        def find_module(self, fullname, path=None):
-            if fullname == name:
-                return self
-
-        def load_module(self, fullname):
-            sys.modules[fullname] = Namespace(fullname)
-    importer = Importer()
-    sys.meta_path.append(importer)
-
-    try:
-        yield
-    finally:
-        sys.meta_path.remove(importer)
+from generalimport.test.funcs import namespace_package, ImportTestCase
 
 
-class Test(TestCase):
-    def tearDown(self):
-        disable_importers()
-
+class Test(ImportTestCase):
     def test_get_installed_packages(self):
         self.assertIn("generalimport", get_installed_packages())
         self.assertIn("setuptools", get_installed_packages())
@@ -198,6 +172,14 @@ class Test(TestCase):
             self.assertRaises(MissingOptionalDependency, fake_namespace.func)
             self.assertRaises(MissingOptionalDependency, missing_dep.func)
             self.assertRaises(MissingOptionalDependency, another_missing.func)
+
+    def test_check_import(self):
+        generalimport("fakepackage")
+        import fakepackage
+        self.assertRaises(MissingOptionalDependency, check_import, fakepackage)
+        check_import(sys)
+
+
 
 
 

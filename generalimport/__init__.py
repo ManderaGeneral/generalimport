@@ -1,5 +1,5 @@
 
-from generalimport.optional_import import generalimport, GeneralImporter, get_installed_packages, package_is_installed, MissingOptionalDependency, FakeModule, import_module, module_is_namespace, get_skip_base_classes, get_enabled_importers, disable_importers, get_importer
+from generalimport.optional_import import generalimport, GeneralImporter, get_installed_packages, package_is_installed, MissingOptionalDependency, FakeModule, import_module, module_is_namespace, get_skip_base_classes, get_enabled_importers, disable_importers, get_importer, check_import
 
 
 

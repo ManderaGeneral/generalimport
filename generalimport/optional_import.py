@@ -131,18 +131,39 @@ class FakeModule:
         Raises a ModuleNotFoundError when used in any way."""
     __path__ = []
 
+    # x = ("__version__", "__call__", "__enter__", "__exit__", "__str__", "__repr__", "__abs__", "__add__", "__all__", "__and__", "__builtins__", "__cached__", "__concat__", "__contains__," "__delitem__", "__doc__", "__eq__", "__floordiv__", "__ge__", "__gt__", "__iadd__", "__iand__", "__iconcat__", "__ifloordiv__", "__ilshift__", "__imatmul__", "__imod__," "__imul__", "__index__", "__inv__", "__invert__", "__ior__", "__ipow__", "__irshift__", "__isub__", "__itruediv__", "__ixor__", "__le__", "__lshift__", "__lt__," "__matmul__", "__mod__", "__mul__", "__ne__", "__neg__", "__not__", "__or__", "__pos__", "__pow__", "__rshift__", "__setitem__", "__sub__," "__truediv__", "__xor__")
+
     def __init__(self, name):
+        self.__name__ = name
         self.name = name
 
     def error_func(self, *args, **kwargs):
         raise MissingOptionalDependency(f"Optional dependency '{self.name}' was used but it isn't installed.")
 
     def __getattr__(self, item):
-        if item == "__version__":  # Maybe do something like this for some attrs
+        if item in self.non_called_dunders:  # Maybe do something like this for some attrs
             self.error_func()
         return self
 
-    __call__ = __enter__ = __exit__ = __str__ = __repr__ = __abs__ = __add__ = __all__ = __and__ = __builtins__ = __cached__ = __concat__ = __contains__ = __delitem__ = __doc__ = __eq__ = __file__ = __floordiv__ = __ge__ = __gt__ = __iadd__ = __iand__ = __iconcat__ = __ifloordiv__ = __ilshift__ = __imatmul__ = __imod__ = __imul__ = __index__ = __inv__ = __invert__ = __ior__ = __ipow__ = __irshift__ = __isub__ = __itruediv__ = __ixor__ = __le__ = __loader__ = __lshift__ = __lt__ = __matmul__ = __mod__ = __mul__ = __name__ = __ne__ = __neg__ = __not__ = __or__ = __package__ = __pos__ = __pow__ = __rshift__ = __setitem__ = __spec__ = __sub__ = __truediv__ = __xor__ = error_func
+    # Binary
+    __ilshift__ = __invert__ = __irshift__ = __ixor__ = __lshift__ = __rlshift__ = __rrshift__ = __rshift__ = error_func
+
+    # Callable
+    __call__ = error_func
+
+    # Cast
+    __bool__ = __bytes__ = __complex__ = __float__ = __int__ = __iter__ = __hash__ = error_func
+
+    # Compare
+    __eq__ = __ge__ = __gt__ = __instancecheck__ = __le__ = __lt__ = __ne__ = __subclasscheck__ = error_func
+
+    non_called_dunders = (
+        # Callable
+        "__annotations__", "__closure__", "__code__", "__defaults__", "__globals__", "__kwdefaults__",
+    )
+
+
+    # __call__ = __enter__ = __exit__ = __str__ = __repr__ = __abs__ = __add__ = __all__ = __and__ = __builtins__ = __cached__ = __concat__ = __contains__ = __delitem__ = __doc__ = __eq__ = __file__ = __floordiv__ = __ge__ = __gt__ = __iadd__ = __iand__ = __iconcat__ = __ifloordiv__ = __ilshift__ = __imatmul__ = __imod__ = __imul__ = __index__ = __inv__ = __invert__ = __ior__ = __ipow__ = __irshift__ = __isub__ = __itruediv__ = __ixor__ = __le__ = __loader__ = __lshift__ = __lt__ = __matmul__ = __mod__ = __mul__ = __name__ = __ne__ = __neg__ = __not__ = __or__ = __package__ = __pos__ = __pow__ = __rshift__ = __setitem__ = __spec__ = __sub__ = __truediv__ = __xor__ = error_func
 
 def _safe_import(name):
     try:
@@ -152,7 +173,7 @@ def _safe_import(name):
 
 def _module_is_namespace(module):
     """ Returns if given module is a namespace, if it is it removes it from sys.modules. """
-    is_namespace = module and getattr(module, "__file__", None) is None
+    is_namespace = module is not None and getattr(module, "__file__", None) is None
     if is_namespace:
         sys.modules.pop(module.__name__, None)
     return is_namespace
@@ -163,11 +184,13 @@ def import_module(name, error=True):
         Also excludes namespaces. """
     module = _safe_import(name=name)
     if _module_is_namespace(module=module):
-        module = None
-
-    if module is None and error:
-        raise ModuleNotFoundError(f"Module '{name}' is only a namespace.")
-    return module
+        if error:
+            raise ModuleNotFoundError(f"Module '{name}' is only a namespace.")
+        return None
+    else:
+        if module is None and error:
+            raise ModuleNotFoundError(f"Module '{name}' isn't installed.")
+        return module
 
 def module_is_namespace(name):
     return _module_is_namespace(module=_safe_import(name=name))
@@ -193,7 +216,10 @@ def generalimport(*names):
     if namespaces:
         get_importer(handles_namespace=True).add_names(*namespaces)
 
-
+def check_import(obj):
+    """ Simple assertion to use on any import to raise error_func if obj is FakeModule. """
+    if isinstance(obj, FakeModule):
+        obj.error_func()
 
 
 
