@@ -157,9 +157,48 @@ class FakeModule:
     # Compare
     __eq__ = __ge__ = __gt__ = __instancecheck__ = __le__ = __lt__ = __ne__ = __subclasscheck__ = error_func
 
+    # Context
+    __enter__ = __exit__ = error_func
+
+    # Delete
+    __delattr__ = __delitem__ = __delslice__ = error_func
+
+    # Info
+    __sizeof__ = __subclasses__ = error_func
+
+    # Iterable
+    __len__ = __next__ = __reversed__ = __contains__ = __getitem__ = __setitem__ = error_func
+
+    # Logic
+    __and__ = __iand__ = __ior__ = __or__ = __rand__ = __ror__ = __rxor__ = __xor__ = error_func
+    # Lookup
+
+
+    # Math
+
+
+    # Matrix
+
+
+    # Object
+
+
+    # Pickle
+
+
+    # String
+
+
+    # Thread
+
+
+
     non_called_dunders = (
         # Callable
         "__annotations__", "__closure__", "__code__", "__defaults__", "__globals__", "__kwdefaults__",
+
+        # Info
+        "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
     )
 
 
