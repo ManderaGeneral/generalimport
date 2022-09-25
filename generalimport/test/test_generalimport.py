@@ -30,7 +30,7 @@ class Test(ImportTestCase):
         self.assertRaises(MissingOptionalDependency, FakeModule("foo").anything)
         x = FakeModule("foo").whatever  # No error
         with self.assertRaises(MissingOptionalDependency):
-            x = FakeModule("foo").whatever + 2
+            FakeModule("foo").whatever == "bar"
 
         fake = FakeModule("bar")
         self.assertIs(fake, fake.these.will.recursively.be.itself)
