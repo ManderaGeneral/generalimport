@@ -40,11 +40,11 @@ jobs:
           git clone ssh://git@github.com/ManderaGeneral/.github.git
       - name: Install 5 repos
         run: |
-          pip install -e generalimport
-          pip install -e generallibrary
-          pip install -e generalfile
-          pip install -e generalvector
-          pip install -e generalpackager
+          pip install -e generalimport[full]
+          pip install -e generallibrary[full]
+          pip install -e generalfile[full]
+          pip install -e generalvector[full]
+          pip install -e generalpackager[full]
       - name: Run Packager method 'workflow_unittest'
         run: |
           python -c "from generalpackager import Packager; Packager().workflow_unittest()"
@@ -83,11 +83,11 @@ jobs:
           git clone ssh://git@github.com/ManderaGeneral/.github.git
       - name: Install 5 repos
         run: |
-          pip install -e generalimport
-          pip install -e generallibrary
-          pip install -e generalfile
-          pip install -e generalvector
-          pip install -e generalpackager
+          pip install -e generalimport[full]
+          pip install -e generallibrary[full]
+          pip install -e generalfile[full]
+          pip install -e generalvector[full]
+          pip install -e generalpackager[full]
       - name: Run Packager method 'workflow_sync'
         run: |
           python -c "from generalpackager import Packager; Packager().workflow_sync()"
