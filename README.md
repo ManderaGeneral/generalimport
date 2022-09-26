@@ -5,12 +5,12 @@ Handle all your optional dependencies with a single call!
 <pre>
 <a href='#generalimport'>generalimport</a>
 ├─ <a href='#Dependency-Tree'>Dependency Tree</a>
+├─ <a href='#Installation'>Installation</a>
 ├─ <a href='#Examples'>Examples</a>
 │  ├─ <a href='#Minimal-Example'>Minimal Example</a>
 │  ├─ <a href='#Tests-Showcase'>Tests Showcase</a>
 │  ├─ <a href='#Recommended-Installation'>Recommended Installation</a>
 │  └─ <a href='#How-It-Works'>How It Works</a>
-├─ <a href='#Installation'>Installation</a>
 ├─ <a href='#Information'>Information</a>
 ├─ <a href='#Attributes'>Attributes</a>
 └─ <a href='#Contributions'>Contributions</a>
@@ -19,17 +19,23 @@ Handle all your optional dependencies with a single call!
 ## Dependency Tree
 ```mermaid
 flowchart LR
-2([file]) --> 3([packager])
-1([library]) --> 4([vector])
-0([import]) --> 1([library])
+2([file]) --> 4([packager])
+1([library]) --> 3([vector])
 1([library]) --> 2([file])
+1([library]) --> 4([packager])
+0([import]) --> 1([library])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
-click 3 "https://github.com/ManderaGeneral/generalpackager"
-click 4 "https://github.com/ManderaGeneral/generalvector"
+click 3 "https://github.com/ManderaGeneral/generalvector"
+click 4 "https://github.com/ManderaGeneral/generalpackager"
 style 0 fill:#482
 ```
+
+## Installation
+| `pip install` ...                                            | `generalimport`   |
+|:-------------------------------------------------------------|:------------------|
+| <a href='https://pypi.org/project/setuptools'>setuptools</a> | ✓                 |
 
 ## Examples
 
@@ -113,11 +119,6 @@ You can also write `generalimport("*")` to make **any** package importable.
 - When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 
-## Installation
-| Command                                                      | `pip install generalimport`   |
-|:-------------------------------------------------------------|:------------------------------|
-| <a href='https://pypi.org/project/setuptools'>setuptools</a> | Yes                           |
-
 ## Information
 | Package                                                          | Ver                                            | Latest Release        | Python                                                                                                                                                                                  | Platform        |   Lvl | Todo                                                      | Cover   |
 |:-----------------------------------------------------------------|:-----------------------------------------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
@@ -156,5 +157,5 @@ Pull requests are not wanted, please discuss with me before investing any time
 
 
 <sup>
-Generated 2022-09-25 12:19 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-26 14:49 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
