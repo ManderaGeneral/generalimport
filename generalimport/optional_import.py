@@ -134,11 +134,14 @@ class FakeModule:
     # x = ("__version__", "__call__", "__enter__", "__exit__", "__str__", "__repr__", "__abs__", "__add__", "__all__", "__and__", "__builtins__", "__cached__", "__concat__", "__contains__," "__delitem__", "__doc__", "__eq__", "__floordiv__", "__ge__", "__gt__", "__iadd__", "__iand__", "__iconcat__", "__ifloordiv__", "__ilshift__", "__imatmul__", "__imod__," "__imul__", "__index__", "__inv__", "__invert__", "__ior__", "__ipow__", "__irshift__", "__isub__", "__itruediv__", "__ixor__", "__le__", "__lshift__", "__lt__," "__matmul__", "__mod__", "__mul__", "__ne__", "__neg__", "__not__", "__or__", "__pos__", "__pow__", "__rshift__", "__setitem__", "__sub__," "__truediv__", "__xor__")
 
     def __init__(self, name):
-        self.__name__ = name
-        self.name = name
+        self.__dict__["__name__"] = name
+        self.__dict__["name"] = name
+        # self.__name__ = name
+        # self.name = name
 
     def error_func(self, *args, **kwargs):
-        raise MissingOptionalDependency(f"Optional dependency '{self.name}' was used but it isn't installed.")
+        name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
+        raise MissingOptionalDependency(f"Optional dependency {name} was used but it isn't installed.")
 
     def __getattr__(self, item):
         if item in self.non_called_dunders:  # Maybe do something like this for some attrs
@@ -171,12 +174,13 @@ class FakeModule:
 
     # Logic
     __and__ = __iand__ = __ior__ = __or__ = __rand__ = __ror__ = __rxor__ = __xor__ = error_func
-    # Lookup
 
+    # Lookup
+    __class_getitem__ = __dir__ = error_func
 
     # Math
-
-
+    __abs__ = __add__ = __ceil__ = __divmod__ = __floor__ = __floordiv__ = __iadd__ = __ifloordiv__ = __imod__ = __imul__ = __ipow__ = __isub__ = __itruediv__ = __mod__ = __mul__ = __neg__ = __pos__ = __pow__ = __radd__ = __rdiv__ = __rdivmod__ = __rfloordiv__ = __rmod__ = __rmul__ = __round__ = __rpow__ = __rsub__ = __rtruediv__ = __sub__ = __truediv__ = __trunc__ = error_func
+    
     # Matrix
 
 

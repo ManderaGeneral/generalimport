@@ -8,12 +8,30 @@ from generalimport.test.funcs import namespace_package, ImportTestCase
 
 
 class Test(ImportTestCase):
-    def test_eq(self):
+    def test_class_getitem(self):
         generalimport("fakepackage")
         import fakepackage
 
         with self.assertRaises(MissingOptionalDependency):
-            fakepackage == 2  # HERE **
+            type(fakepackage)[5]
+
+    def test_dir(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            dir(fakepackage)
+
+    @skip("Cannot cover __setattr__ as it won't allow `import foo.bar`.")
+    def test_setattr(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            fakepackage.x = 5
+
+
+
 
 
 
