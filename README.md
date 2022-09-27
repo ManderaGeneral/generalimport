@@ -20,10 +20,10 @@ Handle all your optional dependencies with a single call!
 ```mermaid
 flowchart LR
 1([library]) --> 4([packager])
-1([library]) --> 3([vector])
-2([file]) --> 4([packager])
-0([import]) --> 1([library])
 1([library]) --> 2([file])
+0([import]) --> 1([library])
+2([file]) --> 4([packager])
+1([library]) --> 3([vector])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -33,9 +33,9 @@ style 0 fill:#482
 ```
 
 ## Installation
-| `pip install` ...                                            | `generalimport`   |
+| `pip install`                                                | `generalimport`   |
 |:-------------------------------------------------------------|:------------------|
-| <a href='https://pypi.org/project/setuptools'>setuptools</a> | ✓                 |
+| <a href='https://pypi.org/project/setuptools'>setuptools</a> | ✔️                |
 
 ## Examples
 
@@ -120,9 +120,9 @@ You can also write `generalimport("*")` to make **any** package importable.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 
 ## Information
-| Package                                                          | Ver                                            | Latest Release        | Python                                                                                                                                                                                  | Platform        |   Lvl | Todo                                                      | Cover   |
-|:-----------------------------------------------------------------|:-----------------------------------------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.2](https://pypi.org/project/generalimport/) | 2022-09-09 12:43 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 98.7 %  |
+| Package                                                               | Ver                                                 | Latest Release           | Python                                                                                                                                                                                       | Platform             | Lvl   | Todo                                                           | Cover       |
+|:----------------------------------------------------------------------|:----------------------------------------------------|:-------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------|:------|:---------------------------------------------------------------|:------------|
+| ('[generalimport](https://github.com/ManderaGeneral/generalimport)',) | ('[0.2](https://pypi.org/project/generalimport/)',) | (2022-09-09 12:43 CEST,) | ('[3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/)',) | ('Windows, Ubuntu',) | (0,)  | ('[0](https://github.com/ManderaGeneral/generalimport#Todo)',) | ('98.7 %',) |
 
 ## Attributes
 <pre>
@@ -157,5 +157,5 @@ Pull requests are not wanted, please discuss with me before investing any time
 
 
 <sup>
-Generated 2022-09-26 15:55 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-27 04:43 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
