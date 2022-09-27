@@ -6,12 +6,12 @@ Handle all your optional dependencies with a single call!
 <a href='#generalimport'>generalimport</a>
 ├─ <a href='#Dependency-Tree'>Dependency Tree</a>
 ├─ <a href='#Installation'>Installation</a>
+├─ <a href='#Information'>Information</a>
 ├─ <a href='#Examples'>Examples</a>
 │  ├─ <a href='#Minimal-Example'>Minimal Example</a>
 │  ├─ <a href='#Tests-Showcase'>Tests Showcase</a>
 │  ├─ <a href='#Recommended-Installation'>Recommended Installation</a>
 │  └─ <a href='#How-It-Works'>How It Works</a>
-├─ <a href='#Information'>Information</a>
 ├─ <a href='#Attributes'>Attributes</a>
 └─ <a href='#Contributions'>Contributions</a>
 </pre>
@@ -19,11 +19,11 @@ Handle all your optional dependencies with a single call!
 ## Dependency Tree
 ```mermaid
 flowchart LR
-1([library]) --> 4([packager])
-1([library]) --> 2([file])
-0([import]) --> 1([library])
 2([file]) --> 4([packager])
+0([import]) --> 1([library])
+1([library]) --> 2([file])
 1([library]) --> 3([vector])
+1([library]) --> 4([packager])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -36,6 +36,11 @@ style 0 fill:#482
 | `pip install`                                                | `generalimport`   |
 |:-------------------------------------------------------------|:------------------|
 | <a href='https://pypi.org/project/setuptools'>setuptools</a> | ✔️                |
+
+## Information
+| Package                                                          | Ver                                            | Latest Release        | Python                                                                                                                                                                                  | Platform        |   Lvl | Todo                                                      | Cover   |
+|:-----------------------------------------------------------------|:-----------------------------------------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|------:|:----------------------------------------------------------|:--------|
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.2](https://pypi.org/project/generalimport/) | 2022-09-09 12:43 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/) | Windows, Ubuntu |     0 | [0](https://github.com/ManderaGeneral/generalimport#Todo) | 98.7 %  |
 
 ## Examples
 
@@ -119,11 +124,6 @@ You can also write `generalimport("*")` to make **any** package importable.
 - When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 
-## Information
-| Package                                                               | Ver                                                 | Latest Release           | Python                                                                                                                                                                                       | Platform             | Lvl   | Todo                                                           | Cover       |
-|:----------------------------------------------------------------------|:----------------------------------------------------|:-------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------|:------|:---------------------------------------------------------------|:------------|
-| ('[generalimport](https://github.com/ManderaGeneral/generalimport)',) | ('[0.2](https://pypi.org/project/generalimport/)',) | (2022-09-09 12:43 CEST,) | ('[3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/)',) | ('Windows, Ubuntu',) | (0,)  | ('[0](https://github.com/ManderaGeneral/generalimport#Todo)',) | ('98.7 %',) |
-
 ## Attributes
 <pre>
 <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/__init__.py#L1'>Module: generalimport</a>
@@ -157,5 +157,5 @@ Pull requests are not wanted, please discuss with me before investing any time
 
 
 <sup>
-Generated 2022-09-27 04:43 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-27 05:21 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
