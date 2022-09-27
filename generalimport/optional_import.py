@@ -182,19 +182,19 @@ class FakeModule:
     __abs__ = __add__ = __ceil__ = __divmod__ = __floor__ = __floordiv__ = __iadd__ = __ifloordiv__ = __imod__ = __imul__ = __ipow__ = __isub__ = __itruediv__ = __mod__ = __mul__ = __neg__ = __pos__ = __pow__ = __radd__ = __rdiv__ = __rdivmod__ = __rfloordiv__ = __rmod__ = __rmul__ = __round__ = __rpow__ = __rsub__ = __rtruediv__ = __sub__ = __truediv__ = __trunc__ = error_func
     
     # Matrix
-
+    __imatmul__ = __matmul__ = __rmatmul__ = error_func
 
     # Object
-
+    __init_subclass__ = __prepare__ = __set_name__ = error_func
 
     # Pickle
-
+    __getnewargs__ = __getnewargs_ex__ = __getstate__ = __reduce__ = __reduce_ex__ = error_func
 
     # String
-
+    __format__ = __fspath__ = __repr__ = __str__ = error_func
 
     # Thread
-
+    __aenter__ = __aexit__ = __aiter__ = __anext__ = __await__ = error_func
 
 
     non_called_dunders = (

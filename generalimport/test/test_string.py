@@ -1,3 +1,4 @@
+import os
 import sys
 from unittest import skip
 
@@ -8,12 +9,36 @@ from generalimport.test.funcs import namespace_package, ImportTestCase
 
 
 class Test(ImportTestCase):
-    def test_eq(self):
+    def test_format(self):
         generalimport("fakepackage")
         import fakepackage
 
         with self.assertRaises(MissingOptionalDependency):
-            fakepackage == 2
+            format(fakepackage)
+
+        with self.assertRaises(MissingOptionalDependency):
+            "{}".format(fakepackage)
+
+    def test_fspath(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            os.fspath(fakepackage)
+
+    def test_repr(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            repr(fakepackage)
+
+    def test_str(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            str(fakepackage)
 
 
 

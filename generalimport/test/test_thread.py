@@ -1,5 +1,5 @@
 import sys
-from unittest import skip
+from unittest import skip, IsolatedAsyncioTestCase
 
 import generalimport as gi
 from generalimport import *
@@ -7,13 +7,29 @@ from generalimport import *
 from generalimport.test.funcs import namespace_package, ImportTestCase
 
 
-class Test(ImportTestCase):
-    def test_eq(self):
+class Test(IsolatedAsyncioTestCase, ImportTestCase):
+    async def test_aenter(self):
         generalimport("fakepackage")
         import fakepackage
 
         with self.assertRaises(MissingOptionalDependency):
-            fakepackage == 2
+            async with fakepackage():
+                pass
+
+    async def test_aiter(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            async for x in fakepackage:
+                pass
+
+    async def test_await(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        with self.assertRaises(MissingOptionalDependency):
+            await fakepackage
 
 
 

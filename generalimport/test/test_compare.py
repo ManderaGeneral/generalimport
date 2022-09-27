@@ -29,7 +29,8 @@ class Test(ImportTestCase):
         with self.assertRaises(MissingOptionalDependency):
             fakepackage > 2
 
-    @skip("https://github.com/ManderaGeneral/generalimport/issues/4")
+    # https://github.com/ManderaGeneral/generalimport/issues/4
+    @skip("Cannot cover `raise X` unless `isinstance(X, Y)` is covered.")
     def test_instancecheck(self):
         generalimport("fakepackage")
         import fakepackage

@@ -1,3 +1,4 @@
+import pickle
 import sys
 from unittest import skip
 
@@ -8,14 +9,13 @@ from generalimport.test.funcs import namespace_package, ImportTestCase
 
 
 class Test(ImportTestCase):
-    def test_eq(self):
+    def test_dumps(self):
+        """ This one is caught by __call__. """
         generalimport("fakepackage")
         import fakepackage
 
         with self.assertRaises(MissingOptionalDependency):
-            fakepackage == 2
-
-
+            pickle.dumps(fakepackage)
 
 
 

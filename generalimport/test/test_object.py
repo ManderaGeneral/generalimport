@@ -8,12 +8,14 @@ from generalimport.test.funcs import namespace_package, ImportTestCase
 
 
 class Test(ImportTestCase):
-    def test_eq(self):
+    def test_init_subclass(self):
+        """ This one is caught by __call__. """
         generalimport("fakepackage")
         import fakepackage
 
         with self.assertRaises(MissingOptionalDependency):
-            fakepackage == 2
+            class X(fakepackage):
+                pass
 
 
 
