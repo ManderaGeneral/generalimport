@@ -128,16 +128,13 @@ def get_importer(handles_namespace):
 
 class FakeModule:
     """ Behaves like a module but any attrs asked for always returns self.
-        Raises a ModuleNotFoundError when used in any way."""
+        Raises a ModuleNotFoundError when used in any way.
+        Unhandled use-cases: https://github.com/ManderaGeneral/generalimport/issues?q=is%3Aissue+is%3Aopen+label%3Aunhandled """
     __path__ = []
-
-    # x = ("__version__", "__call__", "__enter__", "__exit__", "__str__", "__repr__", "__abs__", "__add__", "__all__", "__and__", "__builtins__", "__cached__", "__concat__", "__contains__," "__delitem__", "__doc__", "__eq__", "__floordiv__", "__ge__", "__gt__", "__iadd__", "__iand__", "__iconcat__", "__ifloordiv__", "__ilshift__", "__imatmul__", "__imod__," "__imul__", "__index__", "__inv__", "__invert__", "__ior__", "__ipow__", "__irshift__", "__isub__", "__itruediv__", "__ixor__", "__le__", "__lshift__", "__lt__," "__matmul__", "__mod__", "__mul__", "__ne__", "__neg__", "__not__", "__or__", "__pos__", "__pow__", "__rshift__", "__setitem__", "__sub__," "__truediv__", "__xor__")
 
     def __init__(self, name):
         self.__dict__["__name__"] = name
         self.__dict__["name"] = name
-        # self.__name__ = name
-        # self.name = name
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
