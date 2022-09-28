@@ -4,8 +4,8 @@ Handle all your optional dependencies with a single call!
 ## Contents
 <pre>
 <a href='#generalimport'>generalimport</a>
-├─ <a href='#Dependency-Tree'>Dependency Tree</a>
-├─ <a href='#Installation'>Installation</a>
+├─ <a href='#Dependency-Diagram'>Dependency Diagram</a>
+├─ <a href='#Installation-showing-dependencies'>Installation showing dependencies</a>
 ├─ <a href='#Information'>Information</a>
 ├─ <a href='#Examples'>Examples</a>
 │  ├─ <a href='#Minimal-Example'>Minimal Example</a>
@@ -16,14 +16,14 @@ Handle all your optional dependencies with a single call!
 └─ <a href='#Contributions'>Contributions</a>
 </pre>
 
-## Dependency Tree
+## Dependency Diagram
 ```mermaid
 flowchart LR
+1([library]) --> 3([vector])
 2([file]) --> 4([packager])
+1([library]) --> 4([packager])
 0([import]) --> 1([library])
 1([library]) --> 2([file])
-1([library]) --> 4([packager])
-1([library]) --> 3([vector])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -32,7 +32,7 @@ click 4 "https://github.com/ManderaGeneral/generalpackager"
 style 0 fill:#482
 ```
 
-## Installation
+## Installation showing dependencies
 | `pip install`                                                | `generalimport`   |
 |:-------------------------------------------------------------|:------------------|
 | <a href='https://pypi.org/project/setuptools'>setuptools</a> | ✔️                |
@@ -157,5 +157,5 @@ Pull requests are not wanted, please discuss with me before investing any time
 
 
 <sup>
-Generated 2022-09-27 15:46 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-09-28 13:07 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
