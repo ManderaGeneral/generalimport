@@ -1,220 +1,81 @@
+import importlib
+
 from generalfile import Path
 from generallibrary import join_with_str
-from generalimport import generalimport, get_installed_packages
+from generalimport import generalimport, get_installed_packages, module_is_namespace, import_module
 # generalimport("foobar")
 
-
-
 import sys
-import os
 import pkgutil
-import importlib
-import collections
+
+# CREATE TRUTH TABLE FROM THIS
+# itermodules and piplist can have capital letters
+# piplist equals working_set
+# itermodules and builtin have no module in common
+# working_set has no underscore prefix
+# builtin does not include all underscore prefix
+# builtin modules are not found anywhere else
+# itermodules has every module with venv or global origin, also has some more
+# itermodules has no module with a dash ("-") in it
+# editable installs are caught by itermodules, not working_set (Unless it's main)
+# itermodules can always resolve importlib.util.find_spec(module).loader
+# working_set doesn't change dashes to underscores
 
 
-x = get_installed_packages()
-y1 = set(sys.builtin_module_names)
-y2 = {module.name for module in pkgutil.iter_modules()}
-z = {
-"aiohttp",
-"aiosignal",
-"alpha-vantage",
-"altgraph",
-"appdirs",
-"asgiref",
-"async-generator",
-"async-timeout",
-"atari-py",
-"atomicwrites",
-"attrs",
-"bleach",
-"cachetools",
-"cattrs",
-"certifi",
-"cffi",
-"cfgv",
-"chardet",
-"charset-normalizer",
-"click",
-"cloudpickle",
-"colorama",
-"configparser",
-"coverage",
-"crayons",
-"cryptography",
-"cycler",
-"defusedxml",
-"Deprecated",
-"dill",
-"distlib",
-"Django",
-"djangorestframework",
-"docutils",
-"exchange-calendars",
-"filelock",
-"Flask",
-"frozenlist",
-"ftfy",
-"future",
-"generalbrowser",
-"generaldunder",
-"generalfile",
-"generalgui",
-"generalimport",
-"generallibrary",
-"generalmainframe",
-"generalpackager",
-"generalvector",
-"gitdb",
-"GitPython",
-"google-auth",
-"graphics.py",
-"graphviz",
-"gym",
-"gym-notices",
-"h11",
-"identify",
-"idna",
-"importlib-metadata",
-"iniconfig",
-"itsdangerous",
-"Jinja2",
-"jira",
-"joblib",
-"Js2Py",
-"jsonpickle",
-"keyboard",
-"keyring",
-"kiwisolver",
-"korean-lunar-calendar",
-"llvmlite",
-"lxml",
-"mailchecker",
-"MarkupSafe",
-"matplotlib",
-"MouseInfo",
-"multidict",
-"multitasking",
-"networkx",
-"nltk",
-"nodeenv",
-"numba",
-"numpy",
-"oauthlib",
-"opencv-python",
-"outcome",
-"packaging",
-"pandas",
-"pandas-market-calendars",
-"patsy",
-"pefile",
-"phonenumbers",
-"Pillow",
-"pip",
-"pkginfo",
-"platformdirs",
-"pluggy",
-"progress",
-"psutil",
-"ptan",
-"py",
-"pyasn1",
-"pyasn1-modules",
-"PyAutoGUI",
-"pycparser",
-"PyGetWindow",
-"PyGithub",
-"Pygments",
-"pyinstaller",
-"pyinstaller-hooks-contrib",
-"pyjsparser",
-"PyJWT",
-"pyluach",
-"PyMsgBox",
-"PyNaCl",
-"pyOpenSSL",
-"pyparsing",
-"pyperclip",
-"PyRect",
-"PyScreeze",
-"pytesseract",
-"pytest",
-"python-benedict",
-"python-dateutil",
-"python-dotenv",
-"python-fsutil",
-"python-slugify",
-"pytweening",
-"pytz",
-"pytz-deprecation-shim",
-"pywin32",
-"pywin32-ctypes",
-"PyYAML",
-"readme-renderer",
-"regex",
-"requests",
-"requests-oauthlib",
-"requests-toolbelt",
-"rfc3986",
-"rsa",
-"scikit-learn",
-"scipy",
-"selenium",
-"Send2Trash",
-"setuptools",
-"six",
-"smmap",
-"snakeviz",
-"sniffio",
-"sortedcontainers",
-"sqlparse",
-"StackAPI",
-"statsmodels",
-"tabulate",
-"text-unidecode",
-"threadpoolctl",
-"toml",
-"tomli",
-"toolz",
-"torch",
-"tornado",
-"tqdm",
-"trio",
-"trio-websocket",
-"twilio",
-"twine",
-"typing-extensions",
-"tzdata",
-"tzlocal",
-"urllib3",
-"virtualenv",
-"wcwidth",
-"webdriver-manager",
-"webencodings",
-"Werkzeug",
-"wheel",
-"wrapt",
-"wsproto",
-"xmltodict",
-"yarl",
-"yfinance",
-"zipp",}  # pip list
+# HERE ** Loaders with NoneType are previously installed packages picked up by both itermodules and working_set
+# They are not handled by import_module nor module_is_namespace
 
-all_ = x | y1 | y2 | z
 
-print(len(all_))
+# print(import_module("attrs"))
+# exit()
+# print(importlib.util.find_spec("openssl").origin)
+# exit()
 
-lines = ["module, working_set, builtin_module_names, iter_modules, pip list, all lower"]
+metapath_loaders = [getattr(x, "__name__", getattr(type(x), "__name__")) for x in sys.meta_path]
 
-for module in all_:
+installed = get_installed_packages()
+builtin = set(sys.builtin_module_names)
+itermodules = {module.name.lower() for module in pkgutil.iter_modules()}
+
+
+modules = installed | itermodules
+# modules = installed | builtin | itermodules
+
+print(len(modules))
+
+lines = ["module, installed, itermodules, both, origin, hasdash, loader"]
+
+# TRUE = "✔"
+# TRUE = '\"True\"'
+# FALSE = ""
+# FALSE = "❌"
+# FALSE = "False"
+# TRUE = 1
+FALSE = ""
+
+# print(metapath_loaders)
+
+for module in modules:
+    module_obj = importlib.util.find_spec(module)
+    origin = getattr(module_obj, "origin", "-")
+    loader = getattr(module_obj, "loader", None)
+    loader = getattr(loader, "__name__", getattr(type(loader), "__name__", None))
     lines.append(join_with_str(",", [
         module,
-        module in x,
-        module in y1,
-        module in y2,
-        module in z,
-        module.lower() == module,
+        "A+ ✔" if module in installed else "A-",
+        # "B+ ✔" if module in builtin else "B-",
+        "C+ ✔" if module in itermodules else "C-",
+        # "D+ ✔" if module.startswith("_") else "D-",
+        # "E+ ✔" if module in piplist and module not in installed | builtin | itermodules else "E-",
+        "F+ ✔" if module in installed and module in itermodules else "F-",
+        # origin,
+        "venv" if "Venvs" in origin else "global" if "AppData" in origin else "repo" if "repos" in origin else origin,
+        "G+ ✔" if "-" in module else "G-",
+        loader,
     ]))
 
+
+
 Path("data.csv").text.write("\n".join(lines), overwrite=True)
+
 
