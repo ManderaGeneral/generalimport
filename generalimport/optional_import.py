@@ -15,7 +15,8 @@ def get_skip_base_classes():
 
 def get_installed_packages():
     """ Get a set of all installed packages names. """
-    return {pkg.key for pkg in pkg_resources.working_set}
+    return {pkg.key.replace("-", "_") for pkg in pkg_resources.working_set}
+
 
 def package_is_installed(*names):
     """ Returns whether a package is installed.
