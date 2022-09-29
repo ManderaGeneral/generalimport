@@ -209,7 +209,7 @@ class FakeModule:
 def _safe_import(name):
     try:
         return importlib.import_module(name=name)
-    except (ModuleNotFoundError, TypeError) as e:
+    except (ModuleNotFoundError, TypeError, ImportError) as e:
         return None
 
 def _module_is_namespace(module):
