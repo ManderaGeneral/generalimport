@@ -22,6 +22,7 @@ class Test(ImportTestCase):
         with self.assertRaises(MissingOptionalDependency):
             dir(fakepackage)
 
+    # https://github.com/ManderaGeneral/generalimport/issues/8
     @skip("Cannot cover __setattr__ as it won't allow `import foo.bar`.")
     def test_setattr(self):
         generalimport("fakepackage")
