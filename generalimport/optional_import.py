@@ -1,6 +1,6 @@
 import importlib
 import sys
-import pkg_resources
+import pkgutil
 
 
 def get_skip_base_classes():
@@ -13,15 +13,16 @@ def get_skip_base_classes():
     except ImportError:
         pass
 
-def get_installed_packages():
-    """ Get a set of all installed packages names. """
-    return {pkg.key.replace("-", "_") for pkg in pkg_resources.working_set}
+def get_installed_modules_names():
+    iter_modules = {module.name for module in pkgutil.iter_modules()}
+    builtin = sys.builtin_module_names
+    return set.union(iter_modules, builtin)
 
 
 def package_is_installed(*names):
     """ Returns whether a package is installed.
         `find_spec(name) is None` was the previous solution but namespaces returned True. """
-    packages = get_installed_packages()
+    packages = get_installed_modules_names()
     for name in names:
         if name not in packages:
             return False
