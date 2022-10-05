@@ -9,7 +9,6 @@ from generalimport.test.funcs import namespace_package, ImportTestCase
 class Test(ImportTestCase):
     def test_get_installed_packages(self):
         self.assertIn("generalimport", get_installed_modules_names())
-        self.assertIn("setuptools", get_installed_modules_names())
         self.assertIn("mmap", get_installed_modules_names())
         self.assertNotIn("doesntexist", get_installed_modules_names())
 

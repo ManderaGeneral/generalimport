@@ -1,7 +1,5 @@
 {
-    "install_requires": [
-        "setuptools"
-    ],
+    "install_requires": [],
     "extras_require": {},
     "enabled": true,
     "private": false,
