@@ -1,7 +1,8 @@
 # generalimport
 Handle all your optional dependencies with a single call!
 
-## Contents
+<details>
+  <summary>Table of Contents</summary>
 <pre>
 <a href='#generalimport'>generalimport</a>
 ├─ <a href='#Dependency-Diagram'>Dependency Diagram</a>
@@ -15,6 +16,7 @@ Handle all your optional dependencies with a single call!
 ├─ <a href='#Attributes'>Attributes</a>
 └─ <a href='#Contributions'>Contributions</a>
 </pre>
+</details>
 
 ## Dependency Diagram
 ```mermaid
