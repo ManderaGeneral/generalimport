@@ -19,11 +19,11 @@ Handle all your optional dependencies with a single call!
 ## Dependency Diagram
 ```mermaid
 flowchart LR
-1([library]) --> 3([vector])
-2([file]) --> 4([packager])
 1([library]) --> 4([packager])
-0([import]) --> 1([library])
+1([library]) --> 3([vector])
 1([library]) --> 2([file])
+0([import]) --> 1([library])
+2([file]) --> 4([packager])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -33,9 +33,7 @@ style 0 fill:#482
 ```
 
 ## Installation showing dependencies
-| `pip install`                                                | `generalimport`   |
-|:-------------------------------------------------------------|:------------------|
-| <a href='https://pypi.org/project/setuptools'>setuptools</a> | ✔️                |
+
 
 ## Information
 | Package                                                          | Ver                                            | Latest Release        | Python                                                                                                                                                                                  | Platform        |   Lvl | Todo                                                      | Cover   |
@@ -157,5 +155,5 @@ Pull requests are not wanted, please discuss with me before investing any time
 
 
 <sup>
-Generated 2022-10-05 11:17 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-10-05 11:34 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
