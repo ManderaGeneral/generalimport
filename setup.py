@@ -15,9 +15,7 @@ setup(
     description="Handle all your optional dependencies with a single call!",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    install_requires=[
-        'setuptools',
-    ],
+    install_requires=[],
     url="https://github.com/ManderaGeneral/generalimport",
     license="mit",
     packages=find_namespace_packages(exclude=("build*", "dist*")),
