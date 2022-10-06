@@ -1,7 +1,6 @@
 import sys
 
-from generalimport import FakeModule
-
+from generalimport import FakeModule, import_module
 
 
 class GeneralImporter:
@@ -16,6 +15,7 @@ class GeneralImporter:
     def __init__(self):
         self._singleton()
         self.names = set()
+        self.found_names = set()
         self.added_fullnames = {}
 
     def _singleton(self):
@@ -35,7 +35,16 @@ class GeneralImporter:
 
     def find_module(self, fullname, path=None):
         """ Returns self if fullname is in names, or wildcard is present. """
-        if self.WILDCARD in self.names or self._top_name(fullname) in self.names:
+        if fullname in self.found_names:
+            return None
+        self.found_names.add(fullname)
+
+        if self.WILDCARD in self.names or self._top_name(fullname=fullname) in self.names:
+            module = import_module(name=fullname, error=False)
+            if module:
+                return None
+            sys.modules.pop(fullname, None)
+
             return self
 
     def load_module(self, fullname):
