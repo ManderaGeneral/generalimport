@@ -3,7 +3,7 @@ from contextlib import contextmanager
 
 from unittest import TestCase
 
-from generalimport import disable_importers
+from generalimport import get_importer
 
 
 @contextmanager
@@ -11,6 +11,7 @@ def namespace_package(name):
     class Namespace:
         def __init__(self, name):
             self.__name__ = name
+            self.__path__ = object()
 
     class Importer:
         def find_module(self, fullname, path=None):
@@ -31,4 +32,6 @@ def namespace_package(name):
 class ImportTestCase(TestCase):
     def tearDown(self):
         super().tearDown()
-        disable_importers()
+        importer = get_importer()
+        importer.disable()
+        importer.remove_names()
