@@ -49,6 +49,9 @@ class GeneralImporter:
 
     def remove_names(self, *names):
         """ Removes FakeModule from sys.modules and then name from added_fullnames. """
+        if not names:
+            names = self.names
+
         for name in names:
             for fullname in self.added_fullnames.get(name, []):
                 sys.modules.pop(fullname, None)
@@ -64,10 +67,7 @@ class GeneralImporter:
         """ Enables importer by adding it to sys.meta_path.
             Starts from scratch if previously disabled. """
         if not self.is_enabled():
-            if self.handles_namespace:
-                sys.meta_path.insert(0, self)
-            else:
-                sys.meta_path.append(self)
+            sys.meta_path.insert(0, self)
 
     def disable(self):
         """ Disable importer by removing it from sys.meta_path.

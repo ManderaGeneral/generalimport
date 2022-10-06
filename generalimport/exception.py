@@ -1,4 +1,5 @@
-def get_skip_base_classes():
+
+def _get_skip_base_classes():
     from unittest.case import SkipTest
     yield SkipTest
 
@@ -9,7 +10,7 @@ def get_skip_base_classes():
         pass
 
 
-class MissingOptionalDependency(*get_skip_base_classes()):
+class MissingOptionalDependency(*_get_skip_base_classes()):
     def __init__(self, msg=None):
         self.msg = msg
 

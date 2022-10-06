@@ -2,8 +2,7 @@ import sys
 
 import generalimport as gi
 from generalimport import *
-from generalimport import get_installed_modules_names, package_is_installed, GeneralImporter, FakeModule, import_module, \
-    module_is_namespace
+from generalimport import get_installed_modules_names, module_is_installed, GeneralImporter, FakeModule, import_module, module_name_is_namespace
 
 from generalimport.test.funcs import namespace_package, ImportTestCase
 
@@ -11,13 +10,13 @@ from generalimport.test.funcs import namespace_package, ImportTestCase
 class Test(ImportTestCase):
     def test_get_installed_packages(self):
         self.assertIn("generalimport", get_installed_modules_names())
-        self.assertIn("mmap", get_installed_modules_names())
+        self.assertIn("mmap", get_installed_modules_names())  # built-in
         self.assertNotIn("doesntexist", get_installed_modules_names())
 
     def test_package_is_installed(self):
-        self.assertEqual(True, package_is_installed("generalimport"))
-        self.assertEqual(True, package_is_installed("setuptools"))
-        self.assertEqual(False, package_is_installed("doesntexist"))
+        self.assertEqual(True, module_is_installed("generalimport"))
+        self.assertEqual(True, module_is_installed("setuptools"))
+        self.assertEqual(False, module_is_installed("doesntexist"))
 
     def test_MissingOptionalDependency(self):
         self.assertEqual("foo", MissingOptionalDependency("foo").msg)
@@ -38,11 +37,10 @@ class Test(ImportTestCase):
         self.assertIs(fake, fake.these.will.recursively.be.itself)
 
     def test_GeneralImporter(self):
-        importer = GeneralImporter()
+        importer = generalimport("packagethatdoesntexist")
         self.assertIn(importer, sys.meta_path)
 
-        importer2 = GeneralImporter("packagethatdoesntexist")
-        self.assertIn(importer2, sys.meta_path)
+        self.assertRaises(AssertionError, GeneralImporter)
 
         import packagethatdoesntexist
         self.assertRaises(MissingOptionalDependency, packagethatdoesntexist)
@@ -66,37 +64,13 @@ class Test(ImportTestCase):
             import notexisting.hi.hey
 
         importer.disable()
-        importer2.disable()
         self.assertNotIn(importer, sys.meta_path)
-        self.assertNotIn(importer2, sys.meta_path)
-
-    def test_get_enabled(self):
-        get_enabled_importers()
-        importer = GeneralImporter()
-        self.assertIn(importer, get_enabled_importers())
-        importer.disable()
-        self.assertNotIn(importer, get_enabled_importers())
 
     def test_error_func(self):
         self.assertRaises(MissingOptionalDependency, FakeModule("foo").error_func, 1, 2, 3, 4, 5, x=2, y=3)
 
-    def test_disable_all(self):
-        importer = GeneralImporter("foobar")
-        enabled = get_enabled_importers()
-        self.assertIn(importer, enabled)
-        self.assertEqual(True, importer.is_enabled())
-
-        disable_importers()
-        self.assertEqual(False, importer.is_enabled())
-
-        for importer in enabled:
-            importer.enable()
-        self.assertEqual(True, importer.is_enabled())
-        importer.disable()
-        self.assertEqual(False, importer.is_enabled())
-
     def test_load_module(self):
-        importer = GeneralImporter("foo")
+        importer = generalimport("foo")
         importer.load_module("bar")
         self.assertIn("bar", importer.added_fullnames)
         self.assertIn("bar", sys.modules)
@@ -106,12 +80,12 @@ class Test(ImportTestCase):
         self.assertNotIn("bar", sys.modules)
 
     def test_find_module(self):
-        importer = GeneralImporter("foo")
+        importer = generalimport("foo")
         self.assertIs(importer, importer.find_module("foo"))
         self.assertIs(None, importer.find_module("bar"))
 
     def test_wildcard(self):
-        GeneralImporter("*")
+        generalimport("*")
 
         from whateverz import this
         self.assertRaises(MissingOptionalDependency, this)
@@ -127,7 +101,7 @@ class Test(ImportTestCase):
 
     def test_importmodule(self):
         self.assertRaises(ModuleNotFoundError, import_module, "thisdoesntexist")
-        importer = GeneralImporter("thisdoesntexist")
+        importer = generalimport("thisdoesntexist")
 
         import_module("thisdoesntexist")
         importer.disable()
@@ -146,8 +120,8 @@ class Test(ImportTestCase):
 
     def test_namespace_importer(self):
         with namespace_package("fake_namespace"):
-            self.assertEqual(True, module_is_namespace("fake_namespace"))
-            self.assertEqual(True, module_is_namespace("fake_namespace"))
+            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
+            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
 
             generalimport("fake_namespace")
 
@@ -157,15 +131,17 @@ class Test(ImportTestCase):
 
     def test_generalimport(self):
         with namespace_package("fake_namespace"):
-            self.assertEqual(True, module_is_namespace("fake_namespace"))
-            self.assertEqual(True, module_is_namespace("fake_namespace"))
-            self.assertEqual(0, len(get_enabled_importers()))
+            importer = get_importer()
+
+            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
+            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
+            self.assertEqual(0, len(importer.names))
 
             generalimport("fake_namespace", "missing_dep")
-            self.assertEqual(2, len(get_enabled_importers()))
+            self.assertEqual(2, len(importer.names))
 
             generalimport("another_missing")
-            self.assertEqual(2, len(get_enabled_importers()))
+            self.assertEqual(3, len(importer.names))
 
             import fake_namespace
             import missing_dep
