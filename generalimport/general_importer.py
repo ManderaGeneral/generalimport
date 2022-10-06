@@ -3,6 +3,7 @@ import sys
 from generalimport import FakeModule
 
 
+
 class GeneralImporter:
     """ Creates fake packages if they don't exist.
         These fake packages' attrs are always a function that raises a ModuleNotFoundError when used.
@@ -10,14 +11,16 @@ class GeneralImporter:
         If wildcard (default "*") is provided then this will work on any missing package. """
     WILDCARD = "*"
 
-    def __init__(self, *names, handles_namespace=False):
+    singleton_instance = None
+
+    def __init__(self):
+        self._singleton()
         self.names = set()
         self.added_fullnames = {}
 
-        self.add_names(*names)
-        self.handles_namespace = handles_namespace
-
-        self.enable()
+    def _singleton(self):
+        assert self.singleton_instance is None
+        GeneralImporter.singleton_instance = self
 
     @staticmethod
     def _top_name(fullname):
