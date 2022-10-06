@@ -2,6 +2,8 @@ import sys
 
 import generalimport as gi
 from generalimport import *
+from generalimport import get_installed_modules_names, package_is_installed, GeneralImporter, FakeModule, import_module, \
+    module_is_namespace
 
 from generalimport.test.funcs import namespace_package, ImportTestCase
 
