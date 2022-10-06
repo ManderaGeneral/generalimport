@@ -120,7 +120,8 @@ def disable_importers():
     for importer in get_enabled_importers():
         importer.disable()
 
-def get_importer(handles_namespace):
+def get_importer(handles_namespace: bool):
+    """ Return existing or new GeneralImporter. """
     importers = get_enabled_importers()
     for importer in importers:
         if importer.handles_namespace is handles_namespace:
@@ -204,9 +205,6 @@ class FakeModule:
         "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
     )
 
-
-    # __call__ = __enter__ = __exit__ = __str__ = __repr__ = __abs__ = __add__ = __all__ = __and__ = __builtins__ = __cached__ = __concat__ = __contains__ = __delitem__ = __doc__ = __eq__ = __file__ = __floordiv__ = __ge__ = __gt__ = __iadd__ = __iand__ = __iconcat__ = __ifloordiv__ = __ilshift__ = __imatmul__ = __imod__ = __imul__ = __index__ = __inv__ = __invert__ = __ior__ = __ipow__ = __irshift__ = __isub__ = __itruediv__ = __ixor__ = __le__ = __loader__ = __lshift__ = __lt__ = __matmul__ = __mod__ = __mul__ = __name__ = __ne__ = __neg__ = __not__ = __or__ = __package__ = __pos__ = __pow__ = __rshift__ = __setitem__ = __spec__ = __sub__ = __truediv__ = __xor__ = error_func
-
 def _safe_import(name):
     try:
         return importlib.import_module(name=name)
@@ -259,7 +257,7 @@ def generalimport(*names):
         get_importer(handles_namespace=True).add_names(*namespaces)
 
 def check_import(obj):
-    """ Simple assertion to use on any import to raise error_func if obj is FakeModule. """
+    """ Simple assertion to trigger error_func earlier if module isn't installed. """
     if isinstance(obj, FakeModule):
         obj.error_func()
 
