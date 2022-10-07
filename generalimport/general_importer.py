@@ -88,9 +88,10 @@ class GeneralImporter:
         if self._ignore_next_import(fullname=fullname):
             return self._handle_ignore(fullname=fullname, reason="Recursive break")
 
-        # if fullname == "pyarrow":
-        #     pprint(inspect.stack())
-        #     exit()
+        for frame in inspect.stack()[1:]:
+            if "importlib" not in frame.filename:
+                print(fullname, "imported from", frame.filename)
+                break
 
         spec = importlib.util.find_spec(fullname)
 

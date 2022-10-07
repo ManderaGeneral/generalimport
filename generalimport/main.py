@@ -13,6 +13,7 @@ def get_importer():
 
 def generalimport(*names):
     """ Adds names to existing or new GeneralImporter instance. """
+    print("GENERALIMPORT", __file__)
     _assert_no_dots(names=names)
     importer = get_importer()
     importer.enable()
