@@ -4,7 +4,7 @@ import generalimport as gi
 from generalimport import *
 from generalimport import get_installed_modules_names, module_is_installed, GeneralImporter, FakeModule, import_module, module_name_is_namespace
 
-from generalimport.test.funcs import namespace_package, ImportTestCase
+from generalimport.test.funcs import ImportTestCase
 
 
 class Test(ImportTestCase):
@@ -112,44 +112,37 @@ class Test(ImportTestCase):
 
         import_module("generalimport")
 
-    def test_importmodule_namespace(self):
-        with namespace_package("fake_namespace"):
-            self.assertEqual(None, import_module("fake_namespace", error=False))
-            import fake_namespace
-            self.assertEqual("fake_namespace", fake_namespace.__name__)
-
     def test_namespace_importer(self):
-        with namespace_package("fake_namespace"):
-            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
-            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
+        self.assertEqual(True, module_name_is_namespace("namespace"))
+        self.assertEqual(True, module_name_is_namespace("namespace"))
 
-            generalimport("fake_namespace")
+        generalimport("namespace")
 
-            from fake_namespace.mod import func
+        from namespace.mod import func
 
-            self.assertRaises(MissingOptionalDependency, func)
+        self.assertRaises(MissingOptionalDependency, func)
 
     def test_generalimport(self):
-        with namespace_package("fake_namespace"):
-            importer = get_importer()
+        importer = get_importer()
 
-            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
-            self.assertEqual(True, module_name_is_namespace("fake_namespace"))
-            self.assertEqual(0, len(importer.names))
+        self.assertEqual(True, module_name_is_namespace("namespace"))
+        self.assertEqual(True, module_name_is_namespace("namespace"))
+        self.assertEqual(set(), importer.names)
 
-            generalimport("fake_namespace", "missing_dep")
-            self.assertEqual(2, len(importer.names))
+        generalimport("namespace", "missing_dep")
+        self.assertEqual(2, len(importer.names))
 
-            generalimport("another_missing")
-            self.assertEqual(3, len(importer.names))
+        generalimport("another_missing")
+        self.assertEqual(3, len(importer.names))
 
-            import fake_namespace
-            import missing_dep
-            import another_missing
+        import namespace
+        import missing_dep
+        import another_missing
 
-            self.assertRaises(MissingOptionalDependency, fake_namespace.func)
-            self.assertRaises(MissingOptionalDependency, missing_dep.func)
-            self.assertRaises(MissingOptionalDependency, another_missing.func)
+
+        self.assertRaises(MissingOptionalDependency, namespace.func)
+        self.assertRaises(MissingOptionalDependency, missing_dep.func)
+        self.assertRaises(MissingOptionalDependency, another_missing.func)
 
     def test_check_import(self):
         generalimport("fakepackage")

@@ -3,7 +3,7 @@ import sys
 import generalimport as gi
 from generalimport import *
 
-from generalimport.test.funcs import namespace_package, ImportTestCase
+from generalimport.test.funcs import ImportTestCase
 
 
 class Test(ImportTestCase):

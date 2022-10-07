@@ -10,7 +10,8 @@ def get_installed_modules_names():
 
 def module_is_installed(*names):
     """ Returns whether a package is installed.
-        `find_spec(name) is None` was the previous solution but namespaces returned True. """
+        `find_spec(name) is None` was the previous solution but namespaces returned True.
+        Todo: Change back to find_spec if spec_is_namespace works. """
     packages = get_installed_modules_names()
     for name in names:
         if name not in packages:
@@ -36,9 +37,20 @@ def import_module(name, error=True):
             raise ModuleNotFoundError(f"Module '{name}' isn't installed.")
         return module
 
+def spec_is_namespace(spec):
+    return spec and spec.loader is None
+
 def module_is_namespace(module):
     """ Returns if given module is a namespace. """
     return module is not None and hasattr(module, "__path__") and getattr(module, "__file__", None) is None
 
 def module_name_is_namespace(name):
-    return module_is_namespace(module=_safe_import(name=name))
+    """ Checks if module's name is a namespace without adding it to sys.modules. """
+    was_in_modules = name in sys.modules
+    module = _safe_import(name=name)
+    is_namespace = module_is_namespace(module=module)
+
+    if was_in_modules:
+        sys.modules.pop(name, None)
+
+    return is_namespace
