@@ -1,4 +1,4 @@
-
+from inspect import currentframe
 
 from generalimport import generalimport, get_installed_modules_names
 
@@ -7,6 +7,8 @@ import importlib, sys
 generalimport("*")
 
 import pandas
+
+# HERE ** We can distinguish that only pandas should be handled by prints
 
 # import inspect
 # inspect.stack()

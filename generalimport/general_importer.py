@@ -4,7 +4,7 @@ import sys
 from logging import Logger
 from pprint import pprint
 
-from generalimport import FakeModule, module_is_namespace, spec_is_namespace
+from generalimport import FakeModule, module_is_namespace, spec_is_namespace, get_previous_frame_filename
 
 import inspect
 
@@ -88,10 +88,7 @@ class GeneralImporter:
         if self._ignore_next_import(fullname=fullname):
             return self._handle_ignore(fullname=fullname, reason="Recursive break")
 
-        for frame in inspect.stack()[1:]:
-            if "importlib" not in frame.filename:
-                print(fullname, "imported from", frame.filename)
-                break
+        print(get_previous_frame_filename())
 
         spec = importlib.util.find_spec(fullname)
 
@@ -111,7 +108,7 @@ class GeneralImporter:
         sys.modules[fullname] = module
         self._store_loaded_fullname(fullname=fullname)
 
-    def add_names(self, *names):
+    def add_names(self, *names, scope=None):
         self.names.update(names)
 
     def remove_names(self, *names):

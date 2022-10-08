@@ -1,4 +1,5 @@
 import importlib
+import inspect
 import pkgutil
 import sys
 
@@ -54,3 +55,8 @@ def module_name_is_namespace(name):
         sys.modules.pop(name, None)
 
     return is_namespace
+
+def get_previous_frame_filename():
+    for frame in inspect.stack()[2:]:
+        if "importlib" not in frame.filename:
+            return frame.filename

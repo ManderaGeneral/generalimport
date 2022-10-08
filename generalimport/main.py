@@ -1,6 +1,7 @@
+import inspect
 import sys
 
-from generalimport import GeneralImporter, FakeModule
+from generalimport import GeneralImporter, FakeModule, get_previous_frame_filename
 
 
 def _assert_no_dots(names):
@@ -13,7 +14,8 @@ def get_importer():
 
 def generalimport(*names):
     """ Adds names to existing or new GeneralImporter instance. """
-    print("GENERALIMPORT", __file__)
+    print(get_previous_frame_filename())
+
     _assert_no_dots(names=names)
     importer = get_importer()
     importer.enable()
