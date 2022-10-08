@@ -20,11 +20,11 @@ Handle all your optional dependencies with a single call!
 ## Dependency Diagram
 ```mermaid
 flowchart LR
+2([file]) --> 4([packager])
 0([import]) --> 1([library])
+1([library]) --> 4([packager])
 1([library]) --> 3([vector])
 1([library]) --> 2([file])
-2([file]) --> 4([packager])
-1([library]) --> 4([packager])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -131,23 +131,24 @@ You can also write `generalimport("*")` to make **any** package importable.
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L4'>Class: FakeModule</a>
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L14'>Method: error_func</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L12'>Class: GeneralImporter</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L114'>Method: add_names</a> <b>(Untested)</b>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L143'>Method: disable</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L137'>Method: enable</a> <b>(Untested)</b>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L111'>Method: add_names</a> <b>(Untested)</b>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L140'>Method: disable</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L134'>Method: enable</a> <b>(Untested)</b>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L83'>Method: find_module</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L133'>Method: is_enabled</a> <b>(Untested)</b>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L108'>Method: load_module</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L117'>Method: remove_names</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L130'>Method: is_enabled</a> <b>(Untested)</b>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L105'>Method: load_module</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L114'>Method: remove_names</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L13'>Class: MissingOptionalDependency</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/main.py#L23'>Function: check_import</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/main.py#L14'>Function: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/main.py#L10'>Function: get_importer</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L6'>Function: get_installed_modules_names</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L27'>Function: import_module</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L11'>Function: module_is_installed</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L43'>Function: module_is_namespace</a> <b>(Untested)</b>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L47'>Function: module_name_is_namespace</a>
-└─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L40'>Function: spec_is_namespace</a> <b>(Untested)</b>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/main.py#L25'>Function: check_import</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/main.py#L15'>Function: generalimport</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/main.py#L11'>Function: get_importer</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L7'>Function: get_installed_modules_names</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L59'>Function: get_previous_frame_filename</a> <b>(Untested)</b>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L28'>Function: import_module</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L12'>Function: module_is_installed</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L44'>Function: module_is_namespace</a> <b>(Untested)</b>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L48'>Function: module_name_is_namespace</a>
+└─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L41'>Function: spec_is_namespace</a> <b>(Untested)</b>
 </pre>
 
 ## Contributions
@@ -158,8 +159,8 @@ Pull requests are not wanted, please discuss with me before investing any time
 ## Todo
 | Module                                                                                                                     | Message                                                                                                                                                          |
 |:---------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L1'>module_funcs.py</a> | <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L14'>Change back to find_spec if spec_is_namespace works.</a> |
+| <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L1'>module_funcs.py</a> | <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/module_funcs.py#L15'>Change back to find_spec if spec_is_namespace works.</a> |
 
 <sup>
-Generated 2022-10-07 16:27 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-10-08 15:59 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
