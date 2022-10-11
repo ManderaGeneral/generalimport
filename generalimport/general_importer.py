@@ -1,7 +1,7 @@
 import importlib
 import sys
 
-from logging import Logger
+from logging import getLogger
 from pprint import pprint
 
 from generalimport import FakeModule, module_is_namespace, spec_is_namespace, get_previous_frame_filename
@@ -66,18 +66,18 @@ class GeneralImporter:
 
     def _handle_ignore(self, fullname, reason):
         # print(f"Ignoring '{fullname}' - {reason}")
-        Logger(__name__).debug(f"Ignoring '{fullname}' - {reason}")
+        getLogger(__name__).debug(f"Ignoring '{fullname}' - {reason}")
         return None
 
     def _handle_handle(self, fullname, reason):
         # print(f"Handling '{fullname}' - {reason}")
-        Logger(__name__).info(f"Handling '{fullname}' - {reason}")
+        getLogger(__name__).info(f"Handling '{fullname}' - {reason}")
         sys.modules.pop(fullname, None)
         return self
 
     def _handle_relay(self, fullname, loader):
         # print(f"'{fullname}' exists, returning it's loader '{loader}'")
-        Logger(__name__).debug(f"'{fullname}' exists, returning it's loader '{loader}'")
+        getLogger(__name__).debug(f"'{fullname}' exists, returning it's loader '{loader}'")
         return loader
 
     def find_module(self, fullname, path=None):
@@ -88,7 +88,8 @@ class GeneralImporter:
         if self._ignore_next_import(fullname=fullname):
             return self._handle_ignore(fullname=fullname, reason="Recursive break")
 
-        print(get_previous_frame_filename())
+        if get_previous_frame_filename() != r"C:\Python\Repos\generalimport\randomtesting.py":
+            return self._handle_ignore(fullname=fullname, reason="Outside scope")
 
         spec = importlib.util.find_spec(fullname)
 
