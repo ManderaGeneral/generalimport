@@ -1,10 +1,11 @@
+import importlib
 import sys
 
 import generalimport as gi
 from generalimport import *
-from generalimport import get_installed_modules_names, module_is_installed, GeneralImporter, FakeModule, import_module, module_name_is_namespace
 
 from generalimport.test.funcs import ImportTestCase
+from generalimport.generalimport_bottom import _safe_import
 
 
 class Test(ImportTestCase):
@@ -37,10 +38,11 @@ class Test(ImportTestCase):
         self.assertIs(fake, fake.these.will.recursively.be.itself)
 
     def test_GeneralImporter(self):
-        importer = generalimport("packagethatdoesntexist")
-        self.assertIn(importer, sys.meta_path)
+        generalimport("packagethatdoesntexist")
 
-        self.assertRaises(AssertionError, GeneralImporter)
+        self.assertIn(get_importer(), sys.meta_path)
+
+        self.assertRaises(AssertionError, GeneralImporter)  # Singleton
 
         import packagethatdoesntexist
         self.assertRaises(MissingOptionalDependency, packagethatdoesntexist)
@@ -63,26 +65,26 @@ class Test(ImportTestCase):
         with self.assertRaises(ImportError):
             import notexisting.hi.hey
 
-        importer.disable()
-        self.assertNotIn(importer, sys.meta_path)
-
     def test_error_func(self):
         self.assertRaises(MissingOptionalDependency, FakeModule("foo").error_func, 1, 2, 3, 4, 5, x=2, y=3)
 
     def test_load_module(self):
-        importer = generalimport("foo")
-        importer.load_module("bar")
-        self.assertIn("bar", importer.added_fullnames)
-        self.assertIn("bar", sys.modules)
-
-        importer.disable()
-        self.assertNotIn("bar", importer.added_fullnames)
-        self.assertNotIn("bar", sys.modules)
+        importer = get_importer()
+        importer.load_module("foo")
+        self.assertIn("foo", sys.modules)
 
     def test_find_module(self):
-        importer = generalimport("foo")
+        generalimport("foo")
+        importer = get_importer()
         self.assertIs(importer, importer.find_module("foo"))
         self.assertIs(None, importer.find_module("bar"))
+
+    def test_find_module_relay(self):
+        """ pkg_resources is one of the few packages always included in venv. """
+        generalimport("pkg_resources")
+        sys.modules.pop("pkg_resources", None)
+        import pkg_resources
+        fake_module_check(pkg_resources)
 
     def test_wildcard(self):
         generalimport("*")
@@ -99,18 +101,20 @@ class Test(ImportTestCase):
         import heyyyy.foo
         self.assertRaises(MissingOptionalDependency, heyyyy.foo)
 
-    def test_importmodule(self):
+    def test_import_module(self):
         self.assertRaises(ModuleNotFoundError, import_module, "thisdoesntexist")
-        importer = generalimport("thisdoesntexist")
 
-        import_module("thisdoesntexist")
-        importer.disable()
+        generalimport("thisdoesntexist")
+        thisdoesntexist = import_module("thisdoesntexist")
 
-        self.assertRaises(ModuleNotFoundError, import_module, "thisdoesntexist")
+        self.assertRaises(MissingOptionalDependency, thisdoesntexist)
 
         self.assertIs(import_module("generalimport"), gi)
-
         import_module("generalimport")
+
+    def test_import_module_namespace(self):
+        self.assertIs(None, import_module("namespace", error=False))
+        self.assertRaises(ModuleNotFoundError, import_module, "namespace")
 
     def test_namespace_importer(self):
         self.assertEqual(True, module_name_is_namespace("namespace"))
@@ -123,36 +127,78 @@ class Test(ImportTestCase):
         self.assertRaises(MissingOptionalDependency, func)
 
     def test_generalimport(self):
-        importer = get_importer()
-
         self.assertEqual(True, module_name_is_namespace("namespace"))
         self.assertEqual(True, module_name_is_namespace("namespace"))
-        self.assertEqual(set(), importer.names)
 
-        generalimport("namespace", "missing_dep")
-        self.assertEqual(2, len(importer.names))
+        catcher = generalimport("namespace", "missing_dep")
+        self.assertEqual(2, len(catcher.names))
 
-        generalimport("another_missing")
-        self.assertEqual(3, len(importer.names))
+        catcher2 = generalimport("another_missing")
+        self.assertEqual(1, len(catcher2.names))
 
         import namespace
         import missing_dep
         import another_missing
 
-
         self.assertRaises(MissingOptionalDependency, namespace.func)
         self.assertRaises(MissingOptionalDependency, missing_dep.func)
         self.assertRaises(MissingOptionalDependency, another_missing.func)
 
-    def test_check_import(self):
+    def test_fake_module_check(self):
         generalimport("fakepackage")
         import fakepackage
-        self.assertRaises(MissingOptionalDependency, check_import, fakepackage)
-        check_import(sys)
 
+        self.assertRaises(MissingOptionalDependency, fake_module_check, fakepackage)
+        self.assertIs(True, fake_module_check(fakepackage, error=False))
 
+        fake_module_check(sys)
+        self.assertIs(False, fake_module_check(sys, error=False))
 
+    def test_import_catcher_scope(self):
+        catcher = generalimport("hi")
+        self.assertIn("test", catcher.scope)
 
+    def test_import_catcher_outside_scope(self):
+        catcher = generalimport("fakepackage")
+        catcher.scope = "some/random/path"
+
+        self.assertRaises(ImportError, import_module, "fakepackage")
+
+    def test_import_catcher_scope_is_none(self):
+        catcher = generalimport("fakepackage")
+        catcher.scope = None
+
+        import fakepackage
+
+        self.assertIs(True, fake_module_check(fakepackage, error=False))
+
+    def test_latest_scope_filename_import(self):
+        catcher = generalimport("hi")
+
+        import hi
+        self.assertIs(True, fake_module_check(hi, error=False))
+        self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
+
+    def test_latest_scope_filename_import_module(self):
+        catcher = generalimport("hi")
+
+        hi = import_module("hi")
+        self.assertIs(True, fake_module_check(hi, error=False))
+        self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
+
+    def test_latest_scope_filename_safe_import(self):
+        catcher = generalimport("hi")
+
+        hi = _safe_import("hi")
+        self.assertIs(True, fake_module_check(hi, error=False))
+        self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
+
+    def test_latest_scope_filename_importlib(self):
+        catcher = generalimport("hi")
+
+        hi = importlib.import_module("hi")
+        self.assertIs(True, fake_module_check(hi, error=False))
+        self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
 
 
 

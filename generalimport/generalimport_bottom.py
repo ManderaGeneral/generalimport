@@ -2,12 +2,14 @@ import importlib
 import inspect
 import pkgutil
 import sys
+from pathlib import Path
 
 
 def get_installed_modules_names():
-    names = {module.name for module in pkgutil.iter_modules()}
-    names.update(sys.builtin_module_names)
-    return names
+    """ https://stackoverflow.com/a/73958089/3936044 """
+    iter_modules = {module.name for module in pkgutil.iter_modules()}
+    builtin = sys.builtin_module_names
+    return set.union(iter_modules, builtin)
 
 def module_is_installed(*names):
     """ Returns whether a package is installed.
@@ -56,7 +58,16 @@ def module_name_is_namespace(name):
 
     return is_namespace
 
-def get_previous_frame_filename():
-    for frame in inspect.stack()[2:]:
-        if "importlib" not in frame.filename:
+def _get_previous_frame_filename(depth):
+    # from pprint import pprint
+    # pprint(inspect.stack())
+    for frame in inspect.stack()[depth:]:
+        if "importlib" not in frame.filename and "bottom.py" not in frame.filename:
             return frame.filename
+
+def _get_scope_from_filename(filename):
+    last_part = Path(filename).parts[-1]
+    return filename[0:filename.index(last_part)]
+
+def _get_top_name(fullname):
+    return fullname.split(".")[0]
