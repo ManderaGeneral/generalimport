@@ -45,7 +45,7 @@ def spec_is_namespace(spec):
 
 def module_is_namespace(module):
     """ Returns if given module is a namespace. """
-    return module is not None and hasattr(module, "__path__") and getattr(module, "__file__", None) is None
+    return hasattr(module, "__path__") and getattr(module, "__file__", None) is None
 
 def module_name_is_namespace(name):
     """ Checks if module's name is a namespace without adding it to sys.modules. """
