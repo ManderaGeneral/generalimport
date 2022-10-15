@@ -1,8 +1,6 @@
-""" I recommend to put this at the top of your main `__init__.py` file. """
+""" Put this in your `__init__.py` file to affect *all* imports inside the folder `__init__.py` resides in. """
 
 from generalimport import generalimport
 generalimport("your", "optional", "dependencies")
 
-""" This is all you need to write to use this package. 
-
-You can also write `generalimport("*")` to make **any** package importable."""
+""" You can also write `generalimport("*")` to make **any** package importable."""

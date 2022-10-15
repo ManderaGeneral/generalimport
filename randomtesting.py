@@ -2,20 +2,13 @@ import importlib
 import sys
 import inspect
 from pprint import pprint
+import importlib
 
 
-from logging import basicConfig
+from generalimport import generalimport
 
-from generalimport import generalimport, get_installed_modules_names, import_module
+generalimport("hi")
 
-basicConfig(level=10)
+import hi
 
-generalimport("*")
-
-import pandas
-
-
-
-
-
-
+print(hi)

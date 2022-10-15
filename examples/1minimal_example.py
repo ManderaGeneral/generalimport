@@ -1,6 +1,4 @@
-""" Call `generalimport` before importing any optional dependencies.
-
-    Here is a minimal example:"""
+""" Call `generalimport` before importing any optional dependencies. """
 
 from generalimport import generalimport
 generalimport("notinstalled")
