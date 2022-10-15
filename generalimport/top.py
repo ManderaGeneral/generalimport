@@ -1,5 +1,6 @@
-from generalimport import GeneralImporter, FakeModule, ImportCatcher
 import sys
+
+from generalimport import GeneralImporter, ImportCatcher
 
 
 def _assert_no_dots(names):
