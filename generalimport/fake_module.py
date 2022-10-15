@@ -16,7 +16,7 @@ class FakeModule:
         raise MissingOptionalDependency(f"Optional dependency {name} was used but it isn't installed.")
 
     def __getattr__(self, item):
-        if item in self.non_called_dunders:  # Maybe do something like this for some attrs
+        if item in self.non_called_dunders:
             self.error_func()
         return self
 
