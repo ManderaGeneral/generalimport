@@ -1,5 +1,4 @@
-import inspect
-from pprint import pprint
+from logging import getLogger
 
 from generalimport import _get_previous_frame_filename, _get_top_name, _get_scope_from_filename
 
@@ -13,6 +12,8 @@ class ImportCatcher:
         self.added_fullnames = set()
         self.enabled = True
         self.scope = self._get_scope()
+
+        getLogger(__name__).info(f"Created Catcher with names {self.names} and scope {self.scope}")
 
         self.latest_scope_filename = None
 
