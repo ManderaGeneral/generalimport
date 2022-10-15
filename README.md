@@ -4,7 +4,7 @@ Handle all your optional dependencies with a single call!
 ## Contents
 <pre>
 <a href='#generalimport'>generalimport</a>
-├─ <a href='#Dependency-Diagram'>Dependency Diagram</a>
+├─ <a href='#ManderaGeneral-Dependency-Diagram'>ManderaGeneral Dependency Diagram</a>
 ├─ <a href='#Installation-showing-dependencies'>Installation showing dependencies</a>
 ├─ <a href='#Information'>Information</a>
 ├─ <a href='#Examples'>Examples</a>
@@ -17,15 +17,15 @@ Handle all your optional dependencies with a single call!
 └─ <a href='#Todo'>Todo</a>
 </pre>
 
-## Dependency Diagram
+## ManderaGeneral Dependency Diagram
 ```mermaid
 flowchart LR
-2([file]) --> 4([packager])
-1([library]) --> 4([packager])
-0([import]) --> 1([library])
-0([import]) --> 2([file])
 1([library]) --> 2([file])
+1([library]) --> 4([packager])
+0([import]) --> 2([file])
 1([library]) --> 3([vector])
+2([file]) --> 4([packager])
+0([import]) --> 1([library])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -160,5 +160,5 @@ Pull requests are not wanted, please discuss with me before investing any time
 | <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/generalimport_bottom.py#L1'>generalimport_bottom.py</a> | <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/generalimport_bottom.py#L16'>Change back to find_spec if spec_is_namespace works.</a> |
 
 <sup>
-Generated 2022-10-15 08:45 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-10-15 09:34 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
