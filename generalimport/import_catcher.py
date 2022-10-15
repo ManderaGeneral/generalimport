@@ -38,10 +38,7 @@ class ImportCatcher:
     def _handle_name(self, fullname):
         name = _get_top_name(fullname=fullname)
         if self.WILDCARD in self.names:
-            if name == fullname:
-                return True
-            if name in self.added_names:  # Prevent handling existing_module.missing_module
-                return True
+            return True
         if name in self.names:
             return True
         return False
