@@ -12,11 +12,10 @@ def get_installed_modules_names():
 
 def module_is_installed(*names):
     """ Returns whether a package is installed.
-        `find_spec(name) is None` was the previous solution but namespaces returned True.
-        Todo: Change back to find_spec if spec_is_namespace works. """
-    packages = get_installed_modules_names()
+        `find_spec(name) is None` was the previous solution but namespaces returned True. """
     for name in names:
-        if name not in packages:
+        spec = get_spec(name)
+        if not spec or spec_is_namespace(spec=spec):
             return False
     return True
 
