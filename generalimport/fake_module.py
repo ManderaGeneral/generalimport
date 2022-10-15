@@ -8,8 +8,8 @@ class FakeModule:
     __path__ = []
 
     def __init__(self, name):
-        self.__dict__["__name__"] = name
-        self.__dict__["name"] = name
+        self.__name__ = name
+        self.name = name
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
