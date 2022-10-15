@@ -40,6 +40,9 @@ def import_module(name, error=True):
             raise ModuleNotFoundError(f"Module '{name}' isn't installed.")
         return module
 
+def get_spec(fullname):
+    return importlib.util.find_spec(fullname)
+
 def spec_is_namespace(spec):
     return spec and spec.loader is None
 
