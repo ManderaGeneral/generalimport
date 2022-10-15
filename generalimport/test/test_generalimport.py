@@ -28,15 +28,6 @@ class Test(ImportTestCase):
         self.assertIn("MissingOptionalDependency", repr(MissingOptionalDependency()))
         self.assertIn("MissingOptionalDependency", str(MissingOptionalDependency()))
 
-    def test_FakeModule(self):
-        self.assertRaises(MissingOptionalDependency, FakeModule("foo").anything)
-        x = FakeModule("foo").whatever  # No error
-        with self.assertRaises(MissingOptionalDependency):
-            FakeModule("foo").whatever == "bar"
-
-        fake = FakeModule("bar")
-        self.assertIs(fake, fake.these.will.recursively.be.itself)
-
     def test_GeneralImporter(self):
         generalimport("packagethatdoesntexist")
 
@@ -64,20 +55,6 @@ class Test(ImportTestCase):
 
         with self.assertRaises(ImportError):
             import notexisting.hi.hey
-
-    def test_error_func(self):
-        self.assertRaises(MissingOptionalDependency, FakeModule("foo").error_func, 1, 2, 3, 4, 5, x=2, y=3)
-
-    def test_load_module(self):
-        importer = get_importer()
-        importer.load_module("foo")
-        self.assertIn("foo", sys.modules)
-
-    def test_find_module(self):
-        generalimport("foo")
-        importer = get_importer()
-        self.assertIs(importer, importer.find_module("foo"))
-        self.assertIs(None, importer.find_module("bar"))
 
     def test_find_module_relay(self):
         """ pkg_resources is one of the few packages always included in venv. """

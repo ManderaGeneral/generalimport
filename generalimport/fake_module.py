@@ -7,9 +7,12 @@ class FakeModule:
         Unhandled use-cases: https://github.com/ManderaGeneral/generalimport/issues?q=is%3Aissue+is%3Aopen+label%3Aunhandled """
     __path__ = []
 
-    def __init__(self, name):
-        self.__name__ = name
-        self.name = name
+    def __init__(self, spec):
+        self.name = spec.name
+
+        self.__name__ = spec.name
+        self.__loader__ = spec.loader
+        self.__spec__ = spec
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__

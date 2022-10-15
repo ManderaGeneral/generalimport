@@ -28,8 +28,7 @@ class GeneralImporter:
             if catcher.handle(fullname=fullname):
                 return catcher
 
-    def find_module(self, fullname, path=None):
-        """ Returns self if fullname is in names, or if wildcard is present. """
+    def find_spec(self, fullname, path=None, target=None):
         if self._ignore_next_import(fullname=fullname):
             return self._handle_ignore(fullname=fullname, reason="Recursive break")
 
@@ -43,12 +42,13 @@ class GeneralImporter:
         if spec_is_namespace(spec=spec):
             return self._handle_handle(fullname=fullname, reason="Namespace package")
 
-        return self._handle_relay(fullname=fullname, loader=spec.loader)
+        return self._handle_relay(fullname=fullname, spec=spec)
 
-    def load_module(self, fullname):
-        """ Adds a FakeModule instance to sys.modules. """
-        module = FakeModule(name=fullname)
-        sys.modules[fullname] = module
+    def create_module(self, spec):
+        return FakeModule(spec=spec)
+
+    def exec_module(self, module):
+        pass
 
 
 
@@ -73,7 +73,6 @@ class GeneralImporter:
             return False
 
     def _handle_ignore(self, fullname, reason):
-        # print(f"Ignoring '{fullname}' - {reason}")
         getLogger(__name__).debug(f"Ignoring '{fullname}' - {reason}")
         return None
 
@@ -82,12 +81,12 @@ class GeneralImporter:
         if not catcher:
             return self._handle_ignore(fullname=fullname, reason="Unhandled")
 
-        # print(f"Handling '{fullname}' - {reason}")
         getLogger(__name__).info(f"{catcher} is handling '{fullname}' - {reason}")
-        sys.modules.pop(fullname, None)  # Remove possible namespace
-        return self
 
-    def _handle_relay(self, fullname, loader):
-        # print(f"'{fullname}' exists, returning it's loader '{loader}'")
-        getLogger(__name__).debug(f"'{fullname}' exists, returning it's loader '{loader}'")
-        return loader
+        sys.modules.pop(fullname, None)  # Remove possible namespace
+
+        return importlib.util.spec_from_loader(fullname, self)
+
+    def _handle_relay(self, fullname, spec):
+        getLogger(__name__).debug(f"'{fullname}' exists, returning it's spec '{spec}'")
+        return spec
