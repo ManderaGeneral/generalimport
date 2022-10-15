@@ -3,7 +3,8 @@ import sys
 
 from logging import getLogger
 
-from generalimport import FakeModule, spec_is_namespace, _get_previous_frame_filename
+from generalimport import FakeModule, spec_is_namespace, _get_top_name, get_spec, \
+    fake_module_check, module_is_namespace
 
 
 class GeneralImporter:
@@ -34,10 +35,10 @@ class GeneralImporter:
         if self._ignore_next_import(fullname=fullname):
             return self._handle_ignore(fullname=fullname, reason="Recursive break")
 
-        if not self.catch(fullname=fullname):
-            return self._handle_ignore(fullname=fullname, reason="Unhandled")
+        if self._ignore_existing_top_name(fullname=fullname):
+            return self._handle_ignore(fullname=fullname, reason="Top name exists and is not namespace")
 
-        spec = importlib.util.find_spec(fullname)
+        spec = get_spec(fullname)
         if not spec:
             return self._handle_handle(fullname=fullname, reason="Doesn't exist")
 
@@ -57,6 +58,14 @@ class GeneralImporter:
         assert self.singleton_instance is None
         GeneralImporter.singleton_instance = self
 
+    def _ignore_existing_top_name(self, fullname):
+        name = _get_top_name(fullname=fullname)
+        if name == fullname:
+            return False
+        module = sys.modules.get(name, None)
+        module_is_real = not fake_module_check(module, error=False)
+        return module_is_real and not module_is_namespace(module)
+
     def _ignore_next_import(self, fullname):
         if fullname == self._skip_fullname:
             self._skip_fullname = None
@@ -71,8 +80,12 @@ class GeneralImporter:
         return None
 
     def _handle_handle(self, fullname, reason):
+        catcher = self.catch(fullname=fullname)
+        if not catcher:
+            return self._handle_ignore(fullname=fullname, reason="Unhandled")
+
         # print(f"Handling '{fullname}' - {reason}")
-        getLogger(__name__).info(f"Handling '{fullname}' - {reason}")
+        getLogger(__name__).info(f"{catcher} is handling '{fullname}' - {reason}")
         sys.modules.pop(fullname, None)  # Remove possible namespace
         return self
 

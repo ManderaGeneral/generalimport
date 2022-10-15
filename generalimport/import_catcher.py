@@ -1,3 +1,6 @@
+import inspect
+from pprint import pprint
+
 from generalimport import _get_previous_frame_filename, _get_top_name, _get_scope_from_filename
 
 
@@ -16,7 +19,6 @@ class ImportCatcher:
     def handle(self, fullname):
         if not self._handle_name(fullname=fullname):
             return False
-        print("checking scope for", fullname)
         if not self._handle_scope():
             return False
 
@@ -46,6 +48,6 @@ class ImportCatcher:
     def _handle_scope(self):
         if self.scope is None:
             return True
-        filename = _get_previous_frame_filename(depth=5)
+        filename = _get_previous_frame_filename(depth=6)
         self.latest_scope_filename = filename
         return filename.startswith(self.scope)
