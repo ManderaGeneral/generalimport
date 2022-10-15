@@ -5,12 +5,9 @@
 from generalimport import generalimport
 generalimport("notinstalled")
 
-import notinstalled  # No error
+from notinstalled import missing_func  # No error
 
-def func():
-    notinstalled.missing_func()  # Error occurs here
-
-func()
+missing_func()  # Error occurs here
 
 """
 ```
