@@ -19,15 +19,6 @@ def generalimport(*names):
     get_importer().catchers.append(catcher)
     return catcher
 
-def fake_module_check(obj, error=True):
-    """ Simple assertion to trigger error_func earlier if module isn't installed. """
-    if isinstance(obj, FakeModule):
-        if error:
-            obj.error_func()
-        else:
-            return True
-    else:
-        return False
 
 
 def _pop_imported_modules():
