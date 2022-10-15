@@ -74,11 +74,15 @@ def fake_module_check(obj, error=True):
 
 
 def _get_previous_frame_filename(depth):
-    # from pprint import pprint
-    # pprint(inspect.stack())
-    for frame in inspect.stack()[depth:]:
-        if "importlib" not in frame.filename and "bottom.py" not in frame.filename:
-            return frame.filename
+    frame = sys._getframe(depth)
+    files = ("importlib", "generalimport_bottom.py")
+
+    while frame:
+        filename = frame.f_code.co_filename
+        frame_is_origin = all(file not in filename for file in files)
+        if frame_is_origin:
+            return filename
+        frame = frame.f_back
 
 def _get_scope_from_filename(filename):
     last_part = Path(filename).parts[-1]
