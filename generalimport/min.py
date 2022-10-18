@@ -8,31 +8,26 @@ class MissingOptionalDependency(SkipTest, Skipped):
         self.msg = msg
     def __repr__(self):
         return f"MissingOptionalDependency: {self.msg}" if self.msg else f"MissingOptionalDependency"
-    def __str__(self):
-        return self.msg or "MissingOptionalDependency"
 
 class GeneralImporter:
     def __init__(self, *names):
         self.names = names
         sys.meta_path.insert(0, self)
     def find_spec(self, fullname, path=None, target=None):
-        return importlib.util.spec_from_loader(fullname, self)
+        if fullname in self.names:
+            return importlib.util.spec_from_loader(fullname, self)
     def create_module(self, spec):
         return FakeModule(name=spec.name)
     def exec_module(self, module):
         pass
 
 class FakeModule:
-    __path__ = []
     def __init__(self, name):
         self.name = name
     def __call__(self, *args, **kwargs):
         raise MissingOptionalDependency(f"Optional dependency '{self.name}' was used but it isn't installed.")
-    def __getattr__(self, item):
-        return self
 
-GeneralImporter()
-
+GeneralImporter("notinstalled")
 import notinstalled  # No error
 print(notinstalled)  # <__main__.FakeModule object at 0x0000014B7F6D9E80>
 notinstalled()  # MissingOptionalDependency: Optional dependency 'notinstalled' was used but it isn't installed.
