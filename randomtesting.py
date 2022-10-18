@@ -5,10 +5,19 @@ from pprint import pprint
 import importlib
 
 
-from generalimport import generalimport
+# HERE ** Time for SO question!
 
-generalimport("hi")
+# from generalimport import generalimport
+#
+# generalimport("hi")
+#
+# import hi
+#
+# print(hi)
 
-import hi
 
-print(hi)
+
+
+
+
+
