@@ -28,11 +28,11 @@ Handle all your optional dependencies with a single call!
 ```mermaid
 flowchart LR
 2([file]) --> 4([packager])
-0([import]) --> 2([file])
-1([library]) --> 4([packager])
 1([library]) --> 2([file])
-0([import]) --> 1([library])
+0([import]) --> 2([file])
 1([library]) --> 3([vector])
+1([library]) --> 4([packager])
+0([import]) --> 1([library])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generallibrary"
 click 2 "https://github.com/ManderaGeneral/generalfile"
@@ -55,9 +55,9 @@ style 0 fill:#482
 <details open>
 <summary><h2>Information</h2></summary>
 
-| Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                                                                                  | Platform        | Cover   |
-|:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.2.1](https://pypi.org/project/generalimport/) | 2022-10-07 16:07 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/) | Windows, Ubuntu | 98.4 %  |
+| Package                                                          | Ver                                            | Latest Release        | Python                                                                                                                                                                                  | Platform        | Cover   |
+|:-----------------------------------------------------------------|:-----------------------------------------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------|
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.3](https://pypi.org/project/generalimport/) | 2022-10-19 16:23 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/) | Windows, Ubuntu | 98.4 %  |
 </details>
 
 
@@ -201,7 +201,7 @@ Issue-creation, discussions and pull requests are most welcome!
 
 
 <sup>
-Generated 2022-10-19 15:24 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2022-10-19 16:23 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
