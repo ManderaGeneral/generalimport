@@ -11,9 +11,9 @@ class ImportCatcher:
         self.added_names = set()
         self.added_fullnames = set()
         self.enabled = True
-        self.scope = self._get_scope()
+        self._scope = self._get_scope()
 
-        getLogger(__name__).info(f"Created Catcher with names {self.names} and scope {self.scope}")
+        getLogger(__name__).info(f"Created Catcher with names {self.names} and scope {self._scope}")
 
         self.latest_scope_filename = None
 
@@ -47,8 +47,8 @@ class ImportCatcher:
         return False
 
     def _handle_scope(self):
-        if self.scope is None:
+        if self._scope is None:
             return True
         filename = _get_previous_frame_filename(depth=6)
         self.latest_scope_filename = filename
-        return filename.startswith(self.scope)
+        return filename.startswith(self._scope)

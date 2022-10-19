@@ -133,17 +133,17 @@ class Test(ImportTestCase):
 
     def test_import_catcher_scope(self):
         catcher = generalimport("hi")
-        self.assertIn("test", catcher.scope)
+        self.assertIn("test", catcher._scope)
 
     def test_import_catcher_outside_scope(self):
         catcher = generalimport("fakepackage")
-        catcher.scope = "some/random/path"
+        catcher._scope = "some/random/path"
 
         self.assertRaises(ImportError, import_module, "fakepackage")
 
     def test_import_catcher_scope_is_none(self):
         catcher = generalimport("fakepackage")
-        catcher.scope = None
+        catcher._scope = None
 
         import fakepackage
 
