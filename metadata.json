@@ -8,5 +8,6 @@
     "version": "0.2.1",
     "description": "Handle all your optional dependencies with a single call!",
     "topics": [],
-    "manifest": []
+    "manifest": [],
+    "contribute": false
 }
