@@ -5,7 +5,7 @@
     "private": false,
     "name": "generalimport",
     "target": "python",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "Handle all your optional dependencies with a single call!",
     "topics": [],
     "manifest": [],
