@@ -4,9 +4,9 @@ from generalimport import generalimport
 generalimport("your", "optional", "dependencies")
 
 """
-Not recommended:
- - `generalimport("*")` makes it handle **all** names (If missing of course)
- - :warning: `generalimport("*").scope = None` disables the scope
-   - Makes it handle missing imports anywhere
-   - For example it will override `pandas` custom optional dependency handling
+`generalimport("*")` makes it handle **all** names (If missing of course)
+
+:warning: `generalimport("*")._scope = None` disables the scope
+ - Makes it handle missing imports anywhere
+ - For example it will override `pandas` internal custom optional dependency handling
 """
