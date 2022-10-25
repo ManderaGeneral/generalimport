@@ -7,11 +7,11 @@ defaults:
 
 jobs:
   unittest:
-    if: contains(github.event.head_commit.message, '[CI SKIP]') == false && contains(github.event.head_commit.message, '[CI AUTO]') == false
+    if: contains(github.event.head_commit.message, '[CI SKIP]') == false && contains(github.event.head_commit.message, '[CI AUTO]') == false && github.ref == 'refs/heads/master'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
         os: [windows-latest, ubuntu-latest]
     steps:
       - name: Create folder
@@ -54,7 +54,6 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
   sync:
     needs: unittest
-    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Create folder
