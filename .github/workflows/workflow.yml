@@ -29,18 +29,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-      - name: Clone 7 repos
+      - name: Clone 8 repos
         run: |
           git clone ssh://git@github.com/ManderaGeneral/generalimport.git
+          git clone ssh://git@github.com/ManderaGeneral/generaltool.git
           git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
           git clone ssh://git@github.com/ManderaGeneral/generalfile.git
           git clone ssh://git@github.com/ManderaGeneral/generalvector.git
           git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
           git clone ssh://git@github.com/Mandera/Mandera.git
           git clone ssh://git@github.com/ManderaGeneral/.github.git
-      - name: Install 5 repos
+      - name: Install 6 repos
         run: |
           pip install -e generalimport[full]
+          pip install -e generaltool[full]
           pip install -e generallibrary[full]
           pip install -e generalfile[full]
           pip install -e generalvector[full]
@@ -71,18 +73,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-      - name: Clone 7 repos
+      - name: Clone 8 repos
         run: |
           git clone ssh://git@github.com/ManderaGeneral/generalimport.git
+          git clone ssh://git@github.com/ManderaGeneral/generaltool.git
           git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
           git clone ssh://git@github.com/ManderaGeneral/generalfile.git
           git clone ssh://git@github.com/ManderaGeneral/generalvector.git
           git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
           git clone ssh://git@github.com/Mandera/Mandera.git
           git clone ssh://git@github.com/ManderaGeneral/.github.git
-      - name: Install 5 repos
+      - name: Install 6 repos
         run: |
           pip install -e generalimport[full]
+          pip install -e generaltool[full]
           pip install -e generallibrary[full]
           pip install -e generalfile[full]
           pip install -e generalvector[full]
