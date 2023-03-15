@@ -1,10 +1,10 @@
 {
+    "target": "python",
     "install_requires": [],
     "extras_require": {},
     "enabled": true,
     "private": false,
     "name": "generalimport",
-    "target": "python",
     "version": "0.3.1",
     "description": "Handle all your optional dependencies with a single call!",
     "topics": [],
