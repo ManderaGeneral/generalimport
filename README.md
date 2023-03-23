@@ -27,13 +27,13 @@ Handle all your optional dependencies with a single call!
 
 ```mermaid
 flowchart LR
-3([file]) --> 5([packager])
-0([import]) --> 2([library])
+0([import]) --> 3([file])
 2([library]) --> 3([file])
 2([library]) --> 5([packager])
-2([library]) --> 4([vector])
-0([import]) --> 3([file])
+0([import]) --> 2([library])
 1([tool]) --> 2([library])
+3([file]) --> 5([packager])
+2([library]) --> 4([vector])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -197,13 +197,15 @@ generalimport("your", "optional", "dependencies")
 <details open>
 <summary><h2>Contributions</h2></summary>
 
-Issue-creation, discussions and pull requests are most welcome!
+Issue-creation and discussions are most welcome!
+
+Please hold off on submitting pull requests until all the necessary legal issues have been sorted out.
 </details>
 
 
 
 <sup>
-Generated 2023-03-22 01:21 CET for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-03-23 14:53 CET for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
