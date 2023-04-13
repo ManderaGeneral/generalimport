@@ -1,4 +1,7 @@
-from generalimport import MissingOptionalDependency
+from generalimport import MissingOptionalDependency, missing_exception
+
+
+EXCEPTION_NAMING_PATTERNS = ["Exception", "Error"]
 
 
 class FakeModule:
@@ -9,6 +12,7 @@ class FakeModule:
 
     def __init__(self, spec):
         self.name = spec.name
+        self.trigger = spec.name
 
         self.__name__ = spec.name
         self.__loader__ = spec.loader
@@ -16,11 +20,17 @@ class FakeModule:
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
-        raise MissingOptionalDependency(f"Optional dependency {name} was used but it isn't installed.")
+        raise MissingOptionalDependency(
+            f"Optional dependency {name} (required by '{self.trigger}') was used but it isn't installed."
+        )
 
     def __getattr__(self, item):
+        if any(str(item).endswith(pattern) for pattern in EXCEPTION_NAMING_PATTERNS):
+            return missing_exception(dependency=self.name, trigger=item)
+        
         if item in self.non_called_dunders:
             self.error_func()
+        self.trigger = item
         return self
 
     # Binary

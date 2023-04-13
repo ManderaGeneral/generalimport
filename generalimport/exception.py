@@ -22,3 +22,14 @@ class MissingOptionalDependency(*_get_skip_base_classes()):
 
     def __str__(self):
         return self.msg or "MissingOptionalDependency"
+
+
+
+def missing_exception(dependency: str, trigger: str):
+
+    class MissingOptionalDependencyException(MissingOptionalDependency):
+
+        def __init__(self, msg=None):
+            self.msg = f"Optional dependency {dependency} (required by '{trigger}') was used but it isn't installed."
+        
+    return MissingOptionalDependencyException
