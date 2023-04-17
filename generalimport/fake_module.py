@@ -1,3 +1,4 @@
+import sys
 from generalimport import MissingOptionalDependency
 
 
@@ -79,3 +80,13 @@ class FakeModule:
         # Info
         "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
     )
+
+
+def import_check(package_name: str) -> bool:
+    """
+    Returns True if the module was actually imported, False, if generalimport mocked it.
+    """
+    package = sys.modules.get(package_name)
+    if not package or isinstance(package, FakeModule):
+        return False
+    return True
