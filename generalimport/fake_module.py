@@ -14,6 +14,7 @@ class FakeModule:
         self.__name__ = spec.name
         self.__loader__ = spec.loader
         self.__spec__ = spec
+        self.__fake_module__ = True  # To bypass isinstance()
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
@@ -82,11 +83,20 @@ class FakeModule:
     )
 
 
-def import_check(package_name: str) -> bool:
+def import_check(module_name: str) -> bool:
     """
     Returns True if the module was actually imported, False, if generalimport mocked it.
     """
-    package = sys.modules.get(package_name)
-    if not package or isinstance(package, FakeModule):
+    module = sys.modules.get(module_name)
+    try:
+        if module and not module.__fake_module__:
+            # It should never reach here because `__fake_module__` should trigger a MissingOptionalDependency
+            # but let's keep it to be safe
+            return True
+    except AttributeError as exc2:
+        # __fake_module__ is missing: real module
+        return True
+    except MissingOptionalDependency as exc:
+        # __fake_module__ raises MissingOptionalDependency: fake module
         return False
-    return True
+    return False
