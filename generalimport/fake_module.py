@@ -1,5 +1,7 @@
 from typing import Optional
 import logging
+from functools import partialmethod
+
 from generalimport import MissingOptionalDependency, missing_exception
 
 
@@ -69,32 +71,31 @@ class FakeModule:
         self.__spec__ = spec
 
     def __getattr__(self, item):
+
         if any(str(item).endswith(pattern) for pattern in EXCEPTION_NAMING_PATTERNS):
             return missing_exception(dependency=self.name, trigger=item)
         
         if item in NON_CALLABLE_DUNDERS:
-            error_func(fake_module=self, __caller=item)
+            self.error_func(item)
         
         return FakeModule(spec=self.__spec__, trigger=item)
-
-
-def error_func(fake_module: FakeModule, __caller: str, *args, **kwargs):
-    """
-    Function that is invoked every time the module is accessed in a callable or non callable attribute.
-    """
-    name = f"'{fake_module.name}'" if hasattr(fake_module, "name") else ""  # For __class_getitem__
-    trigger = f"'{fake_module.trigger}'" if hasattr(fake_module, "trigger") else ""
-
-    logger.debug("generalimport was triggered on module '%s' by '%s'.", name, __caller)
     
-    raise MissingOptionalDependency(
-        f"Optional dependency {name} (required by '{trigger}') was used but it isn't installed."
-    )
+    def error_func(self, __caller: str, *args, **kwargs):
+        """
+        Function that is invoked every time the module is accessed in a callable or non callable attribute.
+        """
+        name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
+        trigger = f"'{self.trigger}'" if hasattr(self, "trigger") else ""
+
+        logger.debug("generalimport was triggered on module '%s' by '%s'.", name, __caller)
+        
+        raise MissingOptionalDependency(
+            f"Optional dependency {name} (required by '{trigger}') was used but it isn't installed."
+        )
 
 #
 # Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
 # Mainly useful for debug purposes.
 #
 for dunder in CALLABLE_DUNDERS:
-        setattr(FakeModule, dunder, lambda self, *a, **k: error_func(fake_module=self, __caller=dunder))
-
+    setattr(FakeModule, dunder, partialmethod(FakeModule.error_func, dunder))
