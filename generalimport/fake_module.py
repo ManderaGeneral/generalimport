@@ -16,42 +16,42 @@ NON_CALLABLE_DUNDERS = (
 )
 
 CALLABLE_DUNDERS = [
-        # Binary
-        "__ilshift__", "__invert__", "__irshift__", "__ixor__", "__lshift__", "__rlshift__", "__rrshift__", "__rshift__", 
-        # Callable
-        "__call__", 
-        # Cast
-        "__bool__", "__bytes__", "__complex__", "__float__", "__int__", "__iter__", "__hash__", 
-        # Compare
-        "__eq__", "__ge__", "__gt__", "__instancecheck__", "__le__", "__lt__", "__ne__", "__subclasscheck__", 
-        # Context
-        "__enter__", "__exit__", 
-        # Delete
-        "__delattr__", "__delitem__", "__delslice__", 
-        # Info
-        "__sizeof__", "__subclasses__", 
-        # Iterable
-        "__len__", "__next__", "__reversed__", "__contains__", "__getitem__", "__setitem__", 
-        # Logic
-        "__and__", "__iand__", "__ior__", "__or__", "__rand__", "__ror__", "__rxor__", "__xor__", 
-        # Lookup
-        "__class_getitem__", "__dir__", 
-        # Math
-        "__abs__", "__add__", "__ceil__", "__divmod__", "__floor__", "__floordiv__", "__iadd__", "__ifloordiv__", 
-        "__imod__", "__imul__", "__ipow__", "__isub__", "__itruediv__", "__mod__", "__mul__", "__neg__", "__pos__", 
-        "__pow__", "__radd__", "__rdiv__", "__rdivmod__", "__rfloordiv__", "__rmod__", "__rmul__", "__round__", 
-        "__rpow__", "__rsub__", "__rtruediv__", "__sub__", "__truediv__", "__trunc__", 
-        # Matrix
-        "__imatmul__", "__matmul__", "__rmatmul__", 
-        # Object
-        "__init_subclass__", "__prepare__", "__set_name__", 
-        # Pickel 
-        "__getnewargs__", "__getnewargs_ex__", "__getstate__", "__reduce__", "__reduce_ex__", 
-        # String
-        "__format__", "__fspath__", "__repr__", "__str__", 
-        # Thread
-        "__aenter__", "__aexit__", "__aiter__", "__anext__", "__await__"
-    ]
+    # Binary
+    "__ilshift__", "__invert__", "__irshift__", "__ixor__", "__lshift__", "__rlshift__", "__rrshift__", "__rshift__", 
+    # Callable
+    "__call__", 
+    # Cast
+    "__bool__", "__bytes__", "__complex__", "__float__", "__int__", "__iter__", "__hash__", 
+    # Compare
+    "__eq__", "__ge__", "__gt__", "__instancecheck__", "__le__", "__lt__", "__ne__", "__subclasscheck__", 
+    # Context
+    "__enter__", "__exit__", 
+    # Delete
+    "__delattr__", "__delitem__", "__delslice__", 
+    # Info
+    "__sizeof__", "__subclasses__", 
+    # Iterable
+    "__len__", "__next__", "__reversed__", "__contains__", "__getitem__", "__setitem__", 
+    # Logic
+    "__and__", "__iand__", "__ior__", "__or__", "__rand__", "__ror__", "__rxor__", "__xor__", 
+    # Lookup
+    "__class_getitem__", "__dir__", 
+    # Math
+    "__abs__", "__add__", "__ceil__", "__divmod__", "__floor__", "__floordiv__", "__iadd__", "__ifloordiv__", 
+    "__imod__", "__imul__", "__ipow__", "__isub__", "__itruediv__", "__mod__", "__mul__", "__neg__", "__pos__", 
+    "__pow__", "__radd__", "__rdiv__", "__rdivmod__", "__rfloordiv__", "__rmod__", "__rmul__", "__round__", 
+    "__rpow__", "__rsub__", "__rtruediv__", "__sub__", "__truediv__", "__trunc__", 
+    # Matrix
+    "__imatmul__", "__matmul__", "__rmatmul__", 
+    # Object
+    "__init_subclass__", "__prepare__", "__set_name__", 
+    # Pickel 
+    "__getnewargs__", "__getnewargs_ex__", "__getstate__", "__reduce__", "__reduce_ex__", 
+    # String
+    "__format__", "__fspath__", "__repr__", "__str__", 
+    # Thread
+    "__aenter__", "__aexit__", "__aiter__", "__anext__", "__await__"
+]
 
 
 class FakeModule:
