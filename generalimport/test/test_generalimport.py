@@ -21,6 +21,7 @@ class Test(ImportTestCase):
     
     def test_package_is_imported(self):
         self.assertEqual(True, is_imported("generalimport"))
+        self.assertEqual(False, is_imported("setuptools"))
         self.assertEqual(False, is_imported("doesntexist"))
 
     def test_MissingOptionalDependency(self):
