@@ -82,21 +82,14 @@ class FakeModule:
         "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
     )
 
-
+#
 def import_check(module_name: str) -> bool:
     """
     Returns True if the module was actually imported, False, if generalimport mocked it.
     """
-    module = sys.modules.get(module_name)
     try:
-        if module and not module.__fake_module__:
-            # It should never reach here because `__fake_module__` should trigger a MissingOptionalDependency
-            # but let's keep it to be safe
-            return True
-    except AttributeError as exc2:
-        # __fake_module__ is missing: real module
-        return True
+        return isinstance(sys.modules.get(module_name), FakeModule)
     except MissingOptionalDependency as exc:
-        # __fake_module__ raises MissingOptionalDependency: fake module
-        return False
+        # isinstance() raises MissingOptionalDependency: fake module
+        pass
     return False
