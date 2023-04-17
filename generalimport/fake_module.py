@@ -14,7 +14,7 @@ class FakeModule:
         self.__name__ = spec.name
         self.__loader__ = spec.loader
         self.__spec__ = spec
-        self.__fake_module__ = True  # To bypass isinstance()
+        self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
