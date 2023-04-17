@@ -87,8 +87,9 @@ def is_imported(module_name: str) -> bool:
     """
     Returns True if the module was actually imported, False, if generalimport mocked it.
     """
+    module = sys.modules.get(module_name)
     try:
-        return not isinstance(sys.modules.get(module_name), FakeModule)
+        return bool(module and not isinstance(module, FakeModule))
     except MissingOptionalDependency as exc:
         # isinstance() raises MissingOptionalDependency: fake module
         pass
