@@ -80,7 +80,7 @@ class FakeModule:
 
 def error_func(fake_module: FakeModule, __caller: str, *args, **kwargs):
     """
-    Function that is invoked every time the module is accessed.
+    Function that is invoked every time the module is accessed in a callable or non callable attribute.
     """
     name = f"'{fake_module.name}'" if hasattr(fake_module, "name") else ""  # For __class_getitem__
     trigger = f"'{fake_module.trigger}'" if hasattr(fake_module, "trigger") else ""
