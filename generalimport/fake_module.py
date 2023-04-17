@@ -83,7 +83,7 @@ class FakeModule:
     )
 
 
-def import_check(module_name: str) -> bool:
+def is_imported(module_name: str) -> bool:
     """
     Returns True if the module was actually imported, False, if generalimport mocked it.
     """
