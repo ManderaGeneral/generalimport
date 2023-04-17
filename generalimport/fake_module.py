@@ -82,7 +82,7 @@ class FakeModule:
         "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
     )
 
-#
+
 def import_check(module_name: str) -> bool:
     """
     Returns True if the module was actually imported, False, if generalimport mocked it.
