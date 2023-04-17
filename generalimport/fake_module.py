@@ -1,3 +1,4 @@
+from typing import Optional
 from generalimport import MissingOptionalDependency, missing_exception
 
 
@@ -10,9 +11,9 @@ class FakeModule:
         Unhandled use-cases: https://github.com/ManderaGeneral/generalimport/issues?q=is%3Aissue+is%3Aopen+label%3Aunhandled """
     __path__ = []
 
-    def __init__(self, spec):
+    def __init__(self, spec, trigger: Optional[str] = None):
         self.name = spec.name
-        self.trigger = spec.name
+        self.trigger = trigger or spec.name
 
         self.__name__ = spec.name
         self.__loader__ = spec.loader
@@ -30,8 +31,8 @@ class FakeModule:
         
         if item in self.non_called_dunders:
             self.error_func()
-        self.trigger = item
-        return self
+        
+        return FakeModule(spec=self.__spec__, trigger=item)
 
     # Binary
     __ilshift__ = __invert__ = __irshift__ = __ixor__ = __lshift__ = __rlshift__ = __rrshift__ = __rshift__ = error_func
