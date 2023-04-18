@@ -1,3 +1,4 @@
+import sys
 from generalimport import MissingOptionalDependency
 
 
@@ -13,6 +14,7 @@ class FakeModule:
         self.__name__ = spec.name
         self.__loader__ = spec.loader
         self.__spec__ = spec
+        self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
@@ -79,3 +81,16 @@ class FakeModule:
         # Info
         "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
     )
+
+
+def is_imported(module_name: str) -> bool:
+    """
+    Returns True if the module was actually imported, False, if generalimport mocked it.
+    """
+    module = sys.modules.get(module_name)
+    try:
+        return bool(module and not isinstance(module, FakeModule))
+    except MissingOptionalDependency as exc:
+        # isinstance() raises MissingOptionalDependency: fake module
+        pass
+    return False
