@@ -8,14 +8,26 @@ from generalimport.test.funcs import ImportTestCase
 
 
 class Test(ImportTestCase):
-    def test_init_subclass(self):
-        """ This one is caught by __call__. """
+
+    def test_subclass_module(self):
         generalimport("fakepackage")
         import fakepackage
 
+        class X(fakepackage):
+            pass
+
         with self.assertRaises(MissingOptionalDependency):
-            class X(fakepackage):
-                pass
+            X()
+
+    def test_subclass_class(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        class SubClass(fakepackage.BaseClass):
+            def __init__(self):
+                raise ValueError("'generalimport' should fail earlier with MissingOptionalDependency")
+        
+        self.assertRaises(MissingOptionalDependency, SubClass())
 
 
 

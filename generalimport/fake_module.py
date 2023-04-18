@@ -26,25 +26,25 @@ class FakeModule:
             self.error_func()
         return self
 
-    # def __mro_entries__(self, *a, **k):
-    #     """
-    #     This prevents the creation of subclasses from triggering `generalimport`.
+    def __mro_entries__(self, *a, **k):
+        """
+        This prevents the creation of subclasses from triggering `generalimport`.
 
-    #     The classes so generated will trigger generalimport as soon as they're instantiated.
-    #     """
-    #     return (
-    #         type(
-    #             # Name of the fake class
-    #             "FakeBaseClass",
-    #             # Parent classes for this class
-    #             (object,),
-    #             # Methods
-    #             { 
-    #                 "__new__": partialmethod(FakeModule.error_func, "__new__"),
-    #                 "__init__": partialmethod(FakeModule.error_func, "__init__"),
-    #             }
-    #         ), 
-    #     )
+        The classes so generated will trigger generalimport as soon as they're instantiated.
+        """
+        return (
+            type(
+                # Name of the fake class
+                "FakeBaseClass",
+                # Parent classes for this class
+                (object,),
+                # Methods
+                { 
+                    "__new__": partialmethod(FakeModule.error_func, "__new__"),
+                    "__init__": partialmethod(FakeModule.error_func, "__init__"),
+                }
+            ), 
+        )
 
     # Binary
     __ilshift__ = __invert__ = __irshift__ = __ixor__ = __lshift__ = __rlshift__ = __rrshift__ = __rshift__ = error_func

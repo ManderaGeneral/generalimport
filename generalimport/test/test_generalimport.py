@@ -181,13 +181,3 @@ class Test(ImportTestCase):
         hi = importlib.import_module("hi")
         self.assertIs(True, fake_module_check(hi, error=False))
         self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
-
-    def test_allow_subclassing(self):
-        generalimport("test_module")
-        import test_module
-
-        class SubClass(test_module.BaseClass):
-            def __init__(self):
-                raise ValueError("generalimport should fail earlier with MissingOptionalDependency")
-        
-        self.assertRaises(MissingOptionalDependency, SubClass())
