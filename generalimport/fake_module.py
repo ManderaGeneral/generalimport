@@ -40,8 +40,8 @@ class FakeModule:
                 (object,),
                 # Methods
                 { 
-                    "__new__": partialmethod(FakeModule.error_func, "__new__"),
-                    "__init__": partialmethod(FakeModule.error_func, "__init__"),
+                    "__new__": partialmethod(self.error_func, "__new__"),
+                    "__init__": partialmethod(self.error_func, "__init__"),
                 }
             ), 
         )
