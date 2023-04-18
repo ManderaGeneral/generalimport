@@ -38,12 +38,3 @@ class Test(ImportTestCase):
                 raise ValueError("'generalimport' should fail earlier with MissingOptionalDependency")
         
         self.assertRaises(MissingOptionalDependency, SubClass.__new__(SubClass))
-
-
-
-
-
-
-
-
-
