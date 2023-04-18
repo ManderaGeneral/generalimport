@@ -18,6 +18,11 @@ class Test(ImportTestCase):
         self.assertEqual(True, module_is_installed("generalimport"))
         self.assertEqual(True, module_is_installed("setuptools"))
         self.assertEqual(False, module_is_installed("doesntexist"))
+    
+    def test_package_is_imported(self):
+        self.assertEqual(True, is_imported("generalimport"))
+        self.assertEqual(False, is_imported("setuptools"))
+        self.assertEqual(False, is_imported("doesntexist"))
 
     def test_MissingOptionalDependency(self):
         self.assertEqual("foo", MissingOptionalDependency("foo").msg)
