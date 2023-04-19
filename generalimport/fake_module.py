@@ -85,10 +85,9 @@ class FakeModule:
             self.error_func(item)
         return self
 
-#
+
 # Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
 # Mainly useful for debug purposes.
-#
 for dunder in CALLABLE_DUNDERS:
     setattr(FakeModule, dunder, partialmethod(FakeModule.error_func, dunder))
 
