@@ -1,6 +1,10 @@
 import sys
+import logging
 from functools import partialmethod
 from generalimport import MissingOptionalDependency
+
+
+logger = logging.getLogger("generalimport")
 
 
 NON_CALLABLE_DUNDERS = (
@@ -67,8 +71,13 @@ class FakeModule:
         self.__spec__ = spec
         self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
-    def error_func(self, *args, **kwargs):
+    def error_func(self, __caller: str, *args, **kwargs):
+        """
+        Function that is invoked every time the module is accessed through a callable or non callable attribute, most
+        dunders included.
+        """
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
+        logger.debug("generalimport was triggered on module '%s' by '%s'.", name, __caller)
         raise MissingOptionalDependency(f"Optional dependency {name} was used but it isn't installed.")
 
     def __getattr__(self, item):

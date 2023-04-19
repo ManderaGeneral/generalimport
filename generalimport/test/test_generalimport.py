@@ -182,6 +182,19 @@ class Test(ImportTestCase):
         self.assertIs(True, fake_module_check(hi, error=False))
         self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
 
+    def test_logging_message(self):
+        generalimport("nonexisting")
+        import nonexisting
+
+        with self.assertLogs('generalimport', level='DEBUG') as cm:
+
+            with self.assertRaises(MissingOptionalDependency):
+                nonexisting.func()
+            
+        self.assertEqual(
+            cm.output, 
+            ["DEBUG:generalimport:generalimport was triggered on module ''nonexisting'' by '__call__'."]
+        )
 
 
 
