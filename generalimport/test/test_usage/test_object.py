@@ -9,6 +9,18 @@ from generalimport.test.funcs import ImportTestCase
 
 class Test(ImportTestCase):
 
+    def test_subclass_class_returning_self(self):
+        generalimport("fakepackage")
+        import fakepackage
+
+        class SubClass(fakepackage.BaseClass):
+            pass
+
+        foo = SubClass.bar
+
+        with self.assertRaises(MissingOptionalDependency):
+            foo *= 2
+
     def test_subclass_module(self):
         generalimport("fakepackage")
         import fakepackage
