@@ -1,4 +1,5 @@
 import sys
+from typing import Optional
 from unittest import skip
 
 import generalimport as gi
@@ -13,10 +14,10 @@ class Test(ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        def my_function1(something: fakepackage):
+        def my_function1(something: Optional[fakepackage]):
             pass
         
-        def my_function2(something: int) -> fakepackage:
+        def my_function2(something: int) -> Optional[fakepackage]:
             pass
 
         my_function1(1)
@@ -27,10 +28,10 @@ class Test(ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        def my_function1(something: fakepackage.something):
+        def my_function1(something: Optional[fakepackage.something]):
             pass
 
-        def my_function2(something) -> fakepackage.something:
+        def my_function2(something) -> Optional[fakepackage.something]:
             pass
 
         my_function1(1)
