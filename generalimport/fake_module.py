@@ -32,20 +32,16 @@ class FakeModule:
 
         The classes so generated will trigger generalimport as soon as they're instantiated.
         """
-        return (
-            type(
-                # Name of the fake class
-                "FakeBaseClass",
-                # Parent classes for this class
-                (object,),
-                # Methods
-                { 
-                    "__new__": partialmethod(self.error_func, "__new__"),
-                    "__init__": partialmethod(self.error_func, "__init__"),
-                }
-            ), 
-        )
+        class FakeBaseClass:
 
+            def __new__(fake_cls, *args, **kwargs):
+                self.error_func("__new__")
+
+            def __init__(fake_self, *args, **kwargs):
+                self.error_func("__init__")
+
+        return (FakeBaseClass, )
+        
     # Binary
     __ilshift__ = __invert__ = __irshift__ = __ixor__ = __lshift__ = __rlshift__ = __rrshift__ = __rshift__ = error_func
 
