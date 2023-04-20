@@ -183,12 +183,24 @@ class Test(ImportTestCase):
         self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
 
     def test_custom_error_message(self):
-        generalimport(("hi", "Get 'hi' with 'pip install python-hi'."))
+        generalimport(
+            ("hi", "Get 'hi' with 'pip install python-hi'."),
+            "hello"
+        )
         import hi
 
         with self.assertRaises(MissingOptionalDependency) as missing_dep_error:
             hi.greet()
         self.assertEqual(
             "Optional dependency 'hi' was used but it isn't installed. Get 'hi' with 'pip install python-hi'.",
+            str(missing_dep_error.exception)
+        )
+
+        import hello
+
+        with self.assertRaises(MissingOptionalDependency) as missing_dep_error:
+            hello.greet()
+        self.assertEqual(
+            "Optional dependency 'hello' was used but it isn't installed.",
             str(missing_dep_error.exception)
         )
