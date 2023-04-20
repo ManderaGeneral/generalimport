@@ -7,7 +7,6 @@ class FakeModule:
         Raises a ModuleNotFoundError when used in any way.
         Unhandled use-cases: https://github.com/ManderaGeneral/generalimport/issues?q=is%3Aissue+is%3Aopen+label%3Aunhandled """
     __path__ = []
-    __args__ = []
 
     def __init__(self, spec, message: str):
         self.name = spec.name
