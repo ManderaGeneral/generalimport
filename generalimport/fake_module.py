@@ -18,7 +18,7 @@ class FakeModule:
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
-        message = f" {self.message}" if hasattr(self, "message") else ""  # For __class_getitem__
+        message = f" {self.message}" if getattr(self, "message", None) else ""  # For __class_getitem__
         raise MissingOptionalDependency(
             f"Optional dependency {name} was used but it isn't installed.{message}"
         )
