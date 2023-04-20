@@ -15,6 +15,7 @@ class GeneralImporter:
 
     def __init__(self):
         self.catchers = []
+        self.messages = {}
 
         self._singleton()
         self._skip_fullname = None
@@ -45,12 +46,10 @@ class GeneralImporter:
         return self._handle_relay(fullname=fullname, spec=spec)
 
     def create_module(self, spec):
-        return FakeModule(spec=spec)
+        return FakeModule(spec=spec, message=self.messages.get(spec.name, None))
 
     def exec_module(self, module):
         pass
-
-
 
     def _singleton(self):
         assert self.singleton_instance is None

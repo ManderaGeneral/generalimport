@@ -9,17 +9,20 @@ class FakeModule:
     __path__ = []
     __args__ = []
 
-    def __init__(self, spec):
+    def __init__(self, spec, message: str):
         self.name = spec.name
+        self.message = message
 
         self.__name__ = spec.name
         self.__loader__ = spec.loader
         self.__spec__ = spec
-        self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
-        raise MissingOptionalDependency(f"Optional dependency {name} was used but it isn't installed.")
+        message = f" {self.message}" if hasattr(self, "message") else ""  # For __class_getitem__
+        raise MissingOptionalDependency(
+            f"Optional dependency {name} was used but it isn't installed.{message}"
+        )
 
     def __getattr__(self, item):
         if item in self.non_called_dunders:

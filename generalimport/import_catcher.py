@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from logging import getLogger
 
 from generalimport import _get_previous_frame_filename, _get_top_name, _get_scope_from_filename
@@ -6,7 +8,7 @@ from generalimport import _get_previous_frame_filename, _get_top_name, _get_scop
 class ImportCatcher:
     WILDCARD = "*"
 
-    def __init__(self, *names):
+    def __init__(self, *names: Iterable[str]):
         self.names = set(names)
         self.added_names = set()
         self.added_fullnames = set()
@@ -25,8 +27,6 @@ class ImportCatcher:
 
         self._store_handled_name(fullname=fullname)
         return True
-
-
 
     @staticmethod
     def _get_scope():
