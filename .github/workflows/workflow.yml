@@ -18,15 +18,21 @@ jobs:
         working-directory: ../../
         run: mkdir main
       - name: Set up Git SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.GIT_SSH }}
       - name: Set up python version ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.python-version }}'
+      - name: Install necessities
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade setuptools wheel twine
       - name: Clone 8 repos
         run: |
+          mkdir repos
+          cd repos
           git clone ssh://git@github.com/ManderaGeneral/generalimport.git
           git clone ssh://git@github.com/ManderaGeneral/generaltool.git
           git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
@@ -37,6 +43,7 @@ jobs:
           git clone ssh://git@github.com/ManderaGeneral/.github.git
       - name: Install 6 repos
         run: |
+          cd repos
           pip install -e generalimport[full]
           pip install -e generaltool[full]
           pip install -e generallibrary[full]
@@ -58,15 +65,21 @@ jobs:
         working-directory: ../../
         run: mkdir main
       - name: Set up Git SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.GIT_SSH }}
       - name: Set up python version 3.11
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+      - name: Install necessities
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade setuptools wheel twine
       - name: Clone 8 repos
         run: |
+          mkdir repos
+          cd repos
           git clone ssh://git@github.com/ManderaGeneral/generalimport.git
           git clone ssh://git@github.com/ManderaGeneral/generaltool.git
           git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
@@ -77,6 +90,7 @@ jobs:
           git clone ssh://git@github.com/ManderaGeneral/.github.git
       - name: Install 6 repos
         run: |
+          cd repos
           pip install -e generalimport[full]
           pip install -e generaltool[full]
           pip install -e generallibrary[full]
