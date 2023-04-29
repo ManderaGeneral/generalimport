@@ -52,6 +52,7 @@ jobs:
           pip install -e generalpackager[full]
       - name: Run Packager method 'workflow_unittest'
         run: |
+          cd repos
           python -c "from generalpackager import Packager; Packager().workflow_unittest()"
         env:
           GH_TOKEN: ${{ secrets.PACKAGER_GITHUB_API }}
@@ -99,6 +100,7 @@ jobs:
           pip install -e generalpackager[full]
       - name: Run Packager method 'workflow_sync'
         run: |
+          cd repos
           python -c "from generalpackager import Packager; Packager().workflow_sync()"
         env:
           GH_TOKEN: ${{ secrets.PACKAGER_GITHUB_API }}
