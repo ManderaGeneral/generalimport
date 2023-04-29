@@ -27,13 +27,13 @@ Handle all your optional dependencies with a single call!
 
 ```mermaid
 flowchart LR
-2([library]) --> 3([file])
-2([library]) --> 5([packager])
-0([import]) --> 2([library])
-1([tool]) --> 2([library])
-0([import]) --> 3([file])
-3([file]) --> 5([packager])
 2([library]) --> 4([vector])
+0([import]) --> 3([file])
+0([import]) --> 2([library])
+2([library]) --> 3([file])
+1([tool]) --> 2([library])
+2([library]) --> 5([packager])
+3([file]) --> 5([packager])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -59,7 +59,7 @@ style 0 fill:#482
 
 | Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                                                                                                                                                 | Platform        | Cover   |
 |:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.3.1](https://pypi.org/project/generalimport/) | 2022-10-27 16:21 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 98.4 %  |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.3.1](https://pypi.org/project/generalimport/) | 2022-10-27 16:21 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 98.1 %  |
 </details>
 
 
@@ -169,8 +169,8 @@ generalimport("your", "optional", "dependencies")
 
 <pre>
 <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/__init__.py#L1'>Module: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L4'>Class: FakeModule</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L17'>Method: error_func</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L5'>Class: FakeModule</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L19'>Method: error_func</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L8'>Class: GeneralImporter</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L23'>Method: catch</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L47'>Method: create_module</a>
@@ -185,6 +185,7 @@ generalimport("your", "optional", "dependencies")
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L7'>Function: get_installed_modules_names</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L41'>Function: get_spec</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L28'>Function: import_module</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L86'>Function: is_imported</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L13'>Function: module_is_installed</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L47'>Function: module_is_namespace</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L51'>Function: module_name_is_namespace</a>
@@ -205,7 +206,7 @@ Please hold off on submitting pull requests until all the necessary legal issues
 
 
 <sup>
-Generated 2023-03-23 15:13 CET for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-04-29 02:38 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
