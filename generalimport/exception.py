@@ -10,15 +10,19 @@ def _get_skip_base_classes():
         pass
 
 
-class MissingOptionalDependency(*_get_skip_base_classes()):
+class SkipTestException(*_get_skip_base_classes()):
     def __init__(self, msg=None):
+        if msg is None:
+            msg = ""
         self.msg = msg
 
     def __repr__(self):
-        if self.msg:
-            return f"MissingOptionalDependency: {self.msg}"
-        else:
-            return f"MissingOptionalDependency"
+        message = f"'{self.msg}'" if self.msg else ""
+        return f"{type(self).__name__}({message})"
 
     def __str__(self):
-        return self.msg or "MissingOptionalDependency"
+        return self.msg
+
+
+class MissingOptionalDependency(SkipTestException):
+    pass
