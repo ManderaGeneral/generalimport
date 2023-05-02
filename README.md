@@ -27,13 +27,13 @@ Handle all your optional dependencies with a single call!
 
 ```mermaid
 flowchart LR
-3([file]) --> 5([packager])
-2([library]) --> 5([packager])
-2([library]) --> 3([file])
 0([import]) --> 2([library])
-1([tool]) --> 2([library])
-2([library]) --> 4([vector])
 0([import]) --> 3([file])
+2([library]) --> 4([vector])
+1([tool]) --> 2([library])
+2([library]) --> 3([file])
+2([library]) --> 5([packager])
+3([file]) --> 5([packager])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -178,7 +178,7 @@ generalimport("your", "optional", "dependencies")
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L31'>Method: find_spec</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L6'>Class: ImportCatcher</a>
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L20'>Method: handle</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L13'>Class: MissingOptionalDependency</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L27'>Class: MissingOptionalDependency</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L62'>Function: fake_module_check</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L14'>Function: generalimport</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L10'>Function: get_importer</a>
@@ -206,7 +206,7 @@ Please hold off on submitting pull requests until all the necessary legal issues
 
 
 <sup>
-Generated 2023-04-29 04:49 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-05-02 02:21 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
