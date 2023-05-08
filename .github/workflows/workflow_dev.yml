@@ -5,10 +5,6 @@ on:
     branches-ignore:
       - master
       - main
-  pull_request:
-    branches-ignore:
-      - master
-      - main
 
 defaults:
   run:
@@ -26,10 +22,6 @@ jobs:
       - name: Create folder
         working-directory: ../../
         run: mkdir main
-      - name: Set up Git SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.GIT_SSH }}
       - name: Set up python version ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
