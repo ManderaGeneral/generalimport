@@ -63,7 +63,7 @@ def fake_module_check(obj, error=True):
     """ Simple assertion to trigger error_func earlier if module isn't installed. """
     if type(obj).__name__ == "FakeModule":
         if error:
-            obj.error_func(obj.name)
+            obj.error_func()
         else:
             return True
     else:

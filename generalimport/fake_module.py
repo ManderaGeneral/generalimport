@@ -1,6 +1,6 @@
 from typing import Optional
 import sys
-from generalimport.exception import MissingDependencyException, missing_exception
+from generalimport.exception import MissingOptionalDependency, MissingDependencyException
 
 
 EXCEPTION_NAMING_PATTERNS = ["Exception", "Error"]
@@ -14,7 +14,7 @@ class FakeModule:
 
     def __init__(self, spec, trigger: Optional[str] = None):
         self.name = spec.name
-        self.trigger = trigger or spec.name
+        self.trigger = trigger
 
         self.__name__ = spec.name
         self.__loader__ = spec.loader
@@ -22,20 +22,25 @@ class FakeModule:
         self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
     def error_func(self, *args, **kwargs):
-        name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
-        trigger = f"'{self.trigger}'" if hasattr(self, "trigger") else ""  # For __class_getitem__
-        raise MissingDependencyException(
-            f"Optional dependency {name} (required by '{trigger}') was used but it isn't installed."
-        )
+        trigger_msg = f" (required by '{self.trigger}')" if self.trigger else ""
+        msg = f"Optional dependency {self.name}{trigger_msg} was used but it isn't installed."
+        raise MissingDependencyException(msg=msg)
+
+    @classmethod
+    def error_func_class(cls, *args, **kwargs):
+        msg = f"Optional dependency was used but it isn't installed."
+        raise MissingDependencyException(msg=msg)
+
+    def _item_is_exception(self, item):
+        return any(str(item).endswith(pattern) for pattern in EXCEPTION_NAMING_PATTERNS)
+
+    def _item_is_dunder(self, item):
+        return item in self.non_called_dunders
 
     def __getattr__(self, item):
-
-        if any(str(item).endswith(pattern) for pattern in EXCEPTION_NAMING_PATTERNS):
-            return missing_exception(dependency=self.name, trigger=item)
-        
-        if item in self.non_called_dunders:
-            self.error_func()
-        
+        fakemodule = FakeModule(spec=self.__spec__, trigger=item)
+        if self._item_is_exception(item=item) or self._item_is_dunder(item=item):
+            fakemodule.error_func()
         return FakeModule(spec=self.__spec__, trigger=item)
 
     # Binary
@@ -66,7 +71,8 @@ class FakeModule:
     __and__ = __iand__ = __ior__ = __or__ = __rand__ = __ror__ = __rxor__ = __xor__ = error_func
 
     # Lookup
-    __class_getitem__ = __dir__ = error_func
+    __class_getitem__ = error_func_class
+    __dir__ = error_func
 
     # Math
     __abs__ = __add__ = __ceil__ = __divmod__ = __floor__ = __floordiv__ = __iadd__ = __ifloordiv__ = __imod__ = __imul__ = __ipow__ = __isub__ = __itruediv__ = __mod__ = __mul__ = __neg__ = __pos__ = __pow__ = __radd__ = __rdiv__ = __rdivmod__ = __rfloordiv__ = __rmod__ = __rmul__ = __round__ = __rpow__ = __rsub__ = __rtruediv__ = __sub__ = __truediv__ = __trunc__ = error_func
