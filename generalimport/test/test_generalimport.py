@@ -181,9 +181,27 @@ class Test(ImportTestCase):
         self.assertIs(True, fake_module_check(hi, error=False))
         self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
 
+    def test_correct_message(self):
+        from generalimport import generalimport
+        generalimport("missing_dep")
 
 
+        from missing_dep import foo
+        from missing_dep import bar
 
+        try:
+            foo()
+        except MissingDependencyException as e:
+            self.assertIn("foo", str(e))
+        else:
+            self.fail("Error not raised")
+
+        try:
+            bar()
+        except MissingDependencyException as e:
+            self.assertIn("bar", str(e))
+        else:
+            self.fail("Error not raised")
 
 
 
