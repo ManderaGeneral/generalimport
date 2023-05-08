@@ -1,6 +1,6 @@
 from typing import Optional
 import sys
-from generalimport.exception import MissingOptionalDependency, missing_exception
+from generalimport.exception import MissingDependencyException, missing_exception
 
 
 EXCEPTION_NAMING_PATTERNS = ["Exception", "Error"]
@@ -24,7 +24,7 @@ class FakeModule:
     def error_func(self, *args, **kwargs):
         name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
         trigger = f"'{self.trigger}'" if hasattr(self, "trigger") else ""  # For __class_getitem__
-        raise MissingOptionalDependency(
+        raise MissingDependencyException(
             f"Optional dependency {name} (required by '{trigger}') was used but it isn't installed."
         )
 
@@ -103,7 +103,7 @@ def is_imported(module_name: str) -> bool:
     module = sys.modules.get(module_name)
     try:
         return bool(module and not isinstance(module, FakeModule))
-    except MissingOptionalDependency as exc:
-        # isinstance() raises MissingOptionalDependency: fake module
+    except MissingDependencyException as exc:
+        # isinstance() raises MissingDependencyException: fake module
         pass
     return False

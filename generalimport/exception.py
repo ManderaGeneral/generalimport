@@ -1,4 +1,7 @@
 
+import warnings
+
+
 def _get_skip_base_classes():
     from unittest.case import SkipTest
     yield SkipTest
@@ -24,5 +27,29 @@ class SkipTestException(*_get_skip_base_classes()):
         return self.msg
 
 
-class MissingOptionalDependency(SkipTestException):
+
+class MissingDependencyException(SkipTestException):
     pass
+
+
+def MissingOptionalDependency(*args, **kwargs):
+    warnings.warn("MissingDependencyException has been changed to MissingDependencyException", DeprecationWarning, stacklevel=2)
+    return MissingDependencyException(*args, **kwargs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

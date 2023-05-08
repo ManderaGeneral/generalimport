@@ -84,7 +84,7 @@ missing_func()  # Error occurs here
 
 
 ```
-MissingOptionalDependency: Optional dependency 'notinstalled' was used but it isn't installed.
+MissingDependencyException: Optional dependency 'notinstalled' was used but it isn't installed.
 ```
 
 Imports fail when they are **used**, *not* imported.
@@ -157,7 +157,7 @@ generalimport("your", "optional", "dependencies")
 - This importer will return 'fake' modules for matching names and scope.
 - The scope ensures only your own imports are faked.
 - The fake module will recursively return itself when asked for an attribute.
-- When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
+- When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingDependencyException`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 </details>
 
@@ -178,7 +178,7 @@ generalimport("your", "optional", "dependencies")
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L31'>Method: find_spec</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L6'>Class: ImportCatcher</a>
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L20'>Method: handle</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L27'>Class: MissingOptionalDependency</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L27'>Class: MissingDependencyException</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L62'>Function: fake_module_check</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L14'>Function: generalimport</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L10'>Function: get_importer</a>
