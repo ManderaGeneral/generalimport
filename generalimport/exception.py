@@ -27,13 +27,12 @@ class SkipTestException(*_get_skip_base_classes()):
         return self.msg
 
 
-
 class MissingDependencyException(SkipTestException):
     pass
 
 
 def MissingOptionalDependency(*args, **kwargs):
-    warnings.warn("MissingDependencyException has been changed to MissingDependencyException", DeprecationWarning, stacklevel=2)
+    warnings.warn("MissingOptionalDependency has been changed to MissingDependencyException", DeprecationWarning, stacklevel=2)
     return MissingDependencyException(*args, **kwargs)
 
 
