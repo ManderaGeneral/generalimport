@@ -29,9 +29,8 @@ class Test(ImportTestCase):
         self.assertIn("foo", repr(MissingOptionalDependency("foo")))
         self.assertIn("foo", str(MissingOptionalDependency("foo")))
 
-        self.assertEqual(None, MissingOptionalDependency().msg)
         self.assertIn("MissingOptionalDependency", repr(MissingOptionalDependency()))
-        self.assertIn("MissingOptionalDependency", str(MissingOptionalDependency()))
+        self.assertEqual(str(AttributeError()), str(MissingOptionalDependency()))
 
     def test_GeneralImporter(self):
         generalimport("packagethatdoesntexist")
