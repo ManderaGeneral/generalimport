@@ -22,6 +22,10 @@ jobs:
       - name: Create folder
         working-directory: ../../
         run: mkdir main
+      - name: Set up Git SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.GIT_SSH }}
       - name: Set up python version ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -30,15 +34,27 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade setuptools wheel twine
-      - name: Clone
+      - name: Clone 6 repos
         run: |
           mkdir repos
           cd repos
-          git clone https://github.com/${{ github.repository }}.git -b ${{ github.ref_name }}
-      - name: Install
+          git clone ssh://git@github.com/ManderaGeneral/generalimport.git -b ${{ github.ref_name }}
+          git clone ssh://git@github.com/ManderaGeneral/generaltool.git
+          git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
+          git clone ssh://git@github.com/ManderaGeneral/generalfile.git
+          git clone ssh://git@github.com/ManderaGeneral/generalvector.git
+          git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
+      - name: Install 6 repos
         run: |
-          cd repos/generalimport
-          pip install .[full]
-      - name: Unittest
+          cd repos
+          pip install -e generalimport[full]
+          pip install -e generaltool[full]
+          pip install -e generallibrary[full]
+          pip install -e generalfile[full]
+          pip install -e generalvector[full]
+          pip install -e generalpackager[full]
+      - name: Run Packager method 'workflow_unittest'
         run: |
-          python -m unittest discover repos/generalimport/generalimport/test
+          cd repos
+          python -c "from generalpackager import Packager; Packager().workflow_unittest()"
+
