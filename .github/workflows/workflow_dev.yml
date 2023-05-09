@@ -37,8 +37,8 @@ jobs:
           git clone https://github.com/${{ github.repository }}.git -b ${{ github.ref_name }}
       - name: Install
         run: |
-          cd repos
-          pip install generalimport[full]
+          cd repos/generalimport
+          pip install .[full]
       - name: Unittest
         run: |
           python -m unittest discover repos/generalimport/generalimport/test
