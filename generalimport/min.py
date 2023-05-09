@@ -3,11 +3,11 @@ import importlib
 from unittest.case import SkipTest
 from _pytest.outcomes import Skipped
 
-class MissingOptionalDependency(SkipTest, Skipped):
+class MissingDependencyException(SkipTest, Skipped):
     def __init__(self, msg=None):
         self.msg = msg
     def __repr__(self):
-        return f"MissingOptionalDependency: {self.msg}" if self.msg else f"MissingOptionalDependency"
+        return f"MissingDependencyException: {self.msg}" if self.msg else f"MissingDependencyException"
 
 class GeneralImporter:
     def __init__(self, *names):
@@ -25,9 +25,9 @@ class FakeModule:
     def __init__(self, name):
         self.name = name
     def __call__(self, *args, **kwargs):
-        raise MissingOptionalDependency(f"Optional dependency '{self.name}' was used but it isn't installed.")
+        raise MissingDependencyException(f"Optional dependency '{self.name}' was used but it isn't installed.")
 
 GeneralImporter("notinstalled")
 import notinstalled  # No error
 print(notinstalled)  # <__main__.FakeModule object at 0x0000014B7F6D9E80>
-notinstalled()  # MissingOptionalDependency: Optional dependency 'notinstalled' was used but it isn't installed.
+notinstalled()  # MissingDependencyException: Optional dependency 'notinstalled' was used but it isn't installed.

@@ -12,14 +12,14 @@ class Test(ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             type(fakepackage)[5]
 
     def test_dir(self):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             dir(fakepackage)
 
     # https://github.com/ManderaGeneral/generalimport/issues/8
@@ -28,7 +28,7 @@ class Test(ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             fakepackage.x = 5
 
 
