@@ -30,27 +30,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade setuptools wheel twine
-      - name: Clone 6 repos
+      - name: Clone
         run: |
           mkdir repos
           cd repos
-          git clone https://github.com/ManderaGeneral/generalimport.git -b ${{ github.ref_name }}
-          git clone https://github.com/ManderaGeneral/generaltool.git
-          git clone https://github.com/ManderaGeneral/generallibrary.git
-          git clone https://github.com/ManderaGeneral/generalfile.git
-          git clone https://github.com/ManderaGeneral/generalvector.git
-          git clone https://github.com/ManderaGeneral/generalpackager.git
-      - name: Install 6 repos
+          git clone https://github.com/${{ github.repository }}.git -b ${{ github.ref_name }}
+      - name: Install
         run: |
           cd repos
-          pip install -e generalimport[full]
-          pip install -e generaltool[full]
-          pip install -e generallibrary[full]
-          pip install -e generalfile[full]
-          pip install -e generalvector[full]
-          pip install -e generalpackager[full]
-      - name: Run Packager method 'workflow_unittest'
+          pip install generalimport[full]
+      - name: Unittest
         run: |
-          cd repos
-          python -c "from generalpackager import Packager; Packager().workflow_unittest()"
-
+          python -m unittest discover repos/generalimport/generalimport/test
