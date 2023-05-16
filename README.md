@@ -28,12 +28,12 @@ Handle all your optional dependencies with a single call!
 ```mermaid
 flowchart LR
 3([file]) --> 5([packager])
-1([tool]) --> 2([library])
 2([library]) --> 4([vector])
-0([import]) --> 2([library])
 2([library]) --> 5([packager])
+1([tool]) --> 2([library])
 2([library]) --> 3([file])
 0([import]) --> 3([file])
+0([import]) --> 2([library])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -169,9 +169,9 @@ generalimport("your", "optional", "dependencies")
 
 <pre>
 <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/__init__.py#L1'>Module: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L9'>Class: FakeModule</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L24'>Method: error_func</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L30'>Method: error_func_class</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L70'>Class: FakeModule</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L94'>Method: error_func</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L98'>Method: error_func_class</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L8'>Class: GeneralImporter</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L23'>Method: catch</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L47'>Method: create_module</a>
@@ -187,7 +187,7 @@ generalimport("your", "optional", "dependencies")
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L7'>Function: get_installed_modules_names</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L41'>Function: get_spec</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L28'>Function: import_module</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L105'>Function: is_imported</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L127'>Function: is_imported</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L13'>Function: module_is_installed</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L47'>Function: module_is_namespace</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L51'>Function: module_name_is_namespace</a>
@@ -206,7 +206,7 @@ Issue-creation, discussions and pull requests are most welcome!
 
 
 <sup>
-Generated 2023-05-16 03:43 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-05-16 07:41 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
