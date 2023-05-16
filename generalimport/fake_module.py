@@ -1,5 +1,7 @@
 from typing import Optional
 import sys
+from functools import partialmethod
+from generalimport import MissingOptionalDependency
 from generalimport.exception import MissingOptionalDependency, MissingDependencyException
 
 
@@ -43,6 +45,22 @@ class FakeModule:
             fakemodule.error_func()
         return FakeModule(spec=self.__spec__, trigger=item)
 
+    def __mro_entries__(self, *a, **k):
+        """
+        This prevents the creation of subclasses from triggering `generalimport`.
+
+        The classes so generated will trigger generalimport as soon as they're instantiated.
+        """
+        class FakeBaseClass:
+
+            def __new__(fake_cls, *args, **kwargs):
+                self.error_func("__new__")
+
+            def __init__(fake_self, *args, **kwargs):
+                self.error_func("__init__")
+
+        return (FakeBaseClass, )
+        
     # Binary
     __ilshift__ = __invert__ = __irshift__ = __ixor__ = __lshift__ = __rlshift__ = __rrshift__ = __rshift__ = error_func
 
