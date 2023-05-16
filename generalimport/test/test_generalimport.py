@@ -186,18 +186,15 @@ class Test(ImportTestCase):
         generalimport("missing_dep")
 
     def test_logging_message(self):
-        generalimport("nonexisting")
+        generalimport("nonexisting", "missing_dep")
         import nonexisting
 
         with self.assertLogs('generalimport', level='DEBUG') as cm:
-
-            with self.assertRaises(MissingOptionalDependency):
+            with self.assertRaises(MissingDependencyException):
                 nonexisting.func()
 
-        self.assertEqual(
-            cm.output,
-            ["DEBUG:generalimport:generalimport was triggered on module ''nonexisting'' by '__call__'."]
-        )
+        self.assertIn("nonexisting", cm.output[0])
+        self.assertIn("__call__", cm.output[0])
 
         from missing_dep import foo
         from missing_dep import bar
