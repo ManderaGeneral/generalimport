@@ -112,16 +112,16 @@ class FakeModule:
             fakemodule.error_func(item)
         return FakeModule(spec=self.__spec__, trigger=item)
 
-    @classmethod
-    def assign_dunder_methods(cls, dunders, error_func):
-        """ Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
-            Mainly useful for debug purposes. """
-        for dunder in dunders:
-            setattr(cls, dunder, partialmethod(error_func, dunder))
+
+# Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
+# Mainly useful for debug purposes.
+for dunder in CALLABLE_DUNDERS:
+    setattr(FakeModule, dunder, partialmethod(FakeModule.error_func, dunder))
+
+for dunder in CALLABLE_CLASS_DUNDERS:
+    setattr(FakeModule, dunder, partialmethod(FakeModule.error_func_class, FakeModule, dunder))
 
 
-FakeModule.assign_dunder_methods(dunders=CALLABLE_DUNDERS, error_func=FakeModule.error_func)
-FakeModule.assign_dunder_methods(dunders=CALLABLE_DUNDERS_CLASS, error_func=FakeModule.error_func_class)
 
 
 def is_imported(module_name: str) -> bool:
