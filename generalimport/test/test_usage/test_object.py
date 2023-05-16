@@ -1,14 +1,9 @@
-import sys
-from unittest import skip
-
-import generalimport as gi
 from generalimport import *
 
 from generalimport.test.funcs import ImportTestCase
 
 
 class Test(ImportTestCase):
-
     def test_subclass_class_returning_self(self):
         generalimport("fakepackage")
         import fakepackage
@@ -16,7 +11,7 @@ class Test(ImportTestCase):
         class SubClass(fakepackage.BaseClass):
             pass
 
-        foo = SubClass.bar
+        foo = SubClass.bar  # Won't error if SubClass is a FakeModule
 
         with self.assertRaises(MissingDependencyException):
             foo *= 2
@@ -28,7 +23,7 @@ class Test(ImportTestCase):
         class X(fakepackage):
             pass
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             X()
 
     def test_subclass_class(self):
@@ -37,9 +32,9 @@ class Test(ImportTestCase):
 
         class SubClass(fakepackage.BaseClass):
             def __init__(self):
-                raise ValueError("'generalimport' should fail earlier with MissingOptionalDependency")
+                raise ValueError("'generalimport' should fail earlier with MissingDependencyException")
 
-        self.assertRaises(MissingOptionalDependency, SubClass)
+        self.assertRaises(MissingDependencyException, SubClass)
 
     def test_subclass_class_direct_new_call(self):
         generalimport("fakepackage")
@@ -47,7 +42,7 @@ class Test(ImportTestCase):
 
         class SubClass(fakepackage.BaseClass):
             def __init__(self):
-                raise ValueError("'generalimport' should fail earlier with MissingOptionalDependency")
+                raise ValueError("'generalimport' should fail earlier with MissingDependencyException")
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             SubClass.__new__(SubClass)
