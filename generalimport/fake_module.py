@@ -20,7 +20,7 @@ NON_CALLABLE_DUNDERS = (
 )
 
 
-CALLABLE_DUNDERS_CLASS = [
+CALLABLE_CLASS_DUNDERS = [
     # Lookup
     "__class_getitem__",
 ]
@@ -82,17 +82,21 @@ class FakeModule:
         self.__spec__ = spec
         self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
-    def error_func(self, __caller: str, *args, **kwargs):
-        trigger_msg = f" (required by '{self.trigger}')" if self.trigger else ""
-        logger.debug("generalimport was triggered on module '%s' by '%s'.", self.name, __caller)
-        msg = f"Optional dependency {self.name}{trigger_msg} was used but it isn't installed."
+    @staticmethod
+    def _error_func(name, trigger, caller):
+        required_by = f" (required by '{trigger}')" if trigger else ""
+        name_part = f"{name}{required_by} " if name else ""
+        msg = f"Optional dependency {name_part}was used but it isn't installed."
+        msg = f"{msg} Triggered by '{caller}'."
+        logger.debug(msg=msg)
         raise MissingDependencyException(msg=msg)
 
+    def error_func(self, _caller: str, *args, **kwargs):
+        self._error_func(name=self.name, trigger=self.trigger, caller=_caller)
+
     @classmethod
-    def error_func_class(cls, __caller: str, *args, **kwargs):
-        logger.debug("generalimport was triggered by '%s'.", __caller)
-        msg = f"Optional dependency was used but it isn't installed."
-        raise MissingDependencyException(msg=msg)
+    def error_func_class(cls, _caller: str, *args, **kwargs):
+        cls._error_func(name=None, trigger=None, caller=_caller)
 
     @staticmethod
     def _item_is_exception(item):
