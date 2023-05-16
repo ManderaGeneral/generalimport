@@ -27,13 +27,13 @@ Handle all your optional dependencies with a single call!
 
 ```mermaid
 flowchart LR
-2([library]) --> 3([file])
-2([library]) --> 5([packager])
-0([import]) --> 2([library])
-1([tool]) --> 2([library])
-0([import]) --> 3([file])
 3([file]) --> 5([packager])
+1([tool]) --> 2([library])
 2([library]) --> 4([vector])
+0([import]) --> 2([library])
+2([library]) --> 5([packager])
+2([library]) --> 3([file])
+0([import]) --> 3([file])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -59,7 +59,7 @@ style 0 fill:#482
 
 | Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                                                                                                                                                 | Platform        | Cover   |
 |:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.3.1](https://pypi.org/project/generalimport/) | 2022-10-27 16:21 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 98.4 %  |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.3.1](https://pypi.org/project/generalimport/) | 2022-10-27 16:21 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 96.7 %  |
 </details>
 
 
@@ -84,7 +84,7 @@ missing_func()  # Error occurs here
 
 
 ```
-MissingOptionalDependency: Optional dependency 'notinstalled' was used but it isn't installed.
+MissingDependencyException: Optional dependency 'notinstalled' was used but it isn't installed.
 ```
 
 Imports fail when they are **used**, *not* imported.
@@ -157,7 +157,7 @@ generalimport("your", "optional", "dependencies")
 - This importer will return 'fake' modules for matching names and scope.
 - The scope ensures only your own imports are faked.
 - The fake module will recursively return itself when asked for an attribute.
-- When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingOptionalDependency`.
+- When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingDependencyException`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 </details>
 
@@ -169,8 +169,9 @@ generalimport("your", "optional", "dependencies")
 
 <pre>
 <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/__init__.py#L1'>Module: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L4'>Class: FakeModule</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L17'>Method: error_func</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L9'>Class: FakeModule</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L24'>Method: error_func</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L30'>Method: error_func_class</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L8'>Class: GeneralImporter</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L23'>Method: catch</a>
 │  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L47'>Method: create_module</a>
@@ -178,13 +179,15 @@ generalimport("your", "optional", "dependencies")
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L31'>Method: find_spec</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L6'>Class: ImportCatcher</a>
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L20'>Method: handle</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L13'>Class: MissingOptionalDependency</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L30'>Class: MissingDependencyException</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L34'>Function: MissingOptionalDependency</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L62'>Function: fake_module_check</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L14'>Function: generalimport</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L10'>Function: get_importer</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L7'>Function: get_installed_modules_names</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L41'>Function: get_spec</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L28'>Function: import_module</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L105'>Function: is_imported</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L13'>Function: module_is_installed</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L47'>Function: module_is_namespace</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L51'>Function: module_name_is_namespace</a>
@@ -197,15 +200,13 @@ generalimport("your", "optional", "dependencies")
 <details open>
 <summary><h2>Contributions</h2></summary>
 
-Issue-creation and discussions are most welcome!
-
-Please hold off on submitting pull requests until all the necessary legal issues have been sorted out.
+Issue-creation, discussions and pull requests are most welcome!
 </details>
 
 
 
 <sup>
-Generated 2023-03-23 15:13 CET for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-05-16 03:43 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 

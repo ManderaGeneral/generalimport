@@ -18,7 +18,7 @@ class Test(ImportTestCase):
 
         foo = SubClass.bar
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             foo *= 2
 
     def test_subclass_module(self):
@@ -38,7 +38,7 @@ class Test(ImportTestCase):
         class SubClass(fakepackage.BaseClass):
             def __init__(self):
                 raise ValueError("'generalimport' should fail earlier with MissingOptionalDependency")
-        
+
         self.assertRaises(MissingOptionalDependency, SubClass)
 
     def test_subclass_class_direct_new_call(self):
@@ -48,6 +48,6 @@ class Test(ImportTestCase):
         class SubClass(fakepackage.BaseClass):
             def __init__(self):
                 raise ValueError("'generalimport' should fail earlier with MissingOptionalDependency")
-        
+
         with self.assertRaises(MissingOptionalDependency):
             SubClass.__new__(SubClass)
