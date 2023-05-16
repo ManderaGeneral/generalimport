@@ -24,14 +24,13 @@ class Test(ImportTestCase):
         self.assertEqual(False, is_imported("setuptools"))
         self.assertEqual(False, is_imported("doesntexist"))
 
-    def test_MissingOptionalDependency(self):
-        self.assertEqual("foo", MissingOptionalDependency("foo").msg)
-        self.assertIn("foo", repr(MissingOptionalDependency("foo")))
-        self.assertIn("foo", str(MissingOptionalDependency("foo")))
+    def test_MissingDependencyException(self):
+        self.assertEqual("foo", MissingDependencyException("foo").msg)
+        self.assertIn("foo", repr(MissingDependencyException("foo")))
+        self.assertIn("foo", str(MissingDependencyException("foo")))
 
-        self.assertEqual(None, MissingOptionalDependency().msg)
-        self.assertIn("MissingOptionalDependency", repr(MissingOptionalDependency()))
-        self.assertIn("MissingOptionalDependency", str(MissingOptionalDependency()))
+        self.assertIn("MissingDependencyException", repr(MissingDependencyException()))
+        self.assertEqual(str(AttributeError()), str(MissingDependencyException()))
 
     def test_GeneralImporter(self):
         generalimport("packagethatdoesntexist")
@@ -41,13 +40,13 @@ class Test(ImportTestCase):
         self.assertRaises(AssertionError, GeneralImporter)  # Singleton
 
         import packagethatdoesntexist
-        self.assertRaises(MissingOptionalDependency, packagethatdoesntexist)
+        self.assertRaises(MissingDependencyException, packagethatdoesntexist)
 
         from packagethatdoesntexist.module import fakefunc
-        self.assertRaises(MissingOptionalDependency, fakefunc)
+        self.assertRaises(MissingDependencyException, fakefunc)
 
         import packagethatdoesntexist.module.fakefunc2
-        self.assertRaises(MissingOptionalDependency, packagethatdoesntexist.module.fakefunc2)
+        self.assertRaises(MissingDependencyException, packagethatdoesntexist.module.fakefunc2)
 
         with self.assertRaises(ImportError):
             import notexisting
@@ -72,16 +71,16 @@ class Test(ImportTestCase):
         generalimport("*")
 
         from whateverz import this
-        self.assertRaises(MissingOptionalDependency, this)
+        self.assertRaises(MissingDependencyException, this)
 
         from whateverz.hi import that
-        self.assertRaises(MissingOptionalDependency, that)
+        self.assertRaises(MissingDependencyException, that)
 
         import hiii
-        self.assertRaises(MissingOptionalDependency, hiii)
+        self.assertRaises(MissingDependencyException, hiii)
 
         import heyyyy.foo
-        self.assertRaises(MissingOptionalDependency, heyyyy.foo)
+        self.assertRaises(MissingDependencyException, heyyyy.foo)
 
     def test_import_module(self):
         self.assertRaises(ModuleNotFoundError, import_module, "thisdoesntexist")
@@ -89,7 +88,7 @@ class Test(ImportTestCase):
         generalimport("thisdoesntexist")
         thisdoesntexist = import_module("thisdoesntexist")
 
-        self.assertRaises(MissingOptionalDependency, thisdoesntexist)
+        self.assertRaises(MissingDependencyException, thisdoesntexist)
 
         self.assertIs(import_module("generalimport"), gi)
         import_module("generalimport")
@@ -106,7 +105,7 @@ class Test(ImportTestCase):
 
         from namespace.mod import func
 
-        self.assertRaises(MissingOptionalDependency, func)
+        self.assertRaises(MissingDependencyException, func)
 
     def test_generalimport(self):
         self.assertEqual(True, module_name_is_namespace("namespace"))
@@ -122,15 +121,15 @@ class Test(ImportTestCase):
         import missing_dep
         import another_missing
 
-        self.assertRaises(MissingOptionalDependency, namespace.func)
-        self.assertRaises(MissingOptionalDependency, missing_dep.func)
-        self.assertRaises(MissingOptionalDependency, another_missing.func)
+        self.assertRaises(MissingDependencyException, namespace.func)
+        self.assertRaises(MissingDependencyException, missing_dep.func)
+        self.assertRaises(MissingDependencyException, another_missing.func)
 
     def test_fake_module_check(self):
         generalimport("fakepackage")
         import fakepackage
 
-        self.assertRaises(MissingOptionalDependency, fake_module_check, fakepackage)
+        self.assertRaises(MissingDependencyException, fake_module_check, fakepackage)
         self.assertIs(True, fake_module_check(fakepackage, error=False))
 
         fake_module_check(sys)
@@ -182,6 +181,10 @@ class Test(ImportTestCase):
         self.assertIs(True, fake_module_check(hi, error=False))
         self.assertIn("test_generalimport.py", catcher.latest_scope_filename)
 
+    def test_correct_message(self):
+        from generalimport import generalimport
+        generalimport("missing_dep")
+
     def test_logging_message(self):
         generalimport("nonexisting")
         import nonexisting
@@ -190,14 +193,28 @@ class Test(ImportTestCase):
 
             with self.assertRaises(MissingOptionalDependency):
                 nonexisting.func()
-            
+
         self.assertEqual(
-            cm.output, 
+            cm.output,
             ["DEBUG:generalimport:generalimport was triggered on module ''nonexisting'' by '__call__'."]
         )
 
+        from missing_dep import foo
+        from missing_dep import bar
 
+        try:
+            foo()
+        except MissingDependencyException as e:
+            self.assertIn("foo", str(e))
+        else:
+            self.fail("Error not raised")
 
+        try:
+            bar()
+        except MissingDependencyException as e:
+            self.assertIn("bar", str(e))
+        else:
+            self.fail("Error not raised")
 
 
 
