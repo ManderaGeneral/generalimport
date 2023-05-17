@@ -57,14 +57,7 @@ def _structure(links):
         pass
     return {key: result[key] for key in sorted(result)}
 
- # if not include or key in include
-
-def _format_pkg_name(name):
-    return name.replace('.', '_').replace('-', '_')
-
 def _render(structure, include):
-    include = [_format_pkg_name(name=name) for name in include]
-    structure = {_format_pkg_name(name=name): value for name, value in structure.items()}
     names_in_include_and_not_structure = sorted(list(set(include) - set(structure.keys())))
 
     lines = ["from generalimport import generalimport",
@@ -76,11 +69,11 @@ def _render(structure, include):
         comment = include and name not in include
         comment = "# " if comment else ""
         if len(groups) > 1:
-            groups_str = str(tuple(groups)).replace("'", '"')
+            groups_str = tuple(groups)  # HERE ** Should probably not have the last layer of nested tuples, just put them on same level
         else:
-            groups_str = f'"{groups[0]}"'
-
-        lines.append(f"    {comment}{name}={groups_str},")
+            groups_str = f"{groups[0]}".replace("'", '')
+        line = (name, groups_str)
+        lines.append(f"    {comment}{line},".replace("'", '"'))
     lines.append(")")
     return "\n".join(lines)
 
