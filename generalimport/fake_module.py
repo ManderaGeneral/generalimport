@@ -73,9 +73,10 @@ class FakeModule:
         Unhandled use-cases: https://github.com/ManderaGeneral/generalimport/issues?q=is%3Aissue+is%3Aopen+label%3Aunhandled """
     __path__ = []
 
-    def __init__(self, spec, trigger: Optional[str] = None):
+    def __init__(self, spec, trigger: Optional[str] = None, catcher=None):
         self.name = spec.name
         self.trigger = trigger
+        self.catcher = catcher
 
         self.__name__ = spec.name
         self.__loader__ = spec.loader
@@ -107,7 +108,7 @@ class FakeModule:
         return item in NON_CALLABLE_DUNDERS
 
     def __getattr__(self, item):
-        fakemodule = FakeModule(spec=self.__spec__, trigger=item)
+        fakemodule = FakeModule(spec=self.__spec__, trigger=item, catcher=self.catcher)
         if self._item_is_exception(item=item) or self._item_is_dunder(item=item):
             fakemodule.error_func(item)
         return fakemodule
