@@ -12,21 +12,21 @@ class Test(ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             fakepackage @= 5
 
     def test_matmul(self):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             fakepackage @ 2
 
     def test_rmatmul(self):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             2 @ fakepackage
 
 

@@ -13,31 +13,31 @@ class Test(ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             format(fakepackage)
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             "{}".format(fakepackage)
 
     def test_fspath(self):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             os.fspath(fakepackage)
 
     def test_repr(self):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             repr(fakepackage)
 
     def test_str(self):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             str(fakepackage)
 
 

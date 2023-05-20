@@ -1,5 +1,70 @@
+from typing import Optional
 import sys
-from generalimport import MissingOptionalDependency
+import logging
+from functools import partialmethod
+from generalimport.exception import MissingOptionalDependency, MissingDependencyException
+
+
+EXCEPTION_NAMING_PATTERNS = ["Exception", "Error"]
+
+logger = logging.getLogger("generalimport")
+
+
+NON_CALLABLE_DUNDERS = (
+    # Callable
+    "__annotations__", "__closure__", "__code__", "__defaults__", "__globals__", "__kwdefaults__",
+    # Info
+    "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
+    # Pydantic
+    "_nparams",
+)
+
+
+CALLABLE_CLASS_DUNDERS = [
+    # Lookup
+    "__class_getitem__",
+]
+
+CALLABLE_DUNDERS = [
+    # Binary
+    "__ilshift__", "__invert__", "__irshift__", "__ixor__", "__lshift__", "__rlshift__", "__rrshift__", "__rshift__",
+    # Callable
+    "__call__",
+    # Cast
+    "__bool__", "__bytes__", "__complex__", "__float__", "__int__", "__iter__", "__hash__",
+    # Compare
+    "__eq__", "__ge__", "__gt__", "__instancecheck__", "__le__", "__lt__", "__ne__", "__subclasscheck__",
+    # Context
+    "__enter__", "__exit__",
+    # Delete
+    "__delattr__", "__delitem__", "__delslice__",
+    # Info
+    "__sizeof__", "__subclasses__",
+    # Iterable
+    "__len__", "__next__", "__reversed__", "__contains__", "__getitem__", "__setitem__",
+    # Logic
+    "__and__", "__iand__", "__ior__", "__or__", "__rand__", "__ror__", "__rxor__", "__xor__",
+    # Lookup
+    "__dir__",
+    # Math
+    "__abs__", "__add__", "__ceil__", "__divmod__", "__floor__", "__floordiv__", "__iadd__", "__ifloordiv__",
+    "__imod__", "__imul__", "__ipow__", "__isub__", "__itruediv__", "__mod__", "__mul__", "__neg__", "__pos__",
+    "__pow__", "__radd__", "__rdiv__", "__rdivmod__", "__rfloordiv__", "__rmod__", "__rmul__", "__round__",
+    "__rpow__", "__rsub__", "__rtruediv__", "__sub__", "__truediv__", "__trunc__",
+    # Matrix
+    "__imatmul__", "__matmul__", "__rmatmul__",
+    # Object
+    "__init_subclass__", "__prepare__", "__set_name__",
+    # Pickle
+    "__getnewargs__", "__getnewargs_ex__", "__getstate__", "__reduce__", "__reduce_ex__",
+    # String
+    "__format__", "__fspath__", "__repr__", "__str__",
+    # Thread
+    "__aenter__", "__aexit__", "__aiter__", "__anext__", "__await__",
+    # Typing
+    "__origin__",
+]
+
 
 
 class FakeModule:
@@ -9,79 +74,55 @@ class FakeModule:
     __path__ = []
     __args__ = []
 
-    def __init__(self, spec):
+    def __init__(self, spec, trigger: Optional[str] = None):
         self.name = spec.name
+        self.trigger = trigger
 
         self.__name__ = spec.name
         self.__loader__ = spec.loader
         self.__spec__ = spec
         self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
-    def error_func(self, *args, **kwargs):
-        name = f"'{self.name}'" if hasattr(self, "name") else ""  # For __class_getitem__
-        raise MissingOptionalDependency(f"Optional dependency {name} was used but it isn't installed.")
+    @staticmethod
+    def _error_func(name, trigger, caller):
+        required_by = f" (required by '{trigger}')" if trigger else ""
+        name_part = f"{name}{required_by} " if name else ""
+        msg = f"Optional dependency {name_part}was used but it isn't installed."
+        msg = f"{msg} Triggered by '{caller}'."
+        logger.debug(msg=msg)
+        raise MissingDependencyException(msg=msg)
+
+    def error_func(self, _caller: str, *args, **kwargs):
+        self._error_func(name=self.name, trigger=self.trigger, caller=_caller)
+
+    @classmethod
+    def error_func_class(cls, _caller: str, *args, **kwargs):
+        cls._error_func(name=None, trigger=None, caller=_caller)
+
+    @staticmethod
+    def _item_is_exception(item):
+        return any(str(item).endswith(pattern) for pattern in EXCEPTION_NAMING_PATTERNS)
+
+    @staticmethod
+    def _item_is_dunder(item):
+        return item in NON_CALLABLE_DUNDERS
 
     def __getattr__(self, item):
-        if item in self.non_called_dunders:
-            self.error_func()
-        return self
-
-    # Binary
-    __ilshift__ = __invert__ = __irshift__ = __ixor__ = __lshift__ = __rlshift__ = __rrshift__ = __rshift__ = error_func
-
-    # Callable
-    __call__ = error_func
-
-    # Cast
-    __bool__ = __bytes__ = __complex__ = __float__ = __int__ = __iter__ = __hash__ = error_func
-
-    # Compare
-    __eq__ = __ge__ = __gt__ = __instancecheck__ = __le__ = __lt__ = __ne__ = __subclasscheck__ = error_func
-
-    # Context
-    __enter__ = __exit__ = error_func
-
-    # Delete
-    __delattr__ = __delitem__ = __delslice__ = error_func
-
-    # Info
-    __sizeof__ = __subclasses__ = error_func
-
-    # Iterable
-    __len__ = __next__ = __reversed__ = __contains__ = __getitem__ = __setitem__ = error_func
-
-    # Logic
-    __and__ = __iand__ = __ior__ = __or__ = __rand__ = __ror__ = __rxor__ = __xor__ = error_func
-
-    # Lookup
-    __class_getitem__ = __dir__ = error_func
-
-    # Math
-    __abs__ = __add__ = __ceil__ = __divmod__ = __floor__ = __floordiv__ = __iadd__ = __ifloordiv__ = __imod__ = __imul__ = __ipow__ = __isub__ = __itruediv__ = __mod__ = __mul__ = __neg__ = __pos__ = __pow__ = __radd__ = __rdiv__ = __rdivmod__ = __rfloordiv__ = __rmod__ = __rmul__ = __round__ = __rpow__ = __rsub__ = __rtruediv__ = __sub__ = __truediv__ = __trunc__ = error_func
-
-    # Matrix
-    __imatmul__ = __matmul__ = __rmatmul__ = error_func
-
-    # Object
-    __init_subclass__ = __prepare__ = __set_name__ = error_func
-
-    # Pickle
-    __getnewargs__ = __getnewargs_ex__ = __getstate__ = __reduce__ = __reduce_ex__ = error_func
-
-    # String
-    __format__ = __fspath__ = __repr__ = __str__ = error_func
-
-    # Thread
-    __aenter__ = __aexit__ = __aiter__ = __anext__ = __await__ = error_func
+        fakemodule = FakeModule(spec=self.__spec__, trigger=item)
+        if self._item_is_exception(item=item) or self._item_is_dunder(item=item):
+            fakemodule.error_func(item)
+        return FakeModule(spec=self.__spec__, trigger=item)
 
 
-    non_called_dunders = (
-        # Callable
-        "__annotations__", "__closure__", "__code__", "__defaults__", "__globals__", "__kwdefaults__",
+# Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
+# Mainly useful for debug purposes.
+for dunder in CALLABLE_DUNDERS:
+    setattr(FakeModule, dunder, partialmethod(FakeModule.error_func, dunder))
 
-        # Info
-        "__bases__", "__class__", "__dict__", "__doc__", "__module__", "__name__", "__qualname__", "__all__", "__slots__",
-    )
+for dunder in CALLABLE_CLASS_DUNDERS:
+    setattr(FakeModule, dunder, partialmethod(FakeModule.error_func_class, FakeModule, dunder))
+
+
 
 
 def is_imported(module_name: str) -> bool:
@@ -91,7 +132,7 @@ def is_imported(module_name: str) -> bool:
     module = sys.modules.get(module_name)
     try:
         return bool(module and not isinstance(module, FakeModule))
-    except MissingOptionalDependency as exc:
-        # isinstance() raises MissingOptionalDependency: fake module
+    except MissingDependencyException as exc:
+        # isinstance() raises MissingDependencyException: fake module
         pass
     return False

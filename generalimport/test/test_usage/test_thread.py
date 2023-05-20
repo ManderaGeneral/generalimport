@@ -12,7 +12,7 @@ class Test(IsolatedAsyncioTestCase, ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             async with fakepackage():
                 pass
 
@@ -20,7 +20,7 @@ class Test(IsolatedAsyncioTestCase, ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             async for x in fakepackage:
                 pass
 
@@ -28,7 +28,7 @@ class Test(IsolatedAsyncioTestCase, ImportTestCase):
         generalimport("fakepackage")
         import fakepackage
 
-        with self.assertRaises(MissingOptionalDependency):
+        with self.assertRaises(MissingDependencyException):
             await fakepackage
 
 

@@ -9,7 +9,7 @@ missing_func()  # Error occurs here
 
 """
 ```
-MissingOptionalDependency: Optional dependency 'notinstalled' was used but it isn't installed.
+MissingDependencyException: Optional dependency 'notinstalled' was used but it isn't installed.
 ```
 
 Imports fail when they are **used**, *not* imported. 
