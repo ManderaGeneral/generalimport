@@ -84,20 +84,28 @@ class FakeModule:
         self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
     @staticmethod
-    def _error_func(name, trigger, caller):
+    def _error_func(name, trigger, caller, catcher):
         required_by = f" (required by '{trigger}')" if trigger else ""
         name_part = f"{name}{required_by} " if name else ""
-        msg = f"Optional dependency {name_part}was used but it isn't installed."
-        msg = f"{msg} Triggered by '{caller}'."
+
+        msg_list = [
+            f"Optional dependency {name_part}was used but it isn't installed.",
+            f"Triggered by '{caller}'.",
+        ]
+        if catcher and catcher.message:
+            msg_list.append(catcher.message)
+
+        msg = " ".join(msg_list)
+
         logger.debug(msg=msg)
         raise MissingDependencyException(msg=msg)
 
     def error_func(self, _caller: str, *args, **kwargs):
-        self._error_func(name=self.name, trigger=self.trigger, caller=_caller)
+        self._error_func(name=self.name, trigger=self.trigger, caller=_caller, catcher=self.catcher)
 
     @classmethod
     def error_func_class(cls, _caller: str, *args, **kwargs):
-        cls._error_func(name=None, trigger=None, caller=_caller)
+        cls._error_func(name=None, trigger=None, caller=_caller, catcher=None)
 
     @staticmethod
     def _item_is_exception(item):
