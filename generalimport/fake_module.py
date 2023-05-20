@@ -3,7 +3,7 @@ import sys
 import logging
 from functools import partialmethod
 from generalimport.exception import MissingOptionalDependency, MissingDependencyException
-
+from generalimport.generalimport_bottom import _inside_typing
 
 EXCEPTION_NAMING_PATTERNS = ["Exception", "Error"]
 
@@ -72,7 +72,7 @@ class FakeModule:
         Raises a ModuleNotFoundError when used in any way.
         Unhandled use-cases: https://github.com/ManderaGeneral/generalimport/issues?q=is%3Aissue+is%3Aopen+label%3Aunhandled """
     __path__ = []
-    __args__ = []
+    # __args__ = []  # Doesn't seem necessary
 
     def __init__(self, spec, trigger: Optional[str] = None):
         self.name = spec.name
@@ -84,20 +84,28 @@ class FakeModule:
         self.__fake_module__ = True  # Should not be needed, but let's keep it for safety?
 
     @staticmethod
-    def _error_func(name, trigger, caller):
+    def _error_func(name, trigger, caller, args, kwargs):
         required_by = f" (required by '{trigger}')" if trigger else ""
         name_part = f"{name}{required_by} " if name else ""
         msg = f"Optional dependency {name_part}was used but it isn't installed."
         msg = f"{msg} Triggered by '{caller}'."
         logger.debug(msg=msg)
+
+        # print(name, trigger, caller, args, kwargs)
+        if _inside_typing():
+            if args and caller == "__eq__":
+                return name == args[0]
+            if caller == "__hash__":
+                return hash(name)
+
         raise MissingDependencyException(msg=msg)
 
     def error_func(self, _caller: str, *args, **kwargs):
-        self._error_func(name=self.name, trigger=self.trigger, caller=_caller)
+        return self._error_func(name=self.name, trigger=self.trigger, caller=_caller, args=args, kwargs=kwargs)
 
     @classmethod
     def error_func_class(cls, _caller: str, *args, **kwargs):
-        cls._error_func(name=None, trigger=None, caller=_caller)
+        return cls._error_func(name=None, trigger=None, caller=_caller, args=args, kwargs=kwargs)
 
     @staticmethod
     def _item_is_exception(item):
