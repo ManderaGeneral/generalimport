@@ -110,7 +110,7 @@ class FakeModule:
         fakemodule = FakeModule(spec=self.__spec__, trigger=item)
         if self._item_is_exception(item=item) or self._item_is_dunder(item=item):
             fakemodule.error_func(item)
-        return FakeModule(spec=self.__spec__, trigger=item)
+        return fakemodule
 
 
 # Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
