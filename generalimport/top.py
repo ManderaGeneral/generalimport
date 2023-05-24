@@ -11,12 +11,12 @@ def get_importer():
     """ Return existing or new GeneralImporter instance. """
     return GeneralImporter.singleton_instance or GeneralImporter()
 
-def generalimport(*names):
+def generalimport(*names, message=None):
     """ Adds names to a new ImportCatcher instance.
         Creates GeneralImporter instance if it doesn't exist. """
     # print(get_previous_frame_filename())
     _assert_no_dots(names=names)
-    catcher = ImportCatcher(*names)
+    catcher = ImportCatcher(*names, message=message)
     get_importer().catchers.append(catcher)
     return catcher
 

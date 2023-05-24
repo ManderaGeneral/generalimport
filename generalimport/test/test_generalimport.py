@@ -213,6 +213,47 @@ class Test(ImportTestCase):
         else:
             self.fail("Error not raised")
 
+    def test_message(self):
+        generalimport("nonexisting", message="FooBar")
+        import nonexisting
+
+        try:
+            nonexisting()
+        except MissingDependencyException as e:
+            self.assertIn("FooBar", str(e))
+        else:
+            self.fail("Error not raised")
+
+    def test_catcher_relay_single(self):
+        catcher = generalimport("nonexisting")
+        import nonexisting
+
+        self.assertIs(nonexisting.catcher, catcher)
+
+    def test_catcher_relay_two(self):
+        catcher = generalimport("foo", "bar")
+        import foo
+        import bar
+
+        self.assertIs(foo.catcher, catcher)
+        self.assertIs(bar.catcher, catcher)
+
+    def test_catcher_relay_double(self):
+        catcher = generalimport("foo")
+        from foo import bar
+
+        self.assertIs(bar.catcher, catcher)
+
+    def test_catcher_relay_double_and_two(self):
+        foobar_catcher = generalimport("foo")
+        hiii_catcher = generalimport("hiii")
+
+        from foo import bar
+        import hiii
+
+        self.assertIs(bar.catcher, foobar_catcher)
+        self.assertIs(hiii.catcher, hiii_catcher)
+
 
 
 

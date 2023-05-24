@@ -6,8 +6,10 @@ from generalimport import _get_previous_frame_filename, _get_top_name, _get_scop
 class ImportCatcher:
     WILDCARD = "*"
 
-    def __init__(self, *names):
+    def __init__(self, *names, message=None):
         self.names = set(names)
+        self.message = message
+
         self.added_names = set()
         self.added_fullnames = set()
         self.enabled = True
