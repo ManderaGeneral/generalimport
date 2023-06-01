@@ -15,6 +15,7 @@ class GeneralImporter:
 
     def __init__(self):
         self.catchers = []
+        self.latest_catcher = None
 
         self._singleton()
         self._skip_fullname = None
@@ -45,7 +46,7 @@ class GeneralImporter:
         return self._handle_relay(fullname=fullname, spec=spec)
 
     def create_module(self, spec):
-        return FakeModule(spec=spec)
+        return FakeModule(spec=spec, catcher=self.latest_catcher)
 
     def exec_module(self, module):
         pass
@@ -77,11 +78,11 @@ class GeneralImporter:
         return None
 
     def _handle_handle(self, fullname, reason):
-        catcher = self.catch(fullname=fullname)
-        if not catcher:
+        self.latest_catcher = self.catch(fullname=fullname)
+        if not self.latest_catcher:
             return self._handle_ignore(fullname=fullname, reason="Unhandled")
 
-        getLogger(__name__).info(f"{catcher} is handling '{fullname}' - {reason}")
+        getLogger(__name__).info(f"{self.latest_catcher} is handling '{fullname}' - {reason}")
 
         sys.modules.pop(fullname, None)  # Remove possible namespace
 
