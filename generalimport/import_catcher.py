@@ -1,6 +1,6 @@
 import dataclasses
 from logging import getLogger
-from typing import Optional
+from typing import Optional, Union
 
 from generalimport.generalimport_bottom import _get_previous_frame_filename, _get_top_name, _get_scope_from_filename
 
@@ -64,5 +64,5 @@ class ErrorPars:
     trigger: Optional[str]
     caller: str
     catcher: Optional[ImportCatcher]
-    args: list | tuple
+    args: Union[list, tuple]
     kwargs: dict
