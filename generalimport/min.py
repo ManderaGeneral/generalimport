@@ -1,3 +1,5 @@
+""" Standalone minimal example """
+
 import sys
 import importlib
 from unittest.case import SkipTest

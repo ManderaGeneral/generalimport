@@ -42,5 +42,5 @@ jobs:
       - name: Run unittests
         run: |
           cd repos/generalimport/generalimport/test
-          python -m unittest discover
+          python -m unittest discover -v
 

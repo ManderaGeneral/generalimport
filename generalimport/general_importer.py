@@ -2,7 +2,8 @@ import importlib
 import sys
 from logging import getLogger
 
-from generalimport import FakeModule, spec_is_namespace, _get_top_name, get_spec, fake_module_check, module_is_namespace
+from generalimport.fake_module import FakeModule
+from generalimport.generalimport_bottom import spec_is_namespace, _get_top_name, get_spec, fake_module_check, module_is_namespace
 
 
 class GeneralImporter:

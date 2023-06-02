@@ -1,6 +1,8 @@
 import sys
 
-from generalimport import GeneralImporter, ImportCatcher
+from generalimport import FakeModule, MissingDependencyException
+from generalimport.general_importer import GeneralImporter
+from generalimport.import_catcher import ImportCatcher
 
 
 def _assert_no_dots(names):
@@ -38,36 +40,14 @@ def reset_generalimport():
     _clear_importer()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def is_imported(module_name: str) -> bool:
+    """
+    Returns True if the module was actually imported, False, if generalimport mocked it.
+    """
+    module = sys.modules.get(module_name)
+    try:
+        return bool(module and not isinstance(module, FakeModule))
+    except MissingDependencyException as exc:
+        # isinstance() raises MissingDependencyException: fake module
+        pass
+    return False

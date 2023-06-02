@@ -1,6 +1,7 @@
 import importlib
 import pkgutil
 import sys
+from inspect import getmodule
 from pathlib import Path
 
 
@@ -70,7 +71,6 @@ def fake_module_check(obj, error=True):
         return False
 
 
-
 def _get_previous_frame_filename(depth):
     frame = sys._getframe(depth)
     files = ("importlib", "generalimport_bottom.py")
@@ -81,6 +81,14 @@ def _get_previous_frame_filename(depth):
         if frame_is_origin:
             return filename
         frame = frame.f_back
+
+def _module_in_stack(module):
+    frame = sys._getframe(0)
+    while frame:
+        if getmodule(frame) is module:
+            return True
+        frame = frame.f_back
+    return False
 
 def _get_scope_from_filename(filename):
     last_part = Path(filename).parts[-1]
