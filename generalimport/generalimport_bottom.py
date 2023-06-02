@@ -1,6 +1,7 @@
 import importlib
 import pkgutil
 import sys
+from inspect import getmodule
 from pathlib import Path
 
 
@@ -81,11 +82,10 @@ def _get_previous_frame_filename(depth):
             return filename
         frame = frame.f_back
 
-def _inside_typing():
+def _module_in_stack(module):
     frame = sys._getframe(0)
     while frame:
-        filename = frame.f_code.co_filename.replace("\\", "/").lower()
-        if r"typing.py" in filename:
+        if getmodule(frame) is module:
             return True
         frame = frame.f_back
     return False

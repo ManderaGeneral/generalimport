@@ -1,6 +1,6 @@
-from typing import Type, List
+import typing
 
-from generalimport.generalimport_bottom import _inside_typing
+from generalimport.generalimport_bottom import _module_in_stack
 from generalimport.import_catcher import ErrorPars
 
 
@@ -8,7 +8,7 @@ class DynamicDunder:
     """ Inherit to define a dynamic dunder.
         All subclasses' triggers are tested for truthy before a MissingOptionalDependency is raised.
         Returns result() of first triggered dynamic dunder. """
-    subclasses: List[Type["DynamicDunder"]] = []
+    subclasses: typing.List[typing.Type["DynamicDunder"]] = []
 
     def __init_subclass__(cls, **kwargs):
         cls.subclasses.append(cls)
@@ -75,7 +75,7 @@ CALLABLE_DUNDERS = [
 
 class DynamicEQ(DynamicDunder):
     def trigger(self):
-        return _inside_typing() and self.error_pars.caller == "__eq__" and bool(self.error_pars.args)
+        return _module_in_stack(module=typing) and self.error_pars.caller == "__eq__" and bool(self.error_pars.args)
 
     def result(self):
         other = self.error_pars.args[0]
@@ -84,7 +84,7 @@ class DynamicEQ(DynamicDunder):
 
 class DynamicHash(DynamicDunder):
     def trigger(self):
-        return _inside_typing() and self.error_pars.caller == "__hash__"
+        return _module_in_stack(module=typing) and self.error_pars.caller == "__hash__"
 
     def result(self):
         return id(self)
