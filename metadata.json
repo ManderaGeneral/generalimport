@@ -5,7 +5,7 @@
     "enabled": true,
     "private": false,
     "name": "generalimport",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "Handle all your optional dependencies with a single call!",
     "topics": [],
     "manifest": [],
