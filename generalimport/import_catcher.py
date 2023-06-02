@@ -1,6 +1,8 @@
+import dataclasses
 from logging import getLogger
+from typing import Optional
 
-from generalimport import _get_previous_frame_filename, _get_top_name, _get_scope_from_filename
+from generalimport.generalimport_bottom import _get_previous_frame_filename, _get_top_name, _get_scope_from_filename
 
 
 class ImportCatcher:
@@ -54,3 +56,13 @@ class ImportCatcher:
         filename = _get_previous_frame_filename(depth=6)
         self.latest_scope_filename = filename
         return filename.startswith(self._scope)
+
+
+@dataclasses.dataclass
+class ErrorPars:
+    name: Optional[str]
+    trigger: Optional[str]
+    caller: str
+    catcher: Optional[ImportCatcher]
+    args: list | tuple
+    kwargs: dict
