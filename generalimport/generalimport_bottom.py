@@ -85,7 +85,7 @@ def _inside_typing():
     frame = sys._getframe(0)
     while frame:
         filename = frame.f_code.co_filename.replace("\\", "/").lower()
-        if r"lib/typing.py" in filename:
+        if r"typing.py" in filename:
             return True
         frame = frame.f_back
     return False
