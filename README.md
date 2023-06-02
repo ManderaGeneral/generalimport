@@ -27,13 +27,13 @@ Handle all your optional dependencies with a single call!
 
 ```mermaid
 flowchart LR
-1([tool]) --> 2([library])
-2([library]) --> 4([vector])
-2([library]) --> 5([packager])
-2([library]) --> 3([file])
 0([import]) --> 3([file])
+1([tool]) --> 2([library])
 3([file]) --> 5([packager])
 0([import]) --> 2([library])
+2([library]) --> 3([file])
+2([library]) --> 5([packager])
+2([library]) --> 4([vector])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -59,7 +59,7 @@ style 0 fill:#482
 
 | Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                                                                                                                                                 | Platform        | Cover   |
 |:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.4.0](https://pypi.org/project/generalimport/) | 2023-05-24 09:26 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 96.7 %  |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.5.0](https://pypi.org/project/generalimport/) | 2023-06-02 23:16 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 97.0 %  |
 </details>
 
 
@@ -156,7 +156,7 @@ generalimport("your", "optional", "dependencies")
 - When `generalimport` is instantiated it creates a new importer for `sys.meta_path`.
 - This importer will return 'fake' modules for matching names and scope.
 - The scope ensures only your own imports are faked.
-- The fake module will recursively return itself when asked for an attribute.
+- The fake module will recursively return a FakeModule instance when asked for an attribute.
 - When used in any way (\_\_call\_\_, \_\_add\_\_, \_\_str\_\_ etc) it raises `generalimport.MissingDependencyException`.
 - This exception has the 'skip-exceptions' from `unittest` and `pytest` as bases, which means that tests will automatically be skipped.
 </details>
@@ -169,30 +169,33 @@ generalimport("your", "optional", "dependencies")
 
 <pre>
 <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/__init__.py#L1'>Module: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L70'>Class: FakeModule</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L103'>Method: error_func</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L107'>Method: error_func_class</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L8'>Class: GeneralImporter</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L24'>Method: catch</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L48'>Method: create_module</a>
-│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L51'>Method: exec_module</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L32'>Method: find_spec</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L6'>Class: ImportCatcher</a>
-│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L22'>Method: handle</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/dunders.py#L7'>Class: DynamicDunder</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/dunders.py#L20'>Method: result</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/dunders.py#L19'>Method: trigger</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L14'>Class: FakeModule</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L67'>Method: error_func</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L72'>Method: error_func_class</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L9'>Class: GeneralImporter</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L25'>Method: catch</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L49'>Method: create_module</a>
+│  ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L52'>Method: exec_module</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/general_importer.py#L33'>Method: find_spec</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L8'>Class: ImportCatcher</a>
+│  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L24'>Method: handle</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L30'>Class: MissingDependencyException</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L34'>Function: MissingOptionalDependency</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L62'>Function: fake_module_check</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L14'>Function: generalimport</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L10'>Function: get_importer</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L7'>Function: get_installed_modules_names</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L41'>Function: get_spec</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L28'>Function: import_module</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/fake_module.py#L136'>Function: is_imported</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L13'>Function: module_is_installed</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L47'>Function: module_is_namespace</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L51'>Function: module_name_is_namespace</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L36'>Function: reset_generalimport</a>
-└─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L44'>Function: spec_is_namespace</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L63'>Function: fake_module_check</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L16'>Function: generalimport</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L12'>Function: get_importer</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L8'>Function: get_installed_modules_names</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L42'>Function: get_spec</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L29'>Function: import_module</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L43'>Function: is_imported</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L14'>Function: module_is_installed</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L48'>Function: module_is_namespace</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L52'>Function: module_name_is_namespace</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L38'>Function: reset_generalimport</a>
+└─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L45'>Function: spec_is_namespace</a>
 </pre>
 </details>
 
@@ -206,7 +209,7 @@ Issue-creation, discussions and pull requests are most welcome!
 
 
 <sup>
-Generated 2023-05-24 09:26 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-06-02 23:16 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
