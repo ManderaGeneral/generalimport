@@ -1,5 +1,4 @@
 from typing import Optional
-import sys
 import logging
 from functools import partialmethod
 
@@ -100,14 +99,3 @@ for dunder in CALLABLE_CLASS_DUNDERS:
 
 
 
-def is_imported(module_name: str) -> bool:
-    """
-    Returns True if the module was actually imported, False, if generalimport mocked it.
-    """
-    module = sys.modules.get(module_name)
-    try:
-        return bool(module and not isinstance(module, FakeModule))
-    except MissingDependencyException as exc:
-        # isinstance() raises MissingDependencyException: fake module
-        pass
-    return False
