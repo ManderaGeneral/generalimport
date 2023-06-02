@@ -84,8 +84,8 @@ def _get_previous_frame_filename(depth):
 def _inside_typing():
     frame = sys._getframe(0)
     while frame:
-        filename = frame.f_code.co_filename
-        if r"Lib\typing.py" in filename:
+        filename = frame.f_code.co_filename.replace("\\", "/")
+        if r"Lib/typing.py" in filename:
             return True
         frame = frame.f_back
     return False
