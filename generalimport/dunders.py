@@ -1,3 +1,5 @@
+from typing import Type
+
 from generalimport.generalimport_bottom import _inside_typing
 from generalimport.import_catcher import ErrorPars
 
@@ -6,7 +8,7 @@ class DynamicDunder:
     """ Inherit to define a dynamic dunder.
         All subclasses' triggers are tested for truthy before a MissingOptionalDependency is raised.
         Returns result() of first triggered dynamic dunder. """
-    subclasses: list[type["DynamicDunder"]] = []
+    subclasses: list[Type["DynamicDunder"]] = []
 
     def __init_subclass__(cls, **kwargs):
         cls.subclasses.append(cls)
