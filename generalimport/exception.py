@@ -31,9 +31,13 @@ class MissingDependencyException(SkipTestException):
     pass
 
 
-def MissingOptionalDependency(*args, **kwargs):
-    warnings.warn("MissingOptionalDependency has been changed to MissingDependencyException", DeprecationWarning, stacklevel=2)
-    return MissingDependencyException(*args, **kwargs)
+class MissingOptionalDependency(SkipTestException):
+    """ MissingOptionalDependency is deprecated, use MissingDependencyException """
+    pass
+
+# def MissingOptionalDependency(*args, **kwargs):
+#     warnings.warn("MissingOptionalDependency has been changed to MissingDependencyException", DeprecationWarning, stacklevel=2)
+#     return MissingDependencyException(*args, **kwargs)
 
 
 
