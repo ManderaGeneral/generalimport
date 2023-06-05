@@ -27,13 +27,13 @@ Handle all your optional dependencies with a single call!
 
 ```mermaid
 flowchart LR
-2([library]) --> 5([packager])
 2([library]) --> 4([vector])
-3([file]) --> 5([packager])
-0([import]) --> 3([file])
 1([tool]) --> 2([library])
-0([import]) --> 2([library])
+3([file]) --> 5([packager])
 2([library]) --> 3([file])
+0([import]) --> 2([library])
+0([import]) --> 3([file])
+2([library]) --> 5([packager])
 click 0 "https://github.com/ManderaGeneral/generalimport"
 click 1 "https://github.com/ManderaGeneral/generaltool"
 click 2 "https://github.com/ManderaGeneral/generallibrary"
@@ -59,7 +59,7 @@ style 0 fill:#482
 
 | Package                                                          | Ver                                              | Latest Release        | Python                                                                                                                                                                                                                                                 | Platform        | Cover   |
 |:-----------------------------------------------------------------|:-------------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------|:--------|
-| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.5.0](https://pypi.org/project/generalimport/) | 2023-06-02 23:27 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 97.0 %  |
+| [generalimport](https://github.com/ManderaGeneral/generalimport) | [0.5.1](https://pypi.org/project/generalimport/) | 2023-06-05 11:30 CEST | [3.8](https://www.python.org/downloads/release/python-380/), [3.9](https://www.python.org/downloads/release/python-390/), [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/) | Windows, Ubuntu | 97.2 %  |
 </details>
 
 
@@ -183,7 +183,7 @@ generalimport("your", "optional", "dependencies")
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L8'>Class: ImportCatcher</a>
 │  └─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/import_catcher.py#L24'>Method: handle</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L30'>Class: MissingDependencyException</a>
-├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L34'>Function: MissingOptionalDependency</a>
+├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/exception.py#L34'>Class: MissingOptionalDependency</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport_bottom.py#L63'>Function: fake_module_check</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L16'>Function: generalimport</a>
 ├─ <a href='https://github.com/ManderaGeneral/generalimport/blob/master/generalimport/top.py#L12'>Function: get_importer</a>
@@ -209,7 +209,7 @@ Issue-creation, discussions and pull requests are most welcome!
 
 
 <sup>
-Generated 2023-06-02 23:27 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
+Generated 2023-06-05 11:30 CEST for commit <a href='https://github.com/ManderaGeneral/generalimport/commit/master'>master</a>.
 </sup>
 </details>
 
