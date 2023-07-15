@@ -50,8 +50,12 @@ class GeneralImporter:
         return FakeModule(spec=spec, catcher=self.latest_catcher)
 
     def exec_module(self, module):
+        print("in exec")
+        # sys.modules.pop("hii")
         pass
 
+    def get_data(self, x):
+        print("data", x)
 
 
     def _singleton(self):
@@ -86,7 +90,6 @@ class GeneralImporter:
         getLogger(__name__).info(f"{self.latest_catcher} is handling '{fullname}' - {reason}")
 
         sys.modules.pop(fullname, None)  # Remove possible namespace
-
         return importlib.util.spec_from_loader(fullname, self)
 
     def _handle_relay(self, fullname, spec):

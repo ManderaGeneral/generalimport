@@ -1,3 +1,4 @@
+import sys
 from typing import Optional
 import logging
 from functools import partialmethod
@@ -20,6 +21,7 @@ class FakeModule:
     SENTINEL = object()
 
     def __init__(self, spec, trigger: Optional[str] = None, catcher=None):
+
         self.name = spec.name
         self.trigger = trigger
         self.catcher = catcher
@@ -82,11 +84,34 @@ class FakeModule:
         return item in NON_CALLABLE_DUNDERS
 
     def __getattr__(self, item):
+        print("get", item)
+        # if item == "__package__":
+            # print("pack")
+            # sys.modules.pop(self.name)
+
         fakemodule = FakeModule(spec=self.__spec__, trigger=item, catcher=self.catcher)
         if self._item_is_exception(item=item) or self._item_is_dunder(item=item):
             return fakemodule.error_func(item)
         return fakemodule
 
+    def __setattr__(self, key, value):
+        # print("set", key, value)
+        return super().__setattr__(key, value)
+
+    # def __get__(self, instance, owner):
+    #     print("get", instance, owner)
+    #
+    # def __set__(self, instance, value):
+    #     print("set", instance, value)
+    #
+    # def __setstate__(self, state):
+    #     print("state", state)
+    #
+    # def __getstate__(self):
+    #     print("state")
+
+    def __set_name__(self, owner, name):
+        print("name", owner, name)
 
 # Sets all the callable dunders of FakeModule to 'error_func()' by preserving the name of the dunder that triggered it.
 # Mainly useful for debug purposes.
