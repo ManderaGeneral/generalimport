@@ -17,7 +17,7 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=[],
     url="https://github.com/ManderaGeneral/generalimport",
-    license="mit",
+    license="apache2",
     packages=find_namespace_packages(exclude=("build*", "dist*")),
     extras_require={},
     classifiers=[
@@ -25,7 +25,8 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
-        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3.12',
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
     ],

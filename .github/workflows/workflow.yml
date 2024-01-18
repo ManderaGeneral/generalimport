@@ -16,42 +16,40 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
         os: [windows-latest, ubuntu-latest]
     steps:
       - name: Create folder
         working-directory: ../../
         run: mkdir main
       - name: Set up Git SSH
-        uses: webfactory/ssh-agent@v0.7.0
+        uses: webfactory/ssh-agent@v0.8.0
         with:
-          ssh-private-key: ${{ secrets.GIT_SSH }}
+          ssh-private-key: ${{ secrets.ACTIONS_PRIVATE_KEY }}
       - name: Set up python version ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '${{ matrix.python-version }}'
       - name: Install necessities
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade setuptools wheel twine
-      - name: Clone 6 repos
+      - name: Clone 5 repos
         run: |
           mkdir repos
           cd repos
-          git clone ssh://git@github.com/ManderaGeneral/generalimport.git
-          git clone ssh://git@github.com/ManderaGeneral/generaltool.git
-          git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
-          git clone ssh://git@github.com/ManderaGeneral/generalfile.git
-          git clone ssh://git@github.com/ManderaGeneral/generalvector.git
-          git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
-      - name: Install 6 repos
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generalimport.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generaltool.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generallibrary.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generalfile.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generalpackager.git
+      - name: Install 5 repos
         run: |
           cd repos
           pip install -e generalimport[full]
           pip install -e generaltool[full]
           pip install -e generallibrary[full]
           pip install -e generalfile[full]
-          pip install -e generalvector[full]
           pip install -e generalpackager[full]
       - name: Run Packager method 'workflow_unittest'
         run: |
@@ -69,37 +67,35 @@ jobs:
         working-directory: ../../
         run: mkdir main
       - name: Set up Git SSH
-        uses: webfactory/ssh-agent@v0.7.0
+        uses: webfactory/ssh-agent@v0.8.0
         with:
-          ssh-private-key: ${{ secrets.GIT_SSH }}
-      - name: Set up python version 3.11
-        uses: actions/setup-python@v4
+          ssh-private-key: ${{ secrets.ACTIONS_PRIVATE_KEY }}
+      - name: Set up python version 3.12
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Install necessities
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade setuptools wheel twine
-      - name: Clone 8 repos
+      - name: Clone 7 repos
         run: |
           mkdir repos
           cd repos
-          git clone ssh://git@github.com/ManderaGeneral/generalimport.git
-          git clone ssh://git@github.com/ManderaGeneral/generaltool.git
-          git clone ssh://git@github.com/ManderaGeneral/generallibrary.git
-          git clone ssh://git@github.com/ManderaGeneral/generalfile.git
-          git clone ssh://git@github.com/ManderaGeneral/generalvector.git
-          git clone ssh://git@github.com/ManderaGeneral/generalpackager.git
-          git clone ssh://git@github.com/Mandera/Mandera.git
-          git clone ssh://git@github.com/ManderaGeneral/.github.git
-      - name: Install 6 repos
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generalimport.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generaltool.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generallibrary.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generalfile.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/generalpackager.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/Mandera/Mandera.git
+          git clone https://oauth2:${{ secrets.PACKAGER_GITHUB_API }}@github.com/ManderaGeneral/.github.git
+      - name: Install 5 repos
         run: |
           cd repos
           pip install -e generalimport[full]
           pip install -e generaltool[full]
           pip install -e generallibrary[full]
           pip install -e generalfile[full]
-          pip install -e generalvector[full]
           pip install -e generalpackager[full]
       - name: Run Packager method 'workflow_sync'
         run: |
